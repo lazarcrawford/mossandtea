@@ -328,8 +328,8 @@ document.addEventListener('alpine:init', () => {
       },
 
       getUrl(r2Key) {
-        // Will be replaced with signed URL from worker
-        return `/api/files/${r2Key}`;
+        // Direct Supabase Storage URL
+        return `https://ixfmstlnwnfjkocpordu.supabase.co/storage/v1/object/public/project-files/${r2Key}`;
       },
 
       async upload() {
@@ -344,14 +344,45 @@ document.addEventListener('alpine:init', () => {
         this.uploadSuccess = false;
 
         try {
+          const { data: { session } } = await supabase.auth.getSession();
+          if (!session) throw new Error('Not authenticated');
+
           for (const file of input.files) {
             this.uploadProgress = `Uploading ${file.name}...`;
-            const formData = new FormData();
-            formData.append('file', file);
-            formData.append('projectId', this.uploadProject);
 
-            await fetch('/api/upload', { method: 'POST', body: formData });
+            // Upload to Supabase Storage
+            const ext = file.name.split('.').pop();
+            const key = `projects/${this.uploadProject}/${Date.now()}-${file.name}`;
+
+            const { data: uploadData, error: uploadError } = await supabase.storage
+              .from('project-files')
+              .upload(key, file, {
+                cacheControl: '3600',
+                upsert: false
+              });
+
+            if (uploadError) throw uploadError;
+
+            // Record in project_files table
+            const { error: dbError } = await supabase
+              .from('project_files')
+              .insert({
+                project_id: this.uploadProject,
+                filename: key,
+                original_name: file.name,
+                mime_type: file.type,
+                file_size: file.size,
+                r2_key: key,
+                uploaded_by: 'admin'
+              });
+
+            if (dbError) {
+              // Cleanup: delete storage file if DB insert fails
+              await supabase.storage.from('project-files').remove([key]);
+              throw dbError;
+            }
           }
+
           this.uploadSuccess = true;
           this.uploadProgress = '';
           input.value = '';
@@ -367,7 +398,21 @@ document.addEventListener('alpine:init', () => {
       async delete(f) {
         if (!confirm(`Delete ${f.original_name}?`)) return;
         try {
-          await fetch(`/api/files/${f.r2_key}`, { method: 'DELETE' });
+          // Delete from storage
+          const { error: storageError } = await supabase.storage
+            .from('project-files')
+            .remove([f.r2_key]);
+
+          if (storageError) throw storageError;
+
+          // Delete from DB
+          const { error: dbError } = await supabase
+            .from('project_files')
+            .delete()
+            .eq('id', f.id);
+
+          if (dbError) throw dbError;
+
           this.list = this.list.filter(x => x.id !== f.id);
         } catch (e) { alert('Delete failed: ' + e.message); }
       }
@@ -415,19 +460,30 @@ document.addEventListener('alpine:init', () => {
       async save() {
         if (!this.fileSelected) { alert('Select a PDF file'); return; }
         try {
-          const formData = new FormData();
-          formData.append('file', this.fileSelected);
-          formData.append('projectId', this.form.project_id);
-          formData.append('title', this.form.title);
+          // Upload to Supabase Storage
+          const key = `contracts/${this.form.project_id}/${Date.now()}-${this.fileSelected.name}`;
+          const { error: uploadError } = await supabase.storage
+            .from('project-files')
+            .upload(key, this.fileSelected, { cacheControl: '3600' });
+          if (uploadError) throw uploadError;
 
-          await fetch('/api/contracts/upload', { method: 'POST', body: formData });
+          // Record in contracts table
+          const { error: dbError } = await supabase
+            .from('contracts')
+            .insert({
+              project_id: this.form.project_id,
+              title: this.form.title,
+              r2_key: key
+            });
+          if (dbError) throw dbError;
+
           this.modalOpen = false;
           this.load();
         } catch (e) { alert('Error: ' + e.message); }
       },
 
       download(c) {
-        window.open(`/api/contracts/${c.r2_key}`, '_blank');
+        window.open(`https://ixfmstlnwnfjkocpordu.supabase.co/storage/v1/object/public/project-files/${c.r2_key}`, '_blank');
       }
     },
 
