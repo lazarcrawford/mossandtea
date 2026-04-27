@@ -1,7 +1,3 @@
-name = "mossandtea-api"
+name = "mossandtea"
 main = "api-worker.js"
 compatibility_date = "2026-04-27"
-
-[[r2_buckets]]
-binding = "FILES_BUCKET"
-bucket_name = "mossandtea-files"

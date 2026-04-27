@@ -1,0 +1,12 @@
+# Supabase local
+supabase/.temp/
+
+# Wrangler temp
+.wrangler/
+
+# Node
+node_modules/
+
+# Python
+__pycache__/
+*.pyc

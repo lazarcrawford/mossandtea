@@ -1,0 +1,9 @@
+# Ignore internal tooling dirs
+.git/
+.wrangler/
+supabase/.temp/
+node_modules/
+__pycache__/
+*.pyc
+scripts/
+*.toml
