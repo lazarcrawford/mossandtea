@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moss & Tea — Admin</title>
+  <link rel="stylesheet" href="css/admin.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script defer src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <script defer src="js/admin.js"></script>
+</head>
+<body>
+  <!-- Login Screen -->
+  <div x-data="adminApp" x-cloak>
+    <div x-show="!auth.loggedIn" class="login-page">
+      <div class="login-card">
+        <h1>Moss & Tea</h1>
+        <p>Admin Panel</p>
+        <form @submit.prevent="auth.login()">
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" x-model="auth.email" placeholder="admin@mossandtea.com" required>
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" x-model="auth.password" placeholder="••••••••" required>
+          </div>
+          <div x-show="auth.error" class="alert alert--error" x-text="auth.error"></div>
+          <div x-show="auth.loading" class="loading">Signing in...</div>
+          <button type="submit" class="btn btn--primary" style="width:100%;justify-content:center;margin-top:0.5rem" :disabled="auth.loading">
+            Sign In
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div x-show="auth.loggedIn" class="admin-layout">
+      <!-- Sidebar -->
+      <nav class="sidebar">
+        <div class="sidebar__brand">
+          <h2>Moss & Tea</h2>
+          <span>Admin</span>
+        </div>
+        <div class="sidebar__nav">
+          <a class="sidebar__link" :class="nav.active === 'dashboard' && 'sidebar__link--active'" @click="nav.active = 'dashboard'">
+            <span class="icon">📊</span> <span>Dashboard</span>
+          </a>
+          <a class="sidebar__link" :class="nav.active === 'customers' && 'sidebar__link--active'" @click="nav.active = 'customers'; customers.load()">
+            <span class="icon">👥</span> <span>Customers</span>
+          </a>
+          <a class="sidebar__link" :class="nav.active === 'projects' && 'sidebar__link--active'" @click="nav.active = 'projects'; projects.load()">
+            <span class="icon">📁</span> <span>Projects</span>
+          </a>
+          <a class="sidebar__link" :class="nav.active === 'files' && 'sidebar__link--active'" @click="nav.active = 'files'; files.load()">
+            <span class="icon">🖼️</span> <span>File Gallery</span>
+          </a>
+          <a class="sidebar__link" :class="nav.active === 'contracts' && 'sidebar__link--active'" @click="nav.active = 'contracts'; contracts.load()">
+            <span class="icon">📄</span> <span>Contracts</span>
+          </a>
+          <a class="sidebar__link" :class="nav.active === 'payments' && 'sidebar__link--active'" @click="nav.active = 'payments'; payments.load()">
+            <span class="icon">💰</span> <span>Payments</span>
+          </a>
+        </div>
+        <div class="sidebar__footer">
+          <span x-text="auth.user?.email"></span>
+          <button class="btn--icon" @click="auth.logout()" title="Sign out">🚪</button>
+        </div>
+      </nav>
+
+      <!-- Main Content -->
+      <main class="main-content">
+
+        <!-- Dashboard -->
+        <section x-show="nav.active === 'dashboard'" class="section section--active">
+          <div class="topbar"><h1>Dashboard</h1></div>
+          <div class="stats-grid">
+            <div class="card card--stat">
+              <div class="stat__number" x-text="stats.totalCustomers">—</div>
+              <div class="stat__label">Customers</div>
+            </div>
+            <div class="card card--stat">
+              <div class="stat__number" x-text="stats.activeProjects">—</div>
+              <div class="stat__label">Active Projects</div>
+            </div>
+            <div class="card card--stat">
+              <div class="stat__number" x-text="stats.deliveredThisMonth">—</div>
+              <div class="stat__label">Delivered This Month</div>
+            </div>
+            <div class="card card--stat">
+              <div class="stat__number" x-text="'$' + (stats.revenue / 100).toFixed(0)">—</div>
+              <div class="stat__label">Total Revenue</div>
+            </div>
+          </div>
+          <div class="card">
+            <h3 style="font-family:var(--font-display);font-weight:400;margin-bottom:1rem">Recent Projects</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Project</th>
+                    <th>Client</th>
+                    <th>Status</th>
+                    <th>Shoot Date</th>
+                    <th>Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template x-for="p in stats.recentProjects" :key="p.id">
+                    <tr>
+                      <td x-text="p.title"></td>
+                      <td x-text="p.customer_name"></td>
+                      <td><span class="badge" :class="'badge--' + p.status" x-text="p.status.replace('_',' ')"></span></td>
+                      <td x-text="p.shoot_date || '—'"></td>
+                      <td x-text="p.price_cents ? '$' + (p.price_cents/100).toFixed(0) : '—'"></td>
+                    </tr>
+                  </template>
+                  <tr x-show="!stats.recentProjects.length">
+                    <td colspan="5" class="empty-state">No projects yet</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Customers -->
+        <section x-show="nav.active === 'customers'" class="section">
+          <div class="section__header">
+            <h2>Customers</h2>
+            <button class="btn btn--primary" @click="customers.openNew()">+ New Customer</button>
+          </div>
+          <div class="card">
+            <div class="search-box" style="margin-bottom:1rem">
+              <input type="text" placeholder="Search customers..." x-model="customers.search" @input.debounce="customers.load()">
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Projects</th>
+                    <th>Created</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template x-for="c in customers.list" :key="c.id">
+                    <tr>
+                      <td><strong x-text="c.first_name + ' ' + c.last_name"></strong></td>
+                      <td x-text="c.email"></td>
+                      <td x-text="c.phone || '—'"></td>
+                      <td><span class="badge badge--booked" x-text="c.project_count || 0"></span></td>
+                      <td x-text="new Date(c.created_at).toLocaleDateString()"></td>
+                      <td>
+                        <button class="btn btn--sm btn--outline" @click="customers.edit(c)">Edit</button>
+                        <button class="btn btn--sm btn--outline" @click="customers.viewProjects(c)">Projects</button>
+                      </td>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+            </div>
+            <div x-show="customers.loading" class="loading">Loading...</div>
+          </div>
+        </section>
+
+        <!-- Projects -->
+        <section x-show="nav.active === 'projects'" class="section">
+          <div class="section__header">
+            <h2>Projects</h2>
+            <button class="btn btn--primary" @click="projects.openNew()">+ New Project</button>
+          </div>
+          <div class="card">
+            <div style="display:flex;gap:0.5rem;margin-bottom:1rem;flex-wrap:wrap">
+              <select x-model="projects.statusFilter" @change="projects.load()" style="padding:0.4rem;border:1px solid var(--border);border-radius:6px;font-size:0.85rem">
+                <option value="">All Statuses</option>
+                <option value="inquiry">Inquiry</option>
+                <option value="booked">Booked</option>
+                <option value="shoot_complete">Shoot Complete</option>
+                <option value="editing">Editing</option>
+                <option value="delivered">Delivered</option>
+                <option value="archived">Archived</option>
+              </select>
+              <input type="text" placeholder="Search..." x-model="projects.search" @input.debounce="projects.load()" style="padding:0.4rem 0.6rem;border:1px solid var(--border);border-radius:6px;font-size:0.85rem;width:180px">
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Project</th>
+                    <th>Client</th>
+                    <th>Status</th>
+                    <th>Shoot Date</th>
+                    <th>Price</th>
+                    <th>Paid</th>
+                    <th>Files</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template x-for="p in projects.list" :key="p.id">
+                    <tr @dblclick="projects.openDetail(p)">
+                      <td><strong x-text="p.title"></strong></td>
+                      <td x-text="p.customer_name"></td>
+                      <td><span class="badge" :class="'badge--' + p.status" x-text="p.status.replace('_',' ')"></span></td>
+                      <td x-text="p.shoot_date || '—'"></td>
+                      <td x-text="p.price_cents ? '$' + (p.price_cents/100).toFixed(0) : '—'"></td>
+                      <td>
+                        <span x-show="p.deposit_paid" style="color:var(--success)">✓ deposit</span>
+                        <span x-show="p.balance_paid" style="color:var(--success)">✓ balance</span>
+                        <span x-show="!p.deposit_paid && !p.balance_paid" style="color:var(--text-light)">—</span>
+                      </td>
+                      <td x-text="p.file_count || 0"></td>
+                      <td>
+                        <button class="btn btn--sm btn--outline" @click="projects.openDetail(p)">Open</button>
+                      </td>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+            </div>
+            <div x-show="projects.loading" class="loading">Loading...</div>
+          </div>
+        </section>
+
+        <!-- Files -->
+        <section x-show="nav.active === 'files'" class="section">
+          <div class="section__header">
+            <h2>File Gallery</h2>
+            <div>
+              <select x-model="files.projectFilter" @change="files.load()" style="padding:0.4rem;border:1px solid var(--border);border-radius:6px;font-size:0.85rem;margin-right:0.5rem">
+                <option value="">All Projects</option>
+                <template x-for="p in files.projectList" :key="p.id">
+                  <option :value="p.id" x-text="p.title"></option>
+                </template>
+              </select>
+              <button class="btn btn--primary" @click="files.openUpload()">+ Upload</button>
+            </div>
+          </div>
+          <!-- Upload Zone -->
+          <div x-show="files.showUpload" class="card" style="margin-bottom:1rem">
+            <h3 style="font-family:var(--font-display);margin-bottom:1rem;font-weight:400">Upload Files</h3>
+            <div class="form-group">
+              <label>Project</label>
+              <select x-model="files.uploadProject" required>
+                <option value="">Select project...</option>
+                <template x-for="p in files.projectList" :key="p.id">
+                  <option :value="p.id" x-text="p.title"></option>
+                </template>
+              </select>
+            </div>
+            <div class="upload-zone" @click="document.getElementById('fileInput').click()">
+              <div class="icon" style="font-size:2rem">📁</div>
+              <p>Click to select files or drag them here</p>
+              <input type="file" id="fileInput" multiple accept="image/*,.pdf,.zip" style="display:none" @change="files.upload()">
+            </div>
+            <div x-show="files.uploading" class="loading">Uploading... <span x-text="files.uploadProgress"></span></div>
+            <div x-show="files.uploadSuccess" class="alert alert--success">Files uploaded successfully!</div>
+          </div>
+          <!-- File Grid -->
+          <div class="card">
+            <div x-show="files.loading" class="loading">Loading files...</div>
+            <div x-show="!files.loading && !files.list.length" class="empty-state">
+              <div class="icon">🖼️</div>
+              <p>No files yet. Select a project and upload.</p>
+            </div>
+            <div class="file-grid">
+              <template x-for="f in files.list" :key="f.id">
+                <div class="file-item">
+                  <img :src="files.getUrl(f.r2_key)" :alt="f.original_name" loading="lazy">
+                  <button class="delete-btn" @click="files.delete(f)">×</button>
+                  <div class="file-overlay" x-text="f.original_name"></div>
+                </div>
+              </template>
+            </div>
+          </div>
+        </section>
+
+        <!-- Contracts -->
+        <section x-show="nav.active === 'contracts'" class="section">
+          <div class="section__header">
+            <h2>Contracts</h2>
+            <button class="btn btn--primary" @click="contracts.openNew()">+ Upload Contract</button>
+          </div>
+          <div class="card">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Project</th>
+                    <th>Customer</th>
+                    <th>Signed</th>
+                    <th>Uploaded</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template x-for="c in contracts.list" :key="c.id">
+                    <tr>
+                      <td x-text="c.title"></td>
+                      <td x-text="c.project_title"></td>
+                      <td x-text="c.customer_name"></td>
+                      <td>
+                        <span x-show="c.signed_by_customer && c.signed_by_admin" style="color:var(--success)">✓ Fully Signed</span>
+                        <span x-show="c.signed_by_customer && !c.signed_by_admin">Customer signed, admin pending</span>
+                        <span x-show="!c.signed_by_customer && c.signed_by_admin">Admin signed, customer pending</span>
+                        <span x-show="!c.signed_by_customer && !c.signed_by_admin" style="color:var(--text-light)">Pending</span>
+                      </td>
+                      <td x-text="new Date(c.created_at).toLocaleDateString()"></td>
+                      <td>
+                        <button class="btn btn--sm btn--outline" @click="contracts.download(c)">View</button>
+                      </td>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Payments -->
+        <section x-show="nav.active === 'payments'" class="section">
+          <div class="section__header">
+            <h2>Payments</h2>
+            <button class="btn btn--primary" @click="payments.openNew()">+ Record Payment</button>
+          </div>
+          <div class="card">
+            <div class="stats-grid" style="margin-bottom:1.5rem">
+              <div class="card card--stat">
+                <div class="stat__number" x-text="'$' + (payments.stats.totalReceived / 100).toFixed(0)">—</div>
+                <div class="stat__label">Total Received</div>
+              </div>
+              <div class="card card--stat">
+                <div class="stat__number" x-text="'$' + (payments.stats.outstanding / 100).toFixed(0)">—</div>
+                <div class="stat__label">Outstanding</div>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Project</th>
+                    <th>Client</th>
+                    <th>Amount</th>
+                    <th>Method</th>
+                    <th>Date</th>
+                    <th>Notes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template x-for="p in payments.list" :key="p.id">
+                    <tr>
+                      <td x-text="p.project_title"></td>
+                      <td x-text="p.customer_name"></td>
+                      <td><strong x-text="'$' + (p.amount_cents/100).toFixed(2)"></strong></td>
+                      <td x-text="p.method || '—'"></td>
+                      <td x-text="new Date(p.paid_at).toLocaleDateString()"></td>
+                      <td x-text="p.notes || ''"></td>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Modals -->
+
+    <!-- Customer Modal -->
+    <div class="modal-overlay" :class="customers.modalOpen && 'modal-overlay--open'" @click.self="customers.modalOpen = false">
+      <div class="modal">
+        <h3 x-text="customers.editing ? 'Edit Customer' : 'New Customer'"></h3>
+        <form @submit.prevent="customers.save()">
+          <div class="form-row">
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text" x-model="customers.form.first_name" required>
+            </div>
+            <div class="form-group">
+              <label>Last Name</label>
+              <input type="text" x-model="customers.form.last_name" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" x-model="customers.form.email" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Phone</label>
+              <input type="tel" x-model="customers.form.phone">
+            </div>
+            <div class="form-group">
+              <label>Instagram</label>
+              <input type="text" x-model="customers.form.instagram">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Notes</label>
+            <textarea rows="3" x-model="customers.form.notes"></textarea>
+          </div>
+          <div class="modal__actions">
+            <button type="button" class="btn btn--outline" @click="customers.modalOpen = false">Cancel</button>
+            <button type="submit" class="btn btn--primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Project Modal -->
+    <div class="modal-overlay" :class="projects.modalOpen && 'modal-overlay--open'" @click.self="projects.modalOpen = false">
+      <div class="modal">
+        <h3 x-text="projects.editing ? 'Edit Project' : 'New Project'"></h3>
+        <form @submit.prevent="projects.save()">
+          <div class="form-group">
+            <label>Customer</label>
+            <select x-model="projects.form.customer_id" required>
+              <option value="">Select customer...</option>
+              <template x-for="c in projects.customerList" :key="c.id">
+                <option :value="c.id" x-text="c.first_name + ' ' + c.last_name"></option>
+              </template>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Project Title</label>
+            <input type="text" x-model="projects.form.title" required>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea rows="2" x-model="projects.form.description"></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Status</label>
+              <select x-model="projects.form.status">
+                <option value="inquiry">Inquiry</option>
+                <option value="booked">Booked</option>
+                <option value="shoot_complete">Shoot Complete</option>
+                <option value="editing">Editing</option>
+                <option value="delivered">Delivered</option>
+                <option value="archived">Archived</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Shoot Date</label>
+              <input type="date" x-model="projects.form.shoot_date">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Price ($)</label>
+              <input type="number" step="0.01" x-model="projects.form.price_dollars">
+            </div>
+            <div class="form-group">
+              <label>Deposit ($)</label>
+              <input type="number" step="0.01" x-model="projects.form.deposit_dollars">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Deposit Paid?</label>
+              <select x-model="projects.form.deposit_paid">
+                <option :value="false">No</option>
+                <option :value="true">Yes</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Balance Paid?</label>
+              <select x-model="projects.form.balance_paid">
+                <option :value="false">No</option>
+                <option :value="true">Yes</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Notes</label>
+            <textarea rows="2" x-model="projects.form.notes"></textarea>
+          </div>
+          <div class="modal__actions">
+            <button type="button" class="btn btn--outline" @click="projects.modalOpen = false">Cancel</button>
+            <button type="submit" class="btn btn--primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="modal-overlay" :class="payments.modalOpen && 'modal-overlay--open'" @click.self="payments.modalOpen = false">
+      <div class="modal">
+        <h3>Record Payment</h3>
+        <form @submit.prevent="payments.save()">
+          <div class="form-group">
+            <label>Project</label>
+            <select x-model="payments.form.project_id" required>
+              <option value="">Select project...</option>
+              <template x-for="p in payments.projectList" :key="p.id">
+                <option :value="p.id" x-text="p.title + ' — ' + p.customer_name"></option>
+              </template>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Amount ($)</label>
+            <input type="number" step="0.01" x-model="payments.form.amount_dollars" required>
+          </div>
+          <div class="form-group">
+            <label>Payment Method</label>
+            <select x-model="payments.form.method">
+              <option value="cash">Cash</option>
+              <option value="card">Card</option>
+              <option value="bank_transfer">Bank Transfer</option>
+              <option value="venmo">Venmo</option>
+              <option value="zelle">Zelle</option>
+              <option value="paypal">PayPal</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Notes</label>
+            <input type="text" x-model="payments.form.notes">
+          </div>
+          <div class="modal__actions">
+            <button type="button" class="btn btn--outline" @click="payments.modalOpen = false">Cancel</button>
+            <button type="submit" class="btn btn--primary">Record Payment</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Contract Upload Modal -->
+    <div class="modal-overlay" :class="contracts.modalOpen && 'modal-overlay--open'" @click.self="contracts.modalOpen = false">
+      <div class="modal">
+        <h3>Upload Contract</h3>
+        <form @submit.prevent="contracts.save()">
+          <div class="form-group">
+            <label>Project</label>
+            <select x-model="contracts.form.project_id" required>
+              <option value="">Select project...</option>
+              <template x-for="p in contracts.projectList" :key="p.id">
+                <option :value="p.id" x-text="p.title + ' — ' + p.customer_name"></option>
+              </template>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Contract Title</label>
+            <input type="text" x-model="contracts.form.title" placeholder="e.g. Maternity Shoot Agreement" required>
+          </div>
+          <div class="form-group">
+            <label>Contract PDF</label>
+            <input type="file" accept=".pdf" id="contractFileInput" @change="contracts.fileSelected = $event.target.files[0]">
+          </div>
+          <div class="modal__actions">
+            <button type="button" class="btn btn--outline" @click="contracts.modalOpen = false">Cancel</button>
+            <button type="submit" class="btn btn--primary">Upload</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <style>[x-cloak] { display: none !important; }</style>
+</body>
+</html>
