@@ -59,37 +59,37 @@
             </div>
         </div>
         <div class="gallery">
-            <div class="gallery__item gallery__item--wide">
+            <div class="gallery__item gallery__item--wide" data-lightbox="1" data-src="https://images.squarespace-cdn.com/content/v1/5408e52ce4b0bf6cd12edcbb/1437611862367-46OX37E09DGPY7TYGM64/_G3A5499.jpg?format=2500w" data-caption="Editorial — Natural Light">
                 <img src="images/irina/G3A5499.jpg" alt="Editorial portrait" loading="lazy">
                 <div class="gallery__overlay">
                     <span>Editorial — Natural Light</span>
                 </div>
             </div>
-            <div class="gallery__item gallery__item--tall">
+            <div class="gallery__item gallery__item--tall" data-lightbox="2" data-src="https://images.squarespace-cdn.com/content/v1/5408e52ce4b0bf6cd12edcbb/1437611954536-FH3ZXITCD81B7GUMAOLW/Braina10.jpg?format=2500w" data-caption="Portrait — Braina">
                 <img src="images/irina/Braina10.jpg" alt="Portrait study" loading="lazy">
                 <div class="gallery__overlay">
                     <span>Portrait — Braina</span>
                 </div>
             </div>
-            <div class="gallery__item">
+            <div class="gallery__item" data-lightbox="3" data-src="https://images.squarespace-cdn.com/content/v1/5408e52ce4b0bf6cd12edcbb/1437613842421-TT2IVFYVICR6GL15W7M2/nhmla02.jpg?format=2500w" data-caption="Architecture — NHMLA">
                 <img src="images/irina/nhmla02.jpg" alt="Museum architecture" loading="lazy">
                 <div class="gallery__overlay">
                     <span>Architecture — NHMLA</span>
                 </div>
             </div>
-            <div class="gallery__item">
+            <div class="gallery__item" data-lightbox="4" data-src="https://images.squarespace-cdn.com/content/v1/5408e52ce4b0bf6cd12edcbb/1437785029235-YYG96353VOE0QNVPAN60/cenit_river01.jpg?format=2500w" data-caption="Landscape — Cenit River">
                 <img src="images/irina/cenit_river01.jpg" alt="River landscape" loading="lazy">
                 <div class="gallery__overlay">
                     <span>Landscape — Cenit River</span>
                 </div>
             </div>
-            <div class="gallery__item gallery__item--wide">
+            <div class="gallery__item gallery__item--wide" data-lightbox="5" data-src="https://images.squarespace-cdn.com/content/v1/5408e52ce4b0bf6cd12edcbb/1437611646641-TKISEALT65BR88DTB6CP/Makenna09S.jpg?format=2500w" data-caption="Portrait — Makenna">
                 <img src="images/irina/Makenna09S.jpg" alt="Portrait in soft light" loading="lazy">
                 <div class="gallery__overlay">
                     <span>Portrait — Makenna</span>
                 </div>
             </div>
-            <div class="gallery__item gallery__item--tall">
+            <div class="gallery__item gallery__item--tall" data-lightbox="6" data-src="https://images.squarespace-cdn.com/content/v1/5408e52ce4b0bf6cd12edcbb/1437613722051-0UT6H0IH7YDXCXPXD7SW/Ganna08.jpg?format=2500w" data-caption="Editorial — Ganna">
                 <img src="images/irina/Ganna08.jpg" alt="Editorial fashion portrait" loading="lazy">
                 <div class="gallery__overlay">
                     <span>Editorial — Ganna</span>
@@ -245,6 +245,32 @@
             </div>
         </div>
     </footer>
+
+    <!-- ============ Lightbox ============ -->
+    <div class="lightbox" id="lightbox" role="dialog" aria-label="Image viewer">
+        <div class="lightbox__backdrop"></div>
+        <div class="lightbox__click-area" id="lightboxCloseArea"></div>
+        <button class="lightbox__close" id="lightboxClose" aria-label="Close">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M18 6L6 18M6 6l12 12"/>
+            </svg>
+        </button>
+        <button class="lightbox__nav lightbox__nav--prev" id="lightboxPrev" aria-label="Previous image">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M15 18l-6-6 6-6"/>
+            </svg>
+        </button>
+        <button class="lightbox__nav lightbox__nav--next" id="lightboxNext" aria-label="Next image">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M9 18l6-6-6-6"/>
+            </svg>
+        </button>
+        <div class="lightbox__container" id="lightboxContainer">
+            <img class="lightbox__image" id="lightboxImage" src="" alt="">
+            <div class="lightbox__caption" id="lightboxCaption"></div>
+            <div class="lightbox__counter" id="lightboxCounter"></div>
+        </div>
+    </div>
 
     <script src="js/motion.js"></script>
     <script src="js/main.js"></script>
