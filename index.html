@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Irina Crawford — Photography</title>
+    <meta name="description" content="Irina Crawford — Cinematic photography rooted in earth and light. Portrait, lifestyle, and editorial photography.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <div class="nav__inner container">
+            <a href="#" class="nav__logo">Irina Crawford</a>
+            <div class="nav__links">
+                <a href="#portfolio" class="nav__link">Portfolio</a>
+                <a href="#about" class="nav__link">About</a>
+                <a href="#services" class="nav__link">Services</a>
+                <a href="#contact" class="nav__link">Contact</a>
+            </div>
+            <button class="nav__toggle" id="navToggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" id="hero">
+        <div class="hero__bg">
+            <img src="images/hero-landscape.jpg" alt="Misty mountain landscape at dawn" class="hero__image">
+            <div class="hero__overlay"></div>
+        </div>
+        <div class="hero__content container">
+            <p class="hero__label">Cinematic Photography</p>
+            <h1 class="hero__title">Rooted in Earth.<br>Drawn to Light.</h1>
+            <p class="hero__subtitle">Portraits · Lifestyle · Editorial · Stories</p>
+            <a href="#portfolio" class="btn btn--outline">View Portfolio</a>
+        </div>
+        <div class="hero__scroll">
+            <span>Scroll</span>
+            <div class="hero__scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- Portfolio -->
+    <section class="portfolio section" id="portfolio">
+        <div class="container">
+            <div class="section__header">
+                <p class="section__label">Portfolio</p>
+                <h2 class="section__title">Moments Between Frames</h2>
+                <p class="section__desc">Every photograph is a conversation between light and subject — a pause in time that tells a story without words.</p>
+            </div>
+        </div>
+        <div class="gallery">
+            <div class="gallery__item gallery__item--wide">
+                <img src="images/hero-landscape.jpg" alt="Misty mountain landscape" loading="lazy">
+                <div class="gallery__overlay">
+                    <span>Landscape — Sierra Nevada</span>
+                </div>
+            </div>
+            <div class="gallery__item gallery__item--tall">
+                <img src="images/hero-portrait.jpg" alt="Woman in wheat field at sunset" loading="lazy">
+                <div class="gallery__overlay">
+                    <span>Portrait — Golden Hour</span>
+                </div>
+            </div>
+            <div class="gallery__item">
+                <img src="images/gallery-tea.jpg" alt="Tea ceremony still life" loading="lazy">
+                <div class="gallery__overlay">
+                    <span>Still Life — Tea Ceremony</span>
+                </div>
+            </div>
+            <div class="gallery__item">
+                <img src="images/gallery-moss.jpg" alt="Moss on tree trunk macro" loading="lazy">
+                <div class="gallery__overlay">
+                    <span>Nature — Forest Floor</span>
+                </div>
+            </div>
+            <div class="gallery__item gallery__item--wide">
+                <img src="images/gallery-tea.jpg" alt="Tea setting" loading="lazy">
+                <div class="gallery__overlay">
+                    <span>Lifestyle — Morning Light</span>
+                </div>
+            </div>
+            <div class="gallery__item gallery__item--tall">
+                <img src="images/gallery-moss.jpg" alt="Forest moss detail" loading="lazy">
+                <div class="gallery__overlay">
+                    <span>Texture — Forest Detail</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section class="about section" id="about">
+        <div class="container">
+            <div class="about__grid">
+                <div class="about__image">
+                    <img src="images/gallery-tea.jpg" alt="Irina Crawford — photographer">
+                </div>
+                <div class="about__content">
+                    <p class="section__label">About</p>
+                    <h2 class="section__title">I see the world through a lens of light and story.</h2>
+                    <p class="about__text">
+                        I am Irina Crawford — a visual storyteller, cinematographer, and photographer. 
+                        My work lives at the intersection of the natural world and the intimate moments 
+                        that define us. With roots in filmmaking and an eye for the cinematic, 
+                        every frame I capture is a meditation on light, texture, and emotion.
+                    </p>
+                    <p class="about__text">
+                        From the olive groves of the Mediterranean to the misty forests of the Pacific 
+                        Northwest, I seek the poetry in the ordinary — the way morning light falls across 
+                        a table, the quiet strength in a portrait, the wild grace of an untamed landscape.
+                    </p>
+                    <p class="about__text">
+                        Based between California and the world, I work with families, creators, and 
+                        brands who value authenticity over perfection.
+                    </p>
+                    <a href="#contact" class="btn btn--primary">Let's Create Together</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section class="services section" id="services">
+        <div class="container">
+            <div class="section__header">
+                <p class="section__label">Services</p>
+                <h2 class="section__title">What I Offer</h2>
+            </div>
+            <div class="services__grid">
+                <div class="service-card">
+                    <div class="service-card__icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                        </svg>
+                    </div>
+                    <h3 class="service-card__title">Portrait & Family</h3>
+                    <p class="service-card__text">Authentic portraits that capture the essence of who you are — individually, as a couple, or as a family. Natural light, real moments.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-card__icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                            <polyline points="9 22 9 12 15 12 15 22"/>
+                        </svg>
+                    </div>
+                    <h3 class="service-card__title">Lifestyle & Editorial</h3>
+                    <p class="service-card__text">Styled storytelling for brands, publications, and creative projects. Cinematic imagery that elevates your narrative.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-card__icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M2 12h20"/>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                        </svg>
+                    </div>
+                    <h3 class="service-card__title">Travel & Landscape</h3>
+                    <p class="service-card__text">The earth as subject. From remote wilderness to intimate natural scenes — documenting the beauty of the world around us.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-card__icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                            <circle cx="12" cy="13" r="4"/>
+                        </svg>
+                    </div>
+                    <h3 class="service-card__title">Commercial & Brand</h3>
+                    <p class="service-card__text">Visual content for businesses that want to tell their story with depth and authenticity. Product, space, and brand storytelling.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact section" id="contact">
+        <div class="container">
+            <div class="contact__grid">
+                <div class="contact__info">
+                    <p class="section__label">Connect</p>
+                    <h2 class="section__title">Let's make something beautiful.</h2>
+                    <p class="contact__text">Whether you're planning a family session, a brand shoot, or a creative collaboration — I'd love to hear from you.</p>
+                    <div class="contact__details">
+                        <div class="contact__detail">
+                            <span class="contact__label">Email</span>
+                            <a href="mailto:hello@mossandtea.com" class="contact__value">hello@mossandtea.com</a>
+                        </div>
+                        <div class="contact__detail">
+                            <span class="contact__label">Based</span>
+                            <span class="contact__value">California · Worldwide</span>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact__form" id="contactForm">
+                    <input type="text" class="form__input" placeholder="Name" required>
+                    <input type="email" class="form__input" placeholder="Email" required>
+                    <input type="text" class="form__input" placeholder="Subject">
+                    <textarea class="form__textarea" placeholder="Tell me about your project..." rows="5" required></textarea>
+                    <button type="submit" class="btn btn--primary btn--full">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__inner">
+                <div class="footer__brand">
+                    <span class="footer__logo">Irina Crawford</span>
+                    <p class="footer__tagline">Cinematic photography rooted in earth and light.</p>
+                </div>
+                <div class="footer__links">
+                    <a href="#portfolio" class="footer__link">Portfolio</a>
+                    <a href="#about" class="footer__link">About</a>
+                    <a href="#services" class="footer__link">Services</a>
+                    <a href="#contact" class="footer__link">Contact</a>
+                </div>
+                <div class="footer__social">
+                    <a href="#" class="footer__social-link" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="footer__social-link" aria-label="Pinterest">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 2C6.48 2 2 6.48 2 12c0 4.84 3.27 8.87 7.59 10.28-.11-.87-.2-2.2.04-3.15.22-.86 1.4-5.75 1.4-5.75s-.36-.72-.36-1.78c0-1.67.97-2.92 2.18-2.92 1.03 0 1.53.77 1.53 1.7 0 1.03-.66 2.57-.99 4-.28 1.2.6 2.17 1.78 2.17 2.14 0 3.78-2.25 3.78-5.5 0-2.87-2.06-4.88-5.01-4.88-3.41 0-5.42 2.56-5.42 5.2 0 1.03.4 2.14.9 2.74a.36.36 0 0 1 .08.35c-.09.38-.3 1.2-.34 1.37-.05.22-.18.27-.41.16-1.54-.72-2.5-2.97-2.5-4.78 0-3.9 2.82-7.47 8.16-7.47 4.28 0 7.61 3.05 7.61 7.12 0 4.25-2.68 7.67-6.39 7.67-1.25 0-2.42-.65-2.82-1.42l-.77 2.93c-.28 1.08-1.04 2.44-1.55 3.26A10 10 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2026 Irina Crawford · Moss & Tea, LLC. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
