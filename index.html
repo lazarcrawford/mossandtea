@@ -9,8 +9,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/motion.css">
 </head>
 <body>
+    <!-- Scroll Progress -->
+    <div class="scroll-progress"></div>
 
     <!-- Navigation -->
     <nav class="nav" id="nav">
@@ -49,7 +52,7 @@
     <!-- Portfolio -->
     <section class="portfolio section" id="portfolio">
         <div class="container">
-            <div class="section__header">
+            <div class="section__header reveal">
                 <p class="section__label">Portfolio</p>
                 <h2 class="section__title">Moments Between Frames</h2>
                 <p class="section__desc">Every photograph is a conversation between light and subject — a pause in time that tells a story without words.</p>
@@ -99,10 +102,10 @@
     <section class="about section" id="about">
         <div class="container">
             <div class="about__grid">
-                <div class="about__image">
+                <div class="about__image reveal reveal--left">
                     <img src="images/irina/G3A5407B.jpg" alt="Irina Crawford — photographer">
                 </div>
-                <div class="about__content">
+                <div class="about__content reveal reveal--right">
                     <p class="section__label">About</p>
                     <h2 class="section__title">I see the world through a lens of light and story.</h2>
                     <p class="about__text">
@@ -134,7 +137,7 @@
                 <h2 class="section__title">What I Offer</h2>
             </div>
             <div class="services__grid">
-                <div class="service-card">
+                <div class="service-card reveal reveal--d1">
                     <div class="service-card__icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
@@ -143,7 +146,7 @@
                     <h3 class="service-card__title">Portrait & Family</h3>
                     <p class="service-card__text">Authentic portraits that capture the essence of who you are — individually, as a couple, or as a family. Natural light, real moments.</p>
                 </div>
-                <div class="service-card">
+                <div class="service-card reveal reveal--d2">
                     <div class="service-card__icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
@@ -153,7 +156,7 @@
                     <h3 class="service-card__title">Lifestyle & Editorial</h3>
                     <p class="service-card__text">Styled storytelling for brands, publications, and creative projects. Cinematic imagery that elevates your narrative.</p>
                 </div>
-                <div class="service-card">
+                <div class="service-card reveal reveal--d3">
                     <div class="service-card__icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                             <circle cx="12" cy="12" r="10"/>
@@ -164,7 +167,7 @@
                     <h3 class="service-card__title">Travel & Landscape</h3>
                     <p class="service-card__text">The earth as subject. From remote wilderness to intimate natural scenes — documenting the beauty of the world around us.</p>
                 </div>
-                <div class="service-card">
+                <div class="service-card reveal reveal--d4">
                     <div class="service-card__icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                             <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
@@ -182,7 +185,7 @@
     <section class="contact section" id="contact">
         <div class="container">
             <div class="contact__grid">
-                <div class="contact__info">
+                <div class="contact__info reveal reveal--left">
                     <p class="section__label">Connect</p>
                     <h2 class="section__title">Let's make something beautiful.</h2>
                     <p class="contact__text">Whether you're planning a family session, a brand shoot, or a creative collaboration — I'd love to hear from you.</p>
@@ -197,7 +200,7 @@
                         </div>
                     </div>
                 </div>
-                <form class="contact__form" id="contactForm">
+                <form class="contact__form reveal reveal--right" id="contactForm">
                     <input type="text" class="form__input" placeholder="Name" required>
                     <input type="email" class="form__input" placeholder="Email" required>
                     <input type="text" class="form__input" placeholder="Subject">
@@ -243,6 +246,7 @@
         </div>
     </footer>
 
+    <script src="js/motion.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>

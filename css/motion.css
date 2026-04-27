@@ -1,0 +1,294 @@
+/* ============================================
+   Moss & Tea — Irina Crawford Photography
+   Minimalist · Earthy · Cinematic
+   Physics & Motion Additions
+   ============================================ */
+
+/* --- Lenis smooth scroll --- */
+html.lenis {
+    height: auto;
+}
+
+.lenis.lenis-smooth {
+    scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+    overflow: hidden;
+}
+
+/* --- Hero parallax layers --- */
+.hero {
+    perspective: 1px;
+    overflow-x: hidden;
+}
+
+.hero__bg {
+    transform: translateZ(-1px) scale(2);
+    will-change: transform;
+    z-index: -1;
+}
+
+.hero__content {
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+/* --- Mouse parallax layers --- */
+.parallax-layer {
+    will-change: transform;
+    transition: transform 0.1s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.parallax-deep {
+    transition: transform 0.15s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.parallax-shallow {
+    transition: transform 0.08s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* --- Reveal animations --- */
+.reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.9s cubic-bezier(0.25, 0.1, 0.25, 1),
+                transform 0.9s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.reveal--visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.reveal--left {
+    transform: translateX(-40px);
+}
+
+.reveal--left.reveal--visible {
+    transform: translateX(0);
+}
+
+.reveal--right {
+    transform: translateX(40px);
+}
+
+.reveal--right.reveal--visible {
+    transform: translateX(0);
+}
+
+.reveal--scale {
+    transform: scale(0.95);
+}
+
+.reveal--scale.reveal--visible {
+    transform: scale(1);
+}
+
+/* Stagger delays */
+.reveal--d1 { transition-delay: 0s; }
+.reveal--d2 { transition-delay: 0.1s; }
+.reveal--d3 { transition-delay: 0.2s; }
+.reveal--d4 { transition-delay: 0.3s; }
+.reveal--d5 { transition-delay: 0.4s; }
+.reveal--d6 { transition-delay: 0.5s; }
+
+/* --- Service card 3D tilt --- */
+.service-card {
+    perspective: 800px;
+    transform-style: preserve-3d;
+    transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+                background 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.service-card__inner {
+    transform-style: preserve-3d;
+}
+
+.service-card__icon {
+    transform: translateZ(20px);
+    transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.service-card:hover .service-card__icon {
+    transform: translateZ(40px) scale(1.1);
+}
+
+.service-card__title {
+    transform: translateZ(10px);
+    transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.service-card__text {
+    transform: translateZ(5px);
+    transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* --- Gallery hover zoom with smooth physics --- */
+.gallery__item {
+    overflow: hidden;
+}
+
+.gallery__item img {
+    transition: transform 1.2s cubic-bezier(0.25, 0.1, 0.25, 1),
+                filter 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+    will-change: transform;
+}
+
+.gallery__item:hover img {
+    transform: scale(1.08);
+    filter: saturate(1.05) contrast(1.05);
+}
+
+.gallery__overlay {
+    transition: opacity 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+    will-change: opacity;
+}
+
+.gallery__overlay span {
+    transform: translateY(10px);
+    transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+    will-change: transform;
+}
+
+.gallery__item:hover .gallery__overlay span {
+    transform: translateY(0);
+}
+
+/* --- Gallery stagger entrance --- */
+.gallery__item {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s cubic-bezier(0.25, 0.1, 0.25, 1),
+                transform 0.7s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.gallery__item--visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.gallery__item:nth-child(1) { transition-delay: 0s; }
+.gallery__item:nth-child(2) { transition-delay: 0.08s; }
+.gallery__item:nth-child(3) { transition-delay: 0.16s; }
+.gallery__item:nth-child(4) { transition-delay: 0.24s; }
+.gallery__item:nth-child(5) { transition-delay: 0.32s; }
+.gallery__item:nth-child(6) { transition-delay: 0.40s; }
+
+/* --- Service cards stagger --- */
+.service-card {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s cubic-bezier(0.25, 0.1, 0.25, 1),
+                transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1),
+                background 0.4s ease;
+}
+
+.service-card--visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.service-card:nth-child(1) { transition-delay: 0s; }
+.service-card:nth-child(2) { transition-delay: 0.1s; }
+.service-card:nth-child(3) { transition-delay: 0.2s; }
+.service-card:nth-child(4) { transition-delay: 0.3s; }
+
+/* --- Scroll progress indicator --- */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--clay), var(--sage));
+    z-index: 1000;
+    will-change: width;
+    transition: width 0.1s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* --- Soft image reveal borders --- */
+.about__image {
+    overflow: hidden;
+}
+
+.about__image img {
+    transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1),
+                filter 0.6s ease;
+    will-change: transform;
+}
+
+.about__image:hover img {
+    transform: scale(1.03);
+}
+
+/* --- Contact form micro-interactions --- */
+.form__input,
+.form__textarea {
+    transition: border-color 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+                background 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+                transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.form__input:focus,
+.form__textarea:focus {
+    transform: translateY(-1px);
+}
+
+/* --- Nav scroll reveal --- */
+.nav {
+    transition: background 0.5s cubic-bezier(0.25, 0.1, 0.25, 1),
+                padding 0.5s cubic-bezier(0.25, 0.1, 0.25, 1),
+                box-shadow 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* --- Button hover with physics --- */
+.btn {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.1);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.btn:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+.btn--outline::after {
+    background: rgba(255,255,255,0.05);
+}
+
+/* --- Hero scroll indicator physics --- */
+.hero__scroll-line::after {
+    animation: scrollPhysics 2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@keyframes scrollPhysics {
+    0% { transform: translateY(-100%); }
+    50% { transform: translateY(0); }
+    100% { transform: translateY(100%); }
+}
+
+/* --- Footer social hover --- */
+.footer__social-link svg {
+    transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+                stroke 0.3s ease;
+}
+
+.footer__social-link:hover svg {
+    transform: translateY(-2px) scale(1.1);
+}
