@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- mossandtea-admin-v3 -->
+<!-- mossandtea-admin-v4 -->
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -561,33 +561,20 @@
     </div>
   </div>
 
-  <!-- Load admin.js synchronously first — defines window.createAdminApp -->
-  <script src="js/admin.js?v=3"></script>
+  <!-- Step 1: Load Supabase SDK first (admin.js needs it at load time) -->
+  <script src="js/supabase.min.js?v=20260428"></script>
+  <!-- Step 2: Load app code — defines window.createAdminApp and init supabase client -->
+  <script src="js/admin.js?v=20260428"></script>
+  <!-- Step 3: Register the alpine:init listener BEFORE Alpine loads.
+       alpine:init fires synchronously during Alpine's script execution,
+       so the listener must exist before Alpine's <script> starts. -->
   <script>
-    const D = (...a) => (window.__DEBUG = window.__DEBUG || []).push(a);
-    const _qmt = queueMicrotask;
-    window.__mtBuf = [];
-    queueMicrotask = (fn) => { D('buffered', 1); window.__mtBuf.push(fn); };
-    D('interceptor installed');
-  </script>
-  <script src="js/alpine.min.js?t=04282026"></script>
-  <script src="js/supabase.min.js?t=04282026"></script>
-  <script>
-    D('scripts loaded alpine=' + typeof Alpine + ' cAA=' + typeof window.createAdminApp);
-    D('bufLen=' + window.__mtBuf.length);
-    D('keysBefore=' + Object.keys(Alpine.data()).join(','));
     document.addEventListener('alpine:init', () => {
-      D('alpine:init FIRED');
       Alpine.data('adminApp', window.createAdminApp);
-      D('registered');
     });
-    queueMicrotask = _qmt;
-    const buf = window.__mtBuf; window.__mtBuf = [];
-    D('flushing=' + buf.length);
-    buf.forEach(fn => fn());
-    D('keysAfter=' + Object.keys(Alpine.data()).join(','));
-    D('__x=' + !!document.querySelector('[x-data]')?.__x);
   </script>
+  <!-- Step 4: Load Alpine — triggers alpine:init synchronously, then processes DOM -->
+  <script src="js/alpine.min.js?v=20260428"></script>
 
   <style>[x-cloak] { display: none !important; }</style>
 </body>

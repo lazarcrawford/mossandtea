@@ -1,12 +1,4 @@
-# Supabase local
-supabase/.temp/
-
-# Wrangler temp
-.wrangler/
-
-# Node
+.env
+.env.*
 node_modules/
-
-# Python
-__pycache__/
-*.pyc
+.wrangler/__pycache__/
