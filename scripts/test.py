@@ -33,7 +33,7 @@ required_files = [
     "index.html", "css/style.css", "css/motion.css", "js/main.js",
     "admin/index.html", "admin/css/admin.css", "admin/js/admin.js",
     "admin/js/alpine.min.js", "admin/js/supabase.min.js",
-    "api-worker.js", "wrangler.toml"
+    "functions/api/[[catchall]].js", "wrangler.toml"
 ]
 for f in required_files:
     check(f"  {f} exists", file_exists(f))
@@ -62,7 +62,7 @@ print()
 
 # === 3. JS Syntax ===
 print("🔍 JavaScript")
-for js in ["js/main.js", "admin/js/admin.js", "api-worker.js"]:
+for js in ["js/main.js", "admin/js/admin.js", "functions/api/[[catchall]].js"]:
     if file_exists(js):
         result = subprocess.run(["node", "--check", os.path.join(SITE_DIR, js)],
                                 capture_output=True, text=True)
@@ -83,11 +83,11 @@ if os.path.isfile(js_path):
 if file_exists("wrangler.toml"):
     check("wrangler.toml has name field", grep_file("wrangler.toml", r'^\s*name\s*='))
 
-# Check .wranglerignore doesn't exclude the worker
+# Check .wranglerignore doesn't exclude the functions directory
 if file_exists(".wranglerignore"):
     with open(os.path.join(SITE_DIR, ".wranglerignore")) as f:
         ignored = f.read()
-    check("api-worker.js NOT in .wranglerignore", "api-worker.js" not in ignored)
+    check("functions/ NOT in .wranglerignore", "functions" not in ignored.split("\n"))
 print()
 
 # === 5. CSS sanity ===

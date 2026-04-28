@@ -1,6 +1,5 @@
 name = "mossandtea"
-main = "api-worker.js"
 compatibility_date = "2026-04-28"
 
-# Serve static files from site root alongside the API worker
-assets = { directory = "./", not_found_handling = "none" }
+# Static site served by Cloudflare Pages
+# API routes handled via /functions/ Pages Functions
