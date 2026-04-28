@@ -565,10 +565,13 @@
   <script src="js/supabase.min.js?t=04282026"></script>
   <script src="js/admin.js?v=3"></script>
   <script>
-    // All deps loaded. Register component, then start Alpine.
-    // At end of body, DOM is parsed so start() can scan immediately.
+    // Alpine 3.x auto-starts via queueMicrotask, which fires
+    // between script tags. By this point, start() has already
+    // run and found nothing registered. So we register now
+    // and manually init the tree.
     Alpine.data('adminApp', window.createAdminApp);
-    Alpine.start();
+    const el = document.querySelector('[x-data="adminApp"]');
+    if (el && !el.__x) Alpine.initTree(el);
   </script>
   <style>[x-cloak] { display: none !important; }</style>
 </body>
