@@ -18,8 +18,10 @@ function dollarsToCents(d) { return Math.round(parseFloat(d || 0) * 100); }
 function today() { return new Date().toISOString().split('T')[0]; }
 
 // --- Alpine App ---
-document.addEventListener('alpine:init', () => {
-  Alpine.data('adminApp', () => ({
+// Alpine loads synchronously in <head>. By the time this deferred script
+// runs, Alpine is ready but hasn't started evaluating yet (DOMContentLoaded
+// hasn't fired). Register data directly — no event listener needed.
+Alpine.data('adminApp', () => ({
     // === NAVIGATION ===
     nav: {
       active: 'dashboard'
@@ -46,7 +48,7 @@ document.addEventListener('alpine:init', () => {
           this.loggedIn = true;
           this.user = data.user;
           // Load dashboard data
-          adminApp.loadDashboard();
+          this.loadDashboard();
         } catch (e) {
           this.error = e.message || 'Login failed';
         } finally {
@@ -65,7 +67,7 @@ document.addEventListener('alpine:init', () => {
         if (session) {
           this.loggedIn = true;
           this.user = session.user;
-          adminApp.loadDashboard();
+          this.loadDashboard();
         }
       }
     },
@@ -178,9 +180,9 @@ document.addEventListener('alpine:init', () => {
       },
 
       viewProjects(c) {
-        adminApp.projects.customerFilter = c.id;
-        adminApp.nav.active = 'projects';
-        adminApp.projects.load();
+        this.projects.customerFilter = c.id;
+        this.nav.active = 'projects';
+        this.projects.load();
       }
     },
 
@@ -202,7 +204,7 @@ document.addEventListener('alpine:init', () => {
 
       resetForm() {
         this.form = {
-          customer_id: adminApp.projects.customerFilter || '',
+          customer_id: this.customerFilter || '',
           title: '', description: '', status: 'inquiry',
           shoot_date: '', price_dollars: '', deposit_dollars: '',
           deposit_paid: false, balance_paid: false, notes: ''
@@ -283,9 +285,9 @@ document.addEventListener('alpine:init', () => {
       },
 
       openDetail(p) {
-        adminApp.nav.active = 'files';
-        adminApp.files.projectFilter = p.id;
-        adminApp.files.load();
+        this.nav.active = 'files';
+        this.files.projectFilter = p.id;
+        this.files.load();
       }
     },
 
@@ -552,6 +554,3 @@ document.addEventListener('alpine:init', () => {
     }
   }));
 
-  // Global reference for cross-component calls
-  const adminApp = Alpine.$data(document.querySelector('[x-data="adminApp"]'));
-});
