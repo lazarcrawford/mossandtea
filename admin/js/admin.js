@@ -21,7 +21,8 @@ function today() { return new Date().toISOString().split('T')[0]; }
 // Exported as window.createAdminApp so the inline bootstrap in index.html
 // can register it at the exact right moment during alpine:init.
 // This eliminates CDN-cache timing bugs where admin.js and HTML drift apart.
-window.createAdminApp = () => ({
+window.createAdminApp = () => {
+  const root = {
     // === NAVIGATION ===
     nav: {
       active: 'dashboard'
@@ -47,8 +48,8 @@ window.createAdminApp = () => ({
           if (error) throw error;
           this.loggedIn = true;
           this.user = data.user;
-          // Load dashboard data
-          this.loadDashboard();
+          // Load dashboard data via root reference (nested this can't see parent)
+          root.loadDashboard();
         } catch (e) {
           this.error = e.message || 'Login failed';
         } finally {
@@ -67,9 +68,14 @@ window.createAdminApp = () => ({
         if (session) {
           this.loggedIn = true;
           this.user = session.user;
-          this.loadDashboard();
+          root.loadDashboard();
         }
       }
+    },
+
+    // Auto-check session on mount
+    init() {
+      this.auth.checkSession();
     },
 
     // === DASHBOARD ===
@@ -180,9 +186,9 @@ window.createAdminApp = () => ({
       },
 
       viewProjects(c) {
-        this.projects.customerFilter = c.id;
-        this.nav.active = 'projects';
-        this.projects.load();
+        root.projects.customerFilter = c.id;
+        root.nav.active = 'projects';
+        root.projects.load();
       }
     },
 
@@ -285,9 +291,9 @@ window.createAdminApp = () => ({
       },
 
       openDetail(p) {
-        this.nav.active = 'files';
-        this.files.projectFilter = p.id;
-        this.files.load();
+        root.nav.active = 'files';
+        root.files.projectFilter = p.id;
+        root.files.load();
       }
     },
 
@@ -552,4 +558,6 @@ window.createAdminApp = () => ({
         } catch (e) { alert('Error: ' + e.message); }
       }
     }
-});
+  };
+  return root;
+};

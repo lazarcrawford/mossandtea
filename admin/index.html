@@ -9,7 +9,7 @@
 </head>
 <body>
   <!-- Login Screen -->
-  <div x-data="adminApp" x-cloak>
+  <div x-data="adminApp" x-init="init()" x-cloak>
     <div x-show="!auth.loggedIn" class="login-page">
       <div class="login-card">
         <h1>Moss & Tea</h1>
@@ -564,7 +564,7 @@
   <!-- Step 1: Load Supabase SDK first (admin.js needs it at load time) -->
   <script src="js/supabase.min.js?v=20260428"></script>
   <!-- Step 2: Load app code — defines window.createAdminApp and init supabase client -->
-  <script src="js/admin.js?v=20260428"></script>
+  <script src="js/admin.js?v=20260429"></script>
   <!-- Step 3: Register the alpine:init listener BEFORE Alpine loads.
        alpine:init fires synchronously during Alpine's script execution,
        so the listener must exist before Alpine's <script> starts. -->
@@ -574,8 +574,6 @@
     });
   </script>
   <!-- Step 4: Load Alpine — triggers alpine:init synchronously, then processes DOM -->
-  <script src="js/alpine.min.js?v=20260428"></script>
-
-  <style>[x-cloak] { display: none !important; }</style>
+  <script src="js/alpine.min.js?v=20260429"></script>
 </body>
 </html>
