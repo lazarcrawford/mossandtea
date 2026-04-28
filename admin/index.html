@@ -589,9 +589,11 @@
   <script src="js/alpine.min.js?t=04282026"></script>
   <script src="js/supabase.min.js?t=04282026"></script>
   <script>
-    // Restore queueMicrotask. Alpine's start() sits in __mtBuf.
-    // Register component first, then flush (which runs start()).
-    Alpine.data('adminApp', window.createAdminApp);
+    // start() is buffered in __mtBuf. Register alpine:init listener
+    // first so it fires INSIDE start() when we flush the buffer.
+    document.addEventListener('alpine:init', () => {
+      Alpine.data('adminApp', window.createAdminApp);
+    });
     flushMTs();
   </script>
 
