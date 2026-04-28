@@ -566,32 +566,33 @@
 
   <script>
     // ============================================
-    //   Moss & Tea — Dynamic Bootloader
-    //   Alpine + Supabase load on parallel dynamic
-    //   tags. When both fire onload, we register
-    //   adminApp and call Alpine.start() manually.
-    //   No microtask gaps. No CDN timing fragility.
+    //   Moss & Tea — QueueMicrotask Interceptor
+    //
+    //   Alpine 3.x uses queueMicrotask to auto-start.
+    //   We intercept queueMicrotask BEFORE Alpine loads,
+    //   buffer the deferred microtasks, then flush them
+    //   manually after registration and manual start().
     // ============================================
 
-    let deps = 2;
+    const _qmt = queueMicrotask;
+    window.__mtBuf = [];
+    queueMicrotask = (fn) => window.__mtBuf.push(fn);
 
-    function boot() {
-      if (--deps > 0) return;
-      Alpine.data('adminApp', window.createAdminApp);
-      Alpine.start();
+    function flushMTs() {
+      queueMicrotask = _qmt;
+      const buf = window.__mtBuf;
+      window.__mtBuf = [];
+      buf.forEach(fn => fn());
     }
+  </script>
 
-    // ── Load Alpine ──
-    const alpineEl = document.createElement('script');
-    alpineEl.src = 'js/alpine.min.js?t=04282026';
-    alpineEl.onload = boot;
-    document.body.appendChild(alpineEl);
-
-    // ── Load Supabase ──
-    const supabaseEl = document.createElement('script');
-    supabaseEl.src = 'js/supabase.min.js?t=04282026';
-    supabaseEl.onload = boot;
-    document.body.appendChild(supabaseEl);
+  <script src="js/alpine.min.js?t=04282026"></script>
+  <script src="js/supabase.min.js?t=04282026"></script>
+  <script>
+    // Restore queueMicrotask. Alpine's start() sits in __mtBuf.
+    // Register component first, then flush (which runs start()).
+    Alpine.data('adminApp', window.createAdminApp);
+    flushMTs();
   </script>
 
   <style>[x-cloak] { display: none !important; }</style>
