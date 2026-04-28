@@ -3,6 +3,9 @@
    Earthy · Minimal · Functional
    ============================================ */
 
+/* Hide until Alpine.js hydrates */
+[x-cloak] { display: none !important; }
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
 
 :root {

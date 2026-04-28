@@ -32,6 +32,7 @@ print("📁 Static Files")
 required_files = [
     "index.html", "css/style.css", "css/motion.css", "js/main.js",
     "admin/index.html", "admin/css/admin.css", "admin/js/admin.js",
+    "admin/js/alpine.min.js", "admin/js/supabase.min.js",
     "api-worker.js", "wrangler.toml"
 ]
 for f in required_files:
@@ -51,11 +52,12 @@ for html in ["index.html", "admin/index.html"]:
         opens = content.count("<script")
         closes = content.count("</script>")
         check(f"{html}: script tags balanced ({opens}/{closes})", opens == closes)
-        # CDN check
-        if "unpkg.com/@supabase" in content:
-            check(f"{html}: CDN source", False, warn=True)
+        # CDN check — warn if external CDN scripts (should be local bundles)
+        cdn_matches = re.findall(r'<script[^>]+src="https?://[^"]+\.(js|min\.js)"', content)
+        if cdn_matches:
+            check(f"{html}: uses external CDN scripts: {cdn_matches}", False, warn=True)
         else:
-            check(f"{html}: CDN source", True)
+            check(f"{html}: all scripts are local", True)
 print()
 
 # === 3. JS Syntax ===
