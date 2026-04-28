@@ -95,9 +95,9 @@ window.createAdminApp = () => {
           supabase.from('payments').select('amount_cents')
         ]);
 
-        this.stats.totalCustomers = custRes.count || 0;
-        this.stats.activeProjects = projRes.data?.length || 0;
-        this.stats.revenue = (payRes.data || []).reduce((s, p) => s + (p.amount_cents || 0), 0);
+        const totalCustomers = custRes.count || 0;
+        const activeProjects = projRes.data?.length || 0;
+        const revenue = (payRes.data || []).reduce((s, p) => s + (p.amount_cents || 0), 0);
 
         // Recent projects
         const { data: recent } = await supabase
@@ -105,8 +105,6 @@ window.createAdminApp = () => {
           .select('*')
           .order('created_at', { ascending: false })
           .limit(5);
-
-        this.stats.recentProjects = recent || [];
 
         // Delivered this month
         const firstOfMonth = new Date();
@@ -116,10 +114,17 @@ window.createAdminApp = () => {
           .select('id', { count: 'exact', head: true })
           .eq('status', 'delivered')
           .gte('updated_at', firstOfMonth.toISOString());
-        this.stats.deliveredThisMonth = delivered || 0;
 
+        // Replace entire stats object to trigger Alpine reactivity (replaces proxy reference)
+        this.stats = {
+          totalCustomers,
+          activeProjects,
+          deliveredThisMonth: delivered || 0,
+          revenue,
+          recentProjects: recent || []
+        };
       } catch (e) {
-        console.log('Dashboard load (expected before DB setup):', e.message);
+        console.log('Dashboard load error:', e.message);
       }
     },
 
