@@ -1,6 +1,7 @@
 // ============================================
-// Moss & Tea — Worker
-// API only — assets served directly by Cloudflare
+// Moss & Tea — API Worker
+// Only handles /api/* routes — static files
+// are served directly by Cloudflare
 // ============================================
 
 const SUPABASE_URL = 'https://ixfmstlnwnfjkocpordu.supabase.co';
@@ -11,34 +12,49 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname;
 
-    // API routes only
-    if (path.startsWith('/api/')) {
-      if (path === '/api/health') {
-        return Response.json({ status: 'ok', project: 'Moss & Tea' });
+    try {
+      // Only handle /api/* paths
+      if (path.startsWith('/api/')) {
+        if (path === '/api/health') {
+          return new Response(JSON.stringify({ status: 'ok', project: 'Moss & Tea' }), {
+            headers: { 'Content-Type': 'application/json' }
+          });
+        }
+
+        if (path.startsWith('/api/files/')) {
+          const key = path.replace('/api/files/', '');
+          const resp = await fetch(`${STORAGE_URL}/${key}`);
+          return new Response(resp.body, {
+            headers: {
+              'Content-Type': resp.headers.get('Content-Type') || 'application/octet-stream',
+              'Cache-Control': 'public, max-age=31536000',
+            }
+          });
+        }
+
+        if (path.startsWith('/api/contracts/')) {
+          const key = path.replace('/api/contracts/', '');
+          const resp = await fetch(`${STORAGE_URL}/${key}`);
+          return new Response(resp.body, {
+            headers: {
+              'Content-Type': 'application/pdf',
+              'Content-Disposition': `inline; filename="${key.split('/').pop()}"`,
+            }
+          });
+        }
       }
-      if (path.startsWith('/api/files/')) {
-        const key = path.replace('/api/files/', '');
-        const resp = await fetch(`${STORAGE_URL}/${key}`);
-        return new Response(resp.body, {
-          headers: {
-            'Content-Type': resp.headers.get('Content-Type') || 'application/octet-stream',
-            'Cache-Control': 'public, max-age=31536000',
-          }
-        });
+
+      // For non-API paths, try the asset system
+      if (env.ASSETS) {
+        return env.ASSETS.fetch(request);
       }
-      if (path.startsWith('/api/contracts/')) {
-        const key = path.replace('/api/contracts/', '');
-        const resp = await fetch(`${STORAGE_URL}/${key}`);
-        return new Response(resp.body, {
-          headers: {
-            'Content-Type': 'application/pdf',
-            'Content-Disposition': `inline; filename="${key.split('/').pop()}"`,
-          }
-        });
-      }
+    } catch (e) {
+      return new Response(`Worker error: ${e.message}`, {
+        status: 500,
+        headers: { 'Content-Type': 'text/plain' }
+      });
     }
 
-    // Everything else: let ASSETS serve it
-    return env.ASSETS.fetch(request);
+    return new Response('Not found', { status: 404 });
   }
 };
