@@ -18,10 +18,12 @@ function dollarsToCents(d) { return Math.round(parseFloat(d || 0) * 100); }
 function today() { return new Date().toISOString().split('T')[0]; }
 
 // --- Alpine App ---
-// Alpine loads synchronously in <head>. By the time this deferred script
-// runs, Alpine is ready but hasn't started evaluating yet (DOMContentLoaded
-// hasn't fired). Register data directly — no event listener needed.
-Alpine.data('adminApp', () => ({
+// Alpine loads synchronously in <head> but its internal data store
+// isn't ready until Alpine.start() fires on DOMContentLoaded.
+// alpine:init fires DURING start(), before DOM scanning.
+// Registering here ensures the listener is set before DOMContentLoaded.
+document.addEventListener('alpine:init', () => {
+  Alpine.data('adminApp', () => ({
     // === NAVIGATION ===
     nav: {
       active: 'dashboard'
@@ -553,4 +555,4 @@ Alpine.data('adminApp', () => ({
       }
     }
   }));
-
+});
