@@ -1,13 +1,9 @@
 .git/
 .gitignore
 .wrangler/
-.wranglerignore
-supabase/.temp/
-supabase/config.toml
-supabase/.gitignore
 node_modules/
 __pycache__/
 *.pyc
 scripts/
-wrangler.toml
-*.md
+supabase/
+functions/

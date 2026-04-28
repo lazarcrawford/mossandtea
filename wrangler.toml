@@ -1,5 +1,8 @@
 name = "mossandtea"
 compatibility_date = "2026-04-28"
+main = "worker.js"
 
-# Static site served by Cloudflare Pages
-# API routes handled via /functions/ Pages Functions
+# Static assets served by Worker — non-API routes fall through to these
+[assets]
+directory = "."
+binding = "ASSETS"
