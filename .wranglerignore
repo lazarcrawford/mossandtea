@@ -1,9 +1,4 @@
 .git/
-.gitignore
 .wrangler/
 node_modules/
-__pycache__/
-*.pyc
-scripts/
-supabase/
-functions/
+.env
