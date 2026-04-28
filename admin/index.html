@@ -6,16 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Moss & Tea — Admin</title>
   <link rel="stylesheet" href="css/admin.css">
-  <script src="js/alpine.min.js?t=04282026"></script>
-  <script src="js/supabase.min.js?t=04282026"></script>
-  <script src="js/admin.js?v=3"></script>
-  <script>
-    // Bootstrap: register the adminApp component during Alpine's init cycle.
-    // Inlined here so CDN caching can't split HTML from initialization timing.
-    document.addEventListener('alpine:init', () => {
-      Alpine.data('adminApp', window.createAdminApp);
-    });
-  </script>
 </head>
 <body>
   <!-- Login Screen -->
@@ -571,6 +561,15 @@
     </div>
   </div>
 
+  <script src="js/alpine.min.js?t=04282026"></script>
+  <script src="js/supabase.min.js?t=04282026"></script>
+  <script src="js/admin.js?v=3"></script>
+  <script>
+    // All deps loaded. Register component, then start Alpine.
+    // At end of body, DOM is parsed so start() can scan immediately.
+    Alpine.data('adminApp', window.createAdminApp);
+    Alpine.start();
+  </script>
   <style>[x-cloak] { display: none !important; }</style>
 </body>
 </html>
