@@ -1,9 +1,13 @@
-# Ignore internal tooling dirs
 .git/
+.gitignore
 .wrangler/
+.wranglerignore
 supabase/.temp/
+supabase/config.toml
+supabase/.gitignore
 node_modules/
 __pycache__/
 *.pyc
 scripts/
-*.toml
+wrangler.toml
+*.md
