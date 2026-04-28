@@ -561,18 +561,39 @@
     </div>
   </div>
 
-  <script src="js/alpine.min.js?t=04282026"></script>
-  <script src="js/supabase.min.js?t=04282026"></script>
+  <!-- Load admin.js synchronously first — defines window.createAdminApp -->
   <script src="js/admin.js?v=3"></script>
+
   <script>
-    // Alpine 3.x auto-starts via queueMicrotask, which fires
-    // between script tags. By this point, start() has already
-    // run and found nothing registered. So we register now
-    // and manually init the tree.
-    Alpine.data('adminApp', window.createAdminApp);
-    const el = document.querySelector('[x-data="adminApp"]');
-    if (el && !el.__x) Alpine.initTree(el);
+    // ============================================
+    //   Moss & Tea — Dynamic Bootloader
+    //   Alpine + Supabase load on parallel dynamic
+    //   tags. When both fire onload, we register
+    //   adminApp and call Alpine.start() manually.
+    //   No microtask gaps. No CDN timing fragility.
+    // ============================================
+
+    let deps = 2;
+
+    function boot() {
+      if (--deps > 0) return;
+      Alpine.data('adminApp', window.createAdminApp);
+      Alpine.start();
+    }
+
+    // ── Load Alpine ──
+    const alpineEl = document.createElement('script');
+    alpineEl.src = 'js/alpine.min.js?t=04282026';
+    alpineEl.onload = boot;
+    document.body.appendChild(alpineEl);
+
+    // ── Load Supabase ──
+    const supabaseEl = document.createElement('script');
+    supabaseEl.src = 'js/supabase.min.js?t=04282026';
+    supabaseEl.onload = boot;
+    document.body.appendChild(supabaseEl);
   </script>
+
   <style>[x-cloak] { display: none !important; }</style>
 </body>
 </html>
