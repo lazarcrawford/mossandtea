@@ -1,8 +1,23 @@
 #!/usr/bin/env python3
 """Seed Moss & Tea CRM with sample data based on Irina's portfolio."""
 import json, urllib.request, os
+from pathlib import Path
 
-SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml4Zm1zdGxud25mamtvY3BvcmR1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NzMxMDQ1MCwiZXhwIjoyMDkyODg2NDUwfQ.op3plZBbFa7FCdZ8kxwLIN-31V-FTbjmx45mxnsgoyY'
+def load_env():
+    env_path = Path(__file__).resolve().parents[1] / '.env'
+    if not env_path.exists():
+        return
+    for line in env_path.read_text().splitlines():
+        line = line.strip()
+        if not line or line.startswith('#') or '=' not in line:
+            continue
+        key, value = line.split('=', 1)
+        os.environ.setdefault(key, value)
+
+load_env()
+SERVICE_KEY = os.environ.get('SUPABASE_SERVICE_ROLE_KEY', '')
+if not SERVICE_KEY:
+    raise RuntimeError('SUPABASE_SERVICE_ROLE_KEY is required in .env or environment')
 BASE = 'https://ixfmstlnwnfjkocpordu.supabase.co/rest/v1'
 HEADERS = {
     'apikey': SERVICE_KEY,
