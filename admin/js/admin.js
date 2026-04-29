@@ -115,14 +115,12 @@ window.createAdminApp = () => {
           .eq('status', 'delivered')
           .gte('updated_at', firstOfMonth.toISOString());
 
-        // Replace entire stats object to trigger Alpine reactivity (replaces proxy reference)
-        this.stats = {
-          totalCustomers,
-          activeProjects,
-          deliveredThisMonth: delivered || 0,
-          revenue,
-          recentProjects: recent || []
-        };
+        // Update individual properties to maintain Alpine reactivity
+        this.stats.totalCustomers = totalCustomers;
+        this.stats.activeProjects = activeProjects;
+        this.stats.deliveredThisMonth = delivered || 0;
+        this.stats.revenue = revenue;
+        this.stats.recentProjects = recent || [];
       } catch (e) {
         console.log('Dashboard load error:', e.message);
       }
