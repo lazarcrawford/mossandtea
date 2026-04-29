@@ -68,14 +68,15 @@ window.createAdminApp = () => {
         if (session) {
           this.loggedIn = true;
           this.user = session.user;
-          root.loadDashboard();
         }
+        return Boolean(session);
       }
     },
 
     // Auto-check session on mount
-    init() {
-      this.auth.checkSession();
+    async init() {
+      await this.auth.checkSession();
+      await this.loadDashboard();
     },
 
     // === DASHBOARD ===
@@ -89,40 +90,33 @@ window.createAdminApp = () => {
 
     async loadDashboard() {
       try {
-        const [custRes, projRes, payRes] = await Promise.all([
-          supabase.from('customers').select('id', { count: 'exact', head: true }),
-          supabase.from('project_details').select('*').in('status', ['booked','shoot_complete','editing']),
-          supabase.from('payments').select('amount_cents')
-        ]);
-
-        const totalCustomers = custRes.count || 0;
-        const activeProjects = projRes.data?.length || 0;
-        const revenue = (payRes.data || []).reduce((s, p) => s + (p.amount_cents || 0), 0);
-
-        // Recent projects
-        const { data: recent } = await supabase
+        const { data: projects, error: projectError } = await supabase
           .from('project_details')
           .select('*')
-          .order('created_at', { ascending: false })
-          .limit(5);
+          .order('created_at', { ascending: false });
+        if (projectError) throw projectError;
 
-        // Delivered this month
+        const projectList = projects || [];
+        const customerIds = new Set(projectList.map((p) => p.customer_id).filter(Boolean));
+        const activeProjects = projectList.filter((p) =>
+          ['booked', 'shoot_complete', 'editing'].includes(p.status)
+        ).length;
         const firstOfMonth = new Date();
         firstOfMonth.setDate(1);
-        const { count: delivered } = await supabase
-          .from('projects')
-          .select('id', { count: 'exact', head: true })
-          .eq('status', 'delivered')
-          .gte('updated_at', firstOfMonth.toISOString());
+        firstOfMonth.setHours(0, 0, 0, 0);
+        const delivered = projectList.filter((p) =>
+          p.status === 'delivered' && new Date(p.updated_at || p.created_at) >= firstOfMonth
+        ).length;
+        const revenue = projectList.reduce((sum, p) => sum + (p.total_paid_cents || 0), 0);
 
         // Update individual properties to maintain Alpine reactivity
-        this.stats.totalCustomers = totalCustomers;
+        this.stats.totalCustomers = customerIds.size;
         this.stats.activeProjects = activeProjects;
-        this.stats.deliveredThisMonth = delivered || 0;
+        this.stats.deliveredThisMonth = delivered;
         this.stats.revenue = revenue;
-        this.stats.recentProjects = recent || [];
+        this.stats.recentProjects = projectList.slice(0, 5);
       } catch (e) {
-        console.log('Dashboard load error:', e.message);
+        console.error('Dashboard load error:', e.message);
       }
     },
 
