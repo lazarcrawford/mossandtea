@@ -562,9 +562,9 @@
   </div>
 
   <!-- Step 1: Supabase SDK -->
-  <script src="js/supabase.min.js?v=20260430"></script>
+  <script src="js/supabase.min.js?v=20260430-2"></script>
   <!-- Step 2: App engine — defines window.createAdminApp -->
-  <script src="js/admin.js?v=20260430"></script>
+  <script src="js/admin.js?v=20260430-2"></script>
   <!-- Step 3: Register component BEFORE Alpine loads.
        alpine:init fires synchronously during Alpine's script execution,
        so the listener must exist before alpine.min.js starts. -->
@@ -574,6 +574,6 @@
     });
   </script>
   <!-- Step 4: Load Alpine — triggers alpine:init, then processes DOM -->
-  <script src="js/alpine.min.js?v=20260430"></script>
+  <script src="js/alpine.min.js?v=20260430-2"></script>
 </body>
 </html>
