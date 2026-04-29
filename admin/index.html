@@ -561,19 +561,18 @@
     </div>
   </div>
 
-  <!-- Step 1: Load Supabase SDK first (admin.js needs it at load time) -->
-  <script src="js/supabase.min.js?v=20260428"></script>
-  <!-- Step 2: Load app code — defines window.createAdminApp and init supabase client -->
-  <script src="js/admin.js?v=20260429"></script>
-  <!-- Step 3: Register the alpine:init listener BEFORE Alpine loads.
+  <!-- Step 1: Supabase SDK -->
+  <script src="js/supabase.min.js?v=20260430"></script>
+  <!-- Step 2: App engine — defines window.createAdminApp -->
+  <script src="js/admin.js?v=20260430"></script>
+  <!-- Step 3: Register component BEFORE Alpine loads.
        alpine:init fires synchronously during Alpine's script execution,
-       so the listener must exist before Alpine's <script> starts. -->
+       so the listener must exist before alpine.min.js starts. -->
   <script>
     document.addEventListener('alpine:init', () => {
       Alpine.data('adminApp', window.createAdminApp);
     });
   </script>
-  <!-- Step 4: Load Alpine — triggers alpine:init synchronously, then processes DOM -->
-  <script src="js/alpine.min.js?v=20260429"></script>
+  <!-- Step 4: Load Alpine — triggers alpine:init, then processes DOM -->
+  <script src="js/alpine.min.js?v=20260430"></script>
 </body>
-</html>
