@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Moss & Tea — Admin</title>
-  <link rel="stylesheet" href="css/admin.css?v=20260430-final">
+  <link rel="stylesheet" href="css/admin.css?v=20260430-sample">
 </head>
 <body>
   <!-- Login Screen -->
@@ -68,6 +68,10 @@
 
       <!-- Main Content -->
       <main class="main-content">
+        <div x-show="sampleMode.visible" class="sample-banner">
+          <strong>Sample data</strong>
+          <span>Preview records only. Use them to review the interface before entering real clients, files, contracts, or payments.</span>
+        </div>
 
         <!-- Dashboard -->
         <section x-show="nav.active === 'dashboard'" class="section section--active">
@@ -110,7 +114,7 @@
                       <td x-text="p.customer_name"></td>
                       <td><span class="badge" :class="'badge--' + p.status" x-text="p.status.replace('_',' ')"></span></td>
                       <td x-text="p.shoot_date || '—'"></td>
-                      <td x-text="p.price_cents ? '$' + (p.price_cents/100).toFixed(0) : '—'"></td>
+                      <td x-text="displayMoney(p.price_cents)"></td>
                     </tr>
                   </template>
                   <tr x-show="!stats.recentProjects.length">
@@ -205,7 +209,7 @@
                       <td x-text="p.customer_name"></td>
                       <td><span class="badge" :class="'badge--' + p.status" x-text="p.status.replace('_',' ')"></span></td>
                       <td x-text="p.shoot_date || '—'"></td>
-                      <td x-text="p.price_cents ? '$' + (p.price_cents/100).toFixed(0) : '—'"></td>
+                      <td x-text="displayMoney(p.price_cents)"></td>
                       <td>
                         <span x-show="p.deposit_paid" style="color:var(--success)">✓ deposit</span>
                         <span x-show="p.balance_paid" style="color:var(--success)">✓ balance</span>
@@ -314,9 +318,13 @@
                       </td>
                     </tr>
                   </template>
+                  <tr x-show="!contracts.loading && !contracts.list.length">
+                    <td colspan="6" class="empty-state">No contracts yet</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
+            <div x-show="contracts.loading" class="loading">Loading contracts...</div>
           </div>
         </section>
 
@@ -360,9 +368,13 @@
                       <td x-text="p.notes || ''"></td>
                     </tr>
                   </template>
+                  <tr x-show="!payments.loading && !payments.list.length">
+                    <td colspan="6" class="empty-state">No payment or invoice activity yet</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
+            <div x-show="payments.loading" class="loading">Loading payments...</div>
           </div>
         </section>
       </main>
@@ -564,7 +576,7 @@
   <!-- Step 1: Supabase SDK -->
   <script src="js/supabase.min.js?v=20260430-2"></script>
   <!-- Step 2: App engine — defines window.createAdminApp -->
-  <script src="js/admin.js?v=20260430-3"></script>
+  <script src="js/admin.js?v=20260430-sample"></script>
   <!-- Step 3: Register component BEFORE Alpine loads.
        alpine:init fires synchronously during Alpine's script execution,
        so the listener must exist before alpine.min.js starts. -->

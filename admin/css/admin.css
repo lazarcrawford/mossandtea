@@ -264,6 +264,28 @@ a {
   opacity: 0.75;
 }
 
+.sample-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+  padding: 0.8rem 1rem;
+  background: rgba(246, 225, 199, 0.78);
+  border: 1px solid rgba(185, 137, 69, 0.30);
+  border-radius: var(--radius-sm);
+  color: #6F4B22;
+  font-size: 0.82rem;
+}
+
+.sample-banner strong {
+  flex: 0 0 auto;
+  color: #6F4B22;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
 .topbar,
 .section__header {
   min-height: 74px;
@@ -729,6 +751,12 @@ strong {
 
   .main-content {
     padding: 1.2rem 1rem 3rem;
+  }
+
+  .sample-banner {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.35rem;
   }
 
   .form-row,

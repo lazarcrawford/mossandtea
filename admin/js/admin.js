@@ -16,6 +16,9 @@ const supabase = window.supabase?.createClient
 function centsToDollars(c) { return c ? (c / 100).toFixed(2) : '0.00'; }
 function dollarsToCents(d) { return Math.round(parseFloat(d || 0) * 100); }
 function today() { return new Date().toISOString().split('T')[0]; }
+function displayMoney(cents, fallback = 'Quote pending') {
+  return cents ? `$${(cents / 100).toFixed(0)}` : fallback;
+}
 
 // --- Alpine App ---
 // Exported as window.createAdminApp so the inline bootstrap in index.html
@@ -87,6 +90,9 @@ window.createAdminApp = () => {
       revenue: 0,
       recentProjects: []
     },
+    sampleMode: {
+      visible: false
+    },
 
     async loadDashboard() {
       try {
@@ -115,10 +121,16 @@ window.createAdminApp = () => {
         this.stats.deliveredThisMonth = delivered;
         this.stats.revenue = revenue;
         this.stats.recentProjects = projectList.slice(0, 5);
+        this.sampleMode.visible = projectList.some((p) =>
+          String(p.title || '').toLowerCase().includes('sample') ||
+          String(p.customer_name || '').toLowerCase().includes('sample')
+        );
       } catch (e) {
         console.error('Dashboard load error:', e.message);
       }
     },
+
+    displayMoney,
 
     // === CUSTOMERS ===
     customers: {
