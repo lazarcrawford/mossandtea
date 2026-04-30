@@ -5,66 +5,66 @@
 
 const galleryChapters = {
     witness: {
-        text: 'Women as Witness gathers portraits where the subject keeps her interior life intact. The camera becomes a companion to gaze, refusal, adornment, concealment, and self-possession.'
+        text: 'Woman as Sacred gathers portraits where the subject keeps her interior life intact. The camera becomes a companion to gaze, refusal, adornment, concealment, and self-possession.'
     },
     body: {
-        text: 'Body as Landscape follows bodies in water, stone, shadow, and motion. These images treat gesture as language and the body as a place where memory, strength, and vulnerability meet.'
+        text: 'Body Landscapes follows bodies in water, stone, shadow, and motion. These images treat gesture as language and the body as a place where memory, strength, and vulnerability meet.'
     },
     performance: {
-        text: 'Performance as Myth recovers Irina’s Beauty CULTure images from Annenberg: masks, veils, painted faces, theatrical doubles, and constructed selves that turn beauty into character and ritual.'
+        text: 'Mythology recovers Irina’s Beauty CULTure images from Annenberg: masks, veils, painted faces, theatrical doubles, and constructed selves that turn beauty into character and ritual.'
     },
     editorial: {
         text: 'Editorial as Ritual gathers fashion work where garment, landscape, and model become a ceremony. The image is not selling a look so much as staging a transformation.'
     },
     earth: {
-        text: 'Earth as Element widens the field: creatures, museums, water, desert, and darkness. Irina looks at the nonhuman world with the same intimacy she gives a face.'
+        text: 'Faces of Nature widens the field: water, desert, insects, and luminous dark. Irina looks at the nonhuman world with the same intimacy she gives a face.'
     },
     trace: {
-        text: 'Spaces as Afterimages holds what remains after the figure leaves: beds, thresholds, fruit, cars, and slanted light. The ordinary becomes evidence of a life passing through.'
+        text: 'Afterimages gathers what remains after presence has passed through: beds, thresholds, fruit, cars, museum ground, forest floor, fossil traces, and slanted light. These are relics, not empty spaces.'
     }
 };
 
 const galleryImages = [
-    { file: 'Abby06BW.jpg', category: 'witness', caption: 'Women as Witness — Mask, fruit, and gaze', alt: 'Black and white portrait with face paint beneath fruit branches', layout: 'tall' },
-    { file: 'Abby08.jpg', category: 'witness', caption: 'Women as Witness — Figure among oranges', alt: 'Portrait of a woman standing among orange trees', layout: 'wide' },
-    { file: 'Braina05.jpg', category: 'witness', caption: 'Women as Witness — Seated in the forest', alt: 'Black and white portrait of a woman seated among fallen leaves', layout: '' },
-    { file: 'Braina11BW.jpg', category: 'witness', caption: 'Women as Witness — Crowned in shadow', alt: 'Black and white close portrait of a woman with a floral crown', layout: 'tall' },
-    { file: 'G3A5407B.jpg', category: 'witness', caption: 'Women as Witness — Leaf over the eyes', alt: 'Black and white close portrait with a leaf held over the face', layout: 'wide' },
-    { file: 'Ganna08.jpg', category: 'witness', caption: 'Women as Witness — Veil and hand', alt: 'Black and white portrait partly hidden by draped fabric', layout: 'tall' },
-    { file: 'MG_1382.jpg', category: 'witness', caption: 'Women as Witness — Embrace', alt: 'Black and white close portrait of two women embracing', layout: '' },
-    { file: 'Makenna09S.jpg', category: 'witness', caption: 'Women as Witness — Matchlight', alt: 'Low-key portrait of a woman holding a match', layout: 'tall' },
-    { file: 'berit21B.jpg', category: 'witness', caption: 'Women as Witness — Skin, grain, breath', alt: 'Black and white close portrait focused on cheek, lips, and freckles', layout: '' },
-    { file: 'cenit_12B.jpg', category: 'witness', caption: 'Women as Witness — CENIT, eyes closed', alt: 'Black and white portrait of CENIT with eyes closed and a necklace', layout: 'tall' },
-    { file: 'cenit_21B.jpg', category: 'witness', caption: 'Women as Witness — CENIT, guarded light', alt: 'Black and white portrait of CENIT with hands covering her eyes', layout: '' },
-    { file: 'cenit_28.jpg', category: 'witness', caption: 'Women as Witness — CENIT, hand and necklace', alt: 'Black and white portrait crop of CENIT leaning forward', layout: 'tall' },
-    { file: 'noemie8bw.jpg', category: 'witness', caption: 'Women as Witness — Face in leaves', alt: 'Black and white portrait of a woman framed by leaves', layout: '' },
+    { file: 'Abby06BW.jpg', category: 'witness', caption: 'Woman as Sacred — Mask, fruit, and gaze', alt: 'Black and white portrait with face paint beneath fruit branches', layout: 'tall' },
+    { file: 'Abby08.jpg', category: 'witness', caption: 'Woman as Sacred — Figure among oranges', alt: 'Portrait of a woman standing among orange trees', layout: 'wide' },
+    { file: 'Braina05.jpg', category: 'witness', caption: 'Woman as Sacred — Seated in the forest', alt: 'Black and white portrait of a woman seated among fallen leaves', layout: '' },
+    { file: 'Braina11BW.jpg', category: 'witness', caption: 'Woman as Sacred — Crowned in shadow', alt: 'Black and white close portrait of a woman with a floral crown', layout: 'tall' },
+    { file: 'G3A5407B.jpg', category: 'witness', caption: 'Woman as Sacred — Leaf over the eyes', alt: 'Black and white close portrait with a leaf held over the face', layout: 'wide' },
+    { file: 'Ganna08.jpg', category: 'witness', caption: 'Woman as Sacred — Veil and hand', alt: 'Black and white portrait partly hidden by draped fabric', layout: 'tall' },
+    { file: 'MG_1382.jpg', category: 'witness', caption: 'Woman as Sacred — Embrace', alt: 'Black and white close portrait of two women embracing', layout: '' },
+    { file: 'Makenna09S.jpg', category: 'witness', caption: 'Woman as Sacred — Matchlight', alt: 'Low-key portrait of a woman holding a match', layout: 'tall' },
+    { file: 'berit21B.jpg', category: 'witness', caption: 'Woman as Sacred — Skin, grain, breath', alt: 'Black and white close portrait focused on cheek, lips, and freckles', layout: '' },
+    { file: 'cenit_12B.jpg', category: 'witness', caption: 'Woman as Sacred — CENIT, eyes closed', alt: 'Black and white portrait of CENIT with eyes closed and a necklace', layout: 'tall' },
+    { file: 'cenit_21B.jpg', category: 'witness', caption: 'Woman as Sacred — CENIT, guarded light', alt: 'Black and white portrait of CENIT with hands covering her eyes', layout: '' },
+    { file: 'cenit_28.jpg', category: 'witness', caption: 'Woman as Sacred — CENIT, hand and necklace', alt: 'Black and white portrait crop of CENIT leaning forward', layout: 'tall' },
+    { file: 'noemie8bw.jpg', category: 'witness', caption: 'Woman as Sacred — Face in leaves', alt: 'Black and white portrait of a woman framed by leaves', layout: '' },
 
-    { file: 'BB16.jpg', category: 'body', caption: 'Body as Landscape — Rest on concrete', alt: 'Black and white image of a figure lying on the ground', layout: 'wide' },
-    { file: 'Braina10.jpg', category: 'body', caption: 'Body as Landscape — Back turned to the river', alt: 'Black and white portrait from behind near a river', layout: 'tall' },
-    { file: 'Braina14.jpg', category: 'body', caption: 'Body as Landscape — Green at the waterline', alt: 'Woman in a green dress sitting near blue water', layout: '' },
-    { file: 'Braina20.jpg', category: 'body', caption: 'Body as Landscape — Bones and hand', alt: 'Black and white portrait with hand covering face and skeleton print shirt', layout: 'wide' },
-    { file: 'G3A1886.jpg', category: 'body', caption: 'Body as Landscape — Arched on sand', alt: 'Black and white figure arching backward on sand', layout: 'tall' },
-    { file: 'G3A1901.jpg', category: 'body', caption: 'Body as Landscape — Kneeling in sand', alt: 'Black and white figure kneeling on sand', layout: '' },
-    { file: 'G3A5320.jpg', category: 'body', caption: 'Body as Landscape — Under falling water', alt: 'Figure seated beneath a waterfall', layout: 'wide' },
-    { file: 'cenit_river01.jpg', category: 'body', caption: 'Body as Landscape — CENIT by the river', alt: 'Portrait of CENIT sitting beside a river', layout: 'tall' },
+    { file: 'BB16.jpg', category: 'body', caption: 'Body Landscapes — Rest on concrete', alt: 'Black and white image of a figure lying on the ground', layout: 'wide' },
+    { file: 'Braina10.jpg', category: 'body', caption: 'Body Landscapes — Back turned to the river', alt: 'Black and white portrait from behind near a river', layout: 'tall' },
+    { file: 'Braina14.jpg', category: 'body', caption: 'Body Landscapes — Green at the waterline', alt: 'Woman in a green dress sitting near blue water', layout: '' },
+    { file: 'Braina20.jpg', category: 'body', caption: 'Body Landscapes — Bones and hand', alt: 'Black and white portrait with hand covering face and skeleton print shirt', layout: 'wide' },
+    { file: 'G3A1886.jpg', category: 'body', caption: 'Body Landscapes — Arched on sand', alt: 'Black and white figure arching backward on sand', layout: 'tall' },
+    { file: 'G3A1901.jpg', category: 'body', caption: 'Body Landscapes — Kneeling in sand', alt: 'Black and white figure kneeling on sand', layout: '' },
+    { file: 'G3A5320.jpg', category: 'body', caption: 'Body Landscapes — Under falling water', alt: 'Figure seated beneath a waterfall', layout: 'wide' },
+    { file: 'cenit_river01.jpg', category: 'body', caption: 'Body Landscapes — CENIT by the river', alt: 'Portrait of CENIT sitting beside a river', layout: 'tall' },
 
-    { file: 'harvest/annenberg-beauty-culture/annenberg_01.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, veil study I', alt: 'Archived Annenberg Beauty CULTure image by Irina Garaiacu with a face obscured by pale veil', layout: 'tall' },
-    { file: 'harvest/annenberg-beauty-culture/annenberg_02.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, profile in light', alt: 'Archived Annenberg Beauty CULTure profile portrait by Irina Garaiacu', layout: 'tall' },
-    { file: 'harvest/annenberg-beauty-culture/annenberg_03.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, veiled profile', alt: 'Archived Annenberg Beauty CULTure veiled portrait by Irina Garaiacu', layout: 'tall' },
-    { file: 'harvest/annenberg-beauty-culture/annenberg_04.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, low light gaze', alt: 'Archived Annenberg Beauty CULTure portrait by Irina Garaiacu in low light', layout: 'tall' },
-    { file: 'harvest/annenberg-beauty-culture/annenberg_05.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, blurred double', alt: 'Archived Annenberg Beauty CULTure blurred black and white portrait by Irina Garaiacu', layout: '' },
-    { file: 'harvest/annenberg-beauty-culture/annenberg_06.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, painted face', alt: 'Archived Annenberg Beauty CULTure painted face by Irina Garaiacu', layout: '' },
-    { file: 'harvest/annenberg-beauty-culture/annenberg_07.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, doll figure', alt: 'Archived Annenberg Beauty CULTure doll-like face by Irina Garaiacu', layout: 'tall' },
-    { file: 'harvest/annenberg-beauty-culture/annenberg_08.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, fracture mask', alt: 'Archived Annenberg Beauty CULTure mask portrait by Irina Garaiacu', layout: 'tall' },
-    { file: 'harvest/annenberg-beauty-culture/annenberg_09.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, fan portrait I', alt: 'Archived Annenberg Beauty CULTure fan portrait by Irina Garaiacu', layout: 'tall' },
-    { file: 'harvest/annenberg-beauty-culture/annenberg_10.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, painted blur', alt: 'Archived Annenberg Beauty CULTure painterly portrait by Irina Garaiacu', layout: 'wide' },
-    { file: 'harvest/annenberg-beauty-culture/annenberg_11.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, fan portrait II', alt: 'Archived Annenberg Beauty CULTure fan portrait by Irina Garaiacu', layout: 'tall' },
-    { file: 'harvest/annenberg-beauty-culture/annenberg_12.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, reclining figure', alt: 'Archived Annenberg Beauty CULTure reclining figure by Irina Garaiacu', layout: 'wide' },
-    { file: 'harvest/annenberg-beauty-culture/annenberg_13.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, maker and puppet', alt: 'Archived Annenberg Beauty CULTure puppet image by Irina Garaiacu', layout: 'wide' },
-    { file: 'harvest/annenberg-beauty-culture/annenberg_14.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, paper body', alt: 'Archived Annenberg Beauty CULTure paper costume image by Irina Garaiacu', layout: 'wide' },
-    { file: 'harvest/annenberg-beauty-culture/annenberg_15.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, stitched face', alt: 'Archived Annenberg Beauty CULTure stitched-face character by Irina Garaiacu', layout: 'tall' },
-    { file: 'harvest/annenberg-beauty-culture/annenberg_16.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, masked wreath', alt: 'Archived Annenberg Beauty CULTure masked figure in a wreath by Irina Garaiacu', layout: 'tall' },
-    { file: 'harvest/annenberg-beauty-culture/annenberg_17.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, skin of light', alt: 'Archived Annenberg Beauty CULTure close abstract texture by Irina Garaiacu', layout: 'wide' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_01.jpg', category: 'performance', caption: 'Mythology — Beauty CULTure, veil study I', alt: 'Archived Annenberg Beauty CULTure image by Irina Garaiacu with a face obscured by pale veil', layout: 'tall' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_02.jpg', category: 'performance', caption: 'Mythology — Beauty CULTure, profile in light', alt: 'Archived Annenberg Beauty CULTure profile portrait by Irina Garaiacu', layout: 'tall' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_03.jpg', category: 'performance', caption: 'Mythology — Beauty CULTure, veiled profile', alt: 'Archived Annenberg Beauty CULTure veiled portrait by Irina Garaiacu', layout: 'tall' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_04.jpg', category: 'performance', caption: 'Mythology — Beauty CULTure, low light gaze', alt: 'Archived Annenberg Beauty CULTure portrait by Irina Garaiacu in low light', layout: 'tall' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_05.jpg', category: 'performance', caption: 'Mythology — Beauty CULTure, blurred double', alt: 'Archived Annenberg Beauty CULTure blurred black and white portrait by Irina Garaiacu', layout: '' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_06.jpg', category: 'performance', caption: 'Mythology — Beauty CULTure, painted face', alt: 'Archived Annenberg Beauty CULTure painted face by Irina Garaiacu', layout: '' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_07.jpg', category: 'performance', caption: 'Mythology — Beauty CULTure, doll figure', alt: 'Archived Annenberg Beauty CULTure doll-like face by Irina Garaiacu', layout: 'tall' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_08.jpg', category: 'performance', caption: 'Mythology — Beauty CULTure, fracture mask', alt: 'Archived Annenberg Beauty CULTure mask portrait by Irina Garaiacu', layout: 'tall' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_09.jpg', category: 'performance', caption: 'Mythology — Beauty CULTure, fan portrait I', alt: 'Archived Annenberg Beauty CULTure fan portrait by Irina Garaiacu', layout: 'tall' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_10.jpg', category: 'performance', caption: 'Mythology — Beauty CULTure, painted blur', alt: 'Archived Annenberg Beauty CULTure painterly portrait by Irina Garaiacu', layout: 'wide' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_11.jpg', category: 'performance', caption: 'Mythology — Beauty CULTure, fan portrait II', alt: 'Archived Annenberg Beauty CULTure fan portrait by Irina Garaiacu', layout: 'tall' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_12.jpg', category: 'performance', caption: 'Mythology — Beauty CULTure, reclining figure', alt: 'Archived Annenberg Beauty CULTure reclining figure by Irina Garaiacu', layout: 'wide' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_13.jpg', category: 'performance', caption: 'Mythology — Beauty CULTure, maker and puppet', alt: 'Archived Annenberg Beauty CULTure puppet image by Irina Garaiacu', layout: 'wide' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_14.jpg', category: 'performance', caption: 'Mythology — Beauty CULTure, paper body', alt: 'Archived Annenberg Beauty CULTure paper costume image by Irina Garaiacu', layout: 'wide' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_15.jpg', category: 'performance', caption: 'Mythology — Beauty CULTure, stitched face', alt: 'Archived Annenberg Beauty CULTure stitched-face character by Irina Garaiacu', layout: 'tall' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_16.jpg', category: 'performance', caption: 'Mythology — Beauty CULTure, masked wreath', alt: 'Archived Annenberg Beauty CULTure masked figure in a wreath by Irina Garaiacu', layout: 'tall' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_17.jpg', category: 'performance', caption: 'Mythology — Beauty CULTure, skin of light', alt: 'Archived Annenberg Beauty CULTure close abstract texture by Irina Garaiacu', layout: 'wide' },
 
     { file: 'harvest/no-substance-alexis/alexis_01.jpg', category: 'editorial', caption: 'Editorial as Ritual — Alexis, garment at dusk I', alt: 'No Substance editorial photograph by Irina Garaiacu of Alexis holding a garment at dusk', layout: 'tall' },
     { file: 'harvest/no-substance-alexis/alexis_02.jpg', category: 'editorial', caption: 'Editorial as Ritual — Alexis, field at sunset', alt: 'No Substance editorial photograph by Irina Garaiacu of Alexis standing in a field at sunset', layout: 'tall' },
@@ -74,21 +74,21 @@ const galleryImages = [
     { file: 'harvest/no-substance-alexis/alexis_06.jpg', category: 'editorial', caption: 'Editorial as Ritual — Alexis, walking through dusk', alt: 'No Substance editorial photograph by Irina Garaiacu of Alexis walking outdoors', layout: 'tall' },
     { file: 'harvest/no-substance-alexis/alexis_07.jpg', category: 'editorial', caption: 'Editorial as Ritual — Alexis, garment at dusk II', alt: 'No Substance editorial close photograph by Irina Garaiacu of Alexis with garment and sunset light', layout: 'tall' },
 
-    { file: 'G3A5499.jpg', category: 'earth', caption: 'Earth as Element — Rain surface', alt: 'Close study of rain and water spray', layout: 'wide' },
-    { file: 'IMG_5969.jpg', category: 'earth', caption: 'Earth as Element — Jellyfish, luminous dark', alt: 'Jellyfish glowing against a dark background', layout: 'tall' },
-    { file: 'IMG_5982.jpg', category: 'earth', caption: 'Earth as Element — Jellyfish, orange trace', alt: 'Orange jellyfish in dark water', layout: '' },
-    { file: 'MG_8849.jpg', category: 'earth', caption: 'Earth as Element — Desert from above', alt: 'Aerial view of desert ridges', layout: 'wide' },
-    { file: 'bug05.jpg', category: 'earth', caption: 'Earth as Element — Wing and blue', alt: 'Macro photograph of an insect wing', layout: 'tall' },
-    { file: 'bug06B.jpg', category: 'earth', caption: 'Earth as Element — Beetle in black', alt: 'Black and white macro photograph of a beetle', layout: '' },
-    { file: 'nhmla02.jpg', category: 'earth', caption: 'Earth as Element — Museum ground', alt: 'Antlers and animal legs in a museum-like natural scene', layout: 'wide' },
-    { file: 'nhmla03.jpg', category: 'earth', caption: 'Earth as Element — Forest floor', alt: 'Dark forest floor with moss and small flowers', layout: '' },
-    { file: 'nhmla04.jpg', category: 'earth', caption: 'Earth as Element — Fossil trace', alt: 'Dark study of a fossil or bone-like form on the ground', layout: '' },
+    { file: 'G3A5499.jpg', category: 'earth', caption: 'Faces of Nature — Rain surface', alt: 'Close study of rain and water spray', layout: 'wide' },
+    { file: 'IMG_5969.jpg', category: 'earth', caption: 'Faces of Nature — Jellyfish, luminous dark', alt: 'Jellyfish glowing against a dark background', layout: 'tall' },
+    { file: 'IMG_5982.jpg', category: 'earth', caption: 'Faces of Nature — Jellyfish, orange trace', alt: 'Orange jellyfish in dark water', layout: '' },
+    { file: 'MG_8849.jpg', category: 'earth', caption: 'Faces of Nature — Desert from above', alt: 'Aerial view of desert ridges', layout: 'wide' },
+    { file: 'bug05.jpg', category: 'earth', caption: 'Faces of Nature — Wing and blue', alt: 'Macro photograph of an insect wing', layout: 'tall' },
+    { file: 'bug06B.jpg', category: 'earth', caption: 'Faces of Nature — Beetle in black', alt: 'Black and white macro photograph of a beetle', layout: '' },
+    { file: 'nhmla02.jpg', category: 'trace', caption: 'Afterimages — Museum ground', alt: 'Antlers and animal legs in a museum-like natural scene', layout: 'wide' },
+    { file: 'nhmla03.jpg', category: 'trace', caption: 'Afterimages — Forest floor', alt: 'Dark forest floor with moss and small flowers', layout: '' },
+    { file: 'nhmla04.jpg', category: 'trace', caption: 'Afterimages — Fossil trace', alt: 'Dark study of a fossil or bone-like form on the ground', layout: '' },
 
-    { file: 'IMG_6420.jpg', category: 'trace', caption: 'Spaces as Afterimages — Car at water edge', alt: 'A car parked near water in muted light', layout: 'wide' },
-    { file: 'Makenna13.jpg', category: 'trace', caption: 'Spaces as Afterimages — Fruit and cloth', alt: 'Still life of fruit and stains on white cloth', layout: '' },
-    { file: 'Margo10.jpg', category: 'trace', caption: 'Spaces as Afterimages — Blue threshold', alt: 'Woman seen from behind in a blue corridor', layout: 'tall' },
-    { file: 'bed.jpg', category: 'trace', caption: 'Spaces as Afterimages — Unmade bed', alt: 'Dark interior photograph of an unmade bed', layout: 'wide' },
-    { file: 'random.jpg', category: 'trace', caption: 'Spaces as Afterimages — Slant of light', alt: 'Interior wall with a narrow slant of window light', layout: '' }
+    { file: 'IMG_6420.jpg', category: 'trace', caption: 'Afterimages — Car at water edge', alt: 'A car parked near water in muted light', layout: 'wide' },
+    { file: 'Makenna13.jpg', category: 'trace', caption: 'Afterimages — Fruit and cloth', alt: 'Still life of fruit and stains on white cloth', layout: '' },
+    { file: 'Margo10.jpg', category: 'trace', caption: 'Afterimages — Blue threshold', alt: 'Woman seen from behind in a blue corridor', layout: 'tall' },
+    { file: 'bed.jpg', category: 'trace', caption: 'Afterimages — Unmade bed', alt: 'Dark interior photograph of an unmade bed', layout: 'wide' },
+    { file: 'random.jpg', category: 'trace', caption: 'Afterimages — Slant of light', alt: 'Interior wall with a narrow slant of window light', layout: '' }
 ];
 
 function renderArchiveGallery() {

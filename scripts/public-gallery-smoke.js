@@ -9,12 +9,12 @@ const BRAVE = '/Applications/Brave Browser.app/Contents/MacOS/Brave Browser';
 const TARGET = process.env.PUBLIC_UI_URL || 'https://mossandtea.com/';
 
 const chapters = [
-  ['Women as Witness', 'witness', 13],
-  ['Body as Landscape', 'body', 8],
-  ['Performance as Myth', 'performance', 17],
+  ['Woman as Sacred', 'witness', 13],
+  ['Body Landscapes', 'body', 8],
+  ['Mythology', 'performance', 17],
   ['Editorial as Ritual', 'editorial', 7],
-  ['Earth as Element', 'earth', 9],
-  ['Spaces as Afterimages', 'trace', 5],
+  ['Faces of Nature', 'earth', 6],
+  ['Afterimages', 'trace', 8],
 ];
 
 async function visibleGalleryCount(page) {
