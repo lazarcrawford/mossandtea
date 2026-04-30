@@ -324,6 +324,38 @@ html.lenis {
     -webkit-backdrop-filter: blur(24px) saturate(0.6);
 }
 
+.lightbox--witness .lightbox__backdrop {
+    background:
+        radial-gradient(circle at 24% 18%, rgba(255, 255, 255, 0.06), transparent 28%),
+        rgba(15, 14, 14, 0.94);
+    backdrop-filter: blur(24px) saturate(0.45);
+    -webkit-backdrop-filter: blur(24px) saturate(0.45);
+}
+
+.lightbox--body .lightbox__backdrop {
+    background:
+        linear-gradient(135deg, rgba(45, 31, 25, 0.94), rgba(12, 12, 13, 0.92)),
+        rgba(20, 20, 20, 0.92);
+    backdrop-filter: blur(22px) saturate(0.78);
+    -webkit-backdrop-filter: blur(22px) saturate(0.78);
+}
+
+.lightbox--earth .lightbox__backdrop {
+    background:
+        radial-gradient(circle at 72% 24%, rgba(138, 154, 122, 0.22), transparent 34%),
+        linear-gradient(160deg, rgba(10, 16, 14, 0.96), rgba(30, 39, 31, 0.91));
+    backdrop-filter: blur(20px) saturate(1.05);
+    -webkit-backdrop-filter: blur(20px) saturate(1.05);
+}
+
+.lightbox--trace .lightbox__backdrop {
+    background:
+        linear-gradient(90deg, rgba(38, 35, 32, 0.96), rgba(82, 74, 66, 0.88)),
+        rgba(20, 20, 20, 0.92);
+    backdrop-filter: blur(28px) sepia(0.18) saturate(0.72);
+    -webkit-backdrop-filter: blur(28px) sepia(0.18) saturate(0.72);
+}
+
 .lightbox--open .lightbox__backdrop {
     animation: backdropIn 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
 }
@@ -369,6 +401,46 @@ html.lenis {
 .lightbox__image--loaded {
     opacity: 1;
     transform: scale(1);
+}
+
+.lightbox--witness .lightbox__image {
+    filter: grayscale(0.2) contrast(1.05);
+}
+
+.lightbox--witness .lightbox__image--loaded {
+    animation: witnessLightbox 0.75s cubic-bezier(0.16, 0.84, 0.2, 1) both;
+}
+
+.lightbox--body .lightbox__image--loaded {
+    animation: bodyLightbox 0.85s cubic-bezier(0.16, 0.84, 0.2, 1) both;
+}
+
+.lightbox--earth .lightbox__image--loaded {
+    animation: earthLightbox 0.95s cubic-bezier(0.16, 0.84, 0.2, 1) both;
+}
+
+.lightbox--trace .lightbox__image--loaded {
+    animation: traceLightbox 1.05s cubic-bezier(0.16, 0.84, 0.2, 1) both;
+}
+
+@keyframes witnessLightbox {
+    from { opacity: 0; transform: scale(0.94) translateY(18px); filter: blur(14px) grayscale(1); }
+    to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0) grayscale(0.2) contrast(1.05); }
+}
+
+@keyframes bodyLightbox {
+    from { opacity: 0; transform: translate3d(-46px, 28px, 0) rotate(-2deg) scale(0.96); filter: blur(10px); }
+    to { opacity: 1; transform: translate3d(0, 0, 0) rotate(0) scale(1); filter: blur(0); }
+}
+
+@keyframes earthLightbox {
+    from { opacity: 0; transform: scale(0.84); filter: blur(16px) saturate(0.5); }
+    to { opacity: 1; transform: scale(1); filter: blur(0) saturate(1); }
+}
+
+@keyframes traceLightbox {
+    from { opacity: 0; transform: translate3d(38px, -24px, 0) scale(1.04); filter: blur(18px) sepia(0.35); }
+    to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0) sepia(0.06); }
 }
 
 .lightbox__close {

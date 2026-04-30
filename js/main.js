@@ -11,10 +11,10 @@ const galleryChapters = {
         text: 'Body as Landscape follows bodies in water, stone, shadow, and motion. These images treat gesture as language and the body as a place where memory, strength, and vulnerability meet.'
     },
     earth: {
-        text: 'Earth & Element widens the field: creatures, museums, water, desert, and darkness. Irina looks at the nonhuman world with the same intimacy she gives a face.'
+        text: 'Earth as Element widens the field: creatures, museums, water, desert, and darkness. Irina looks at the nonhuman world with the same intimacy she gives a face.'
     },
     trace: {
-        text: 'Rooms & Afterimages holds what remains after the figure leaves: beds, thresholds, fruit, cars, and slanted light. The ordinary becomes evidence of a life passing through.'
+        text: 'Spaces as Afterimages holds what remains after the figure leaves: beds, thresholds, fruit, cars, and slanted light. The ordinary becomes evidence of a life passing through.'
     }
 };
 
@@ -42,21 +42,21 @@ const galleryImages = [
     { file: 'G3A5320.jpg', category: 'body', caption: 'Body as Landscape — Under falling water', alt: 'Figure seated beneath a waterfall', layout: 'wide' },
     { file: 'cenit_river01.jpg', category: 'body', caption: 'Body as Landscape — CENIT by the river', alt: 'Portrait of CENIT sitting beside a river', layout: 'tall' },
 
-    { file: 'G3A5499.jpg', category: 'earth', caption: 'Earth & Element — Rain surface', alt: 'Close study of rain and water spray', layout: 'wide' },
-    { file: 'IMG_5969.jpg', category: 'earth', caption: 'Earth & Element — Jellyfish, luminous dark', alt: 'Jellyfish glowing against a dark background', layout: 'tall' },
-    { file: 'IMG_5982.jpg', category: 'earth', caption: 'Earth & Element — Jellyfish, orange trace', alt: 'Orange jellyfish in dark water', layout: '' },
-    { file: 'MG_8849.jpg', category: 'earth', caption: 'Earth & Element — Desert from above', alt: 'Aerial view of desert ridges', layout: 'wide' },
-    { file: 'bug05.jpg', category: 'earth', caption: 'Earth & Element — Wing and blue', alt: 'Macro photograph of an insect wing', layout: 'tall' },
-    { file: 'bug06B.jpg', category: 'earth', caption: 'Earth & Element — Beetle in black', alt: 'Black and white macro photograph of a beetle', layout: '' },
-    { file: 'nhmla02.jpg', category: 'earth', caption: 'Earth & Element — Museum ground', alt: 'Antlers and animal legs in a museum-like natural scene', layout: 'wide' },
-    { file: 'nhmla03.jpg', category: 'earth', caption: 'Earth & Element — Forest floor', alt: 'Dark forest floor with moss and small flowers', layout: '' },
-    { file: 'nhmla04.jpg', category: 'earth', caption: 'Earth & Element — Fossil trace', alt: 'Dark study of a fossil or bone-like form on the ground', layout: '' },
+    { file: 'G3A5499.jpg', category: 'earth', caption: 'Earth as Element — Rain surface', alt: 'Close study of rain and water spray', layout: 'wide' },
+    { file: 'IMG_5969.jpg', category: 'earth', caption: 'Earth as Element — Jellyfish, luminous dark', alt: 'Jellyfish glowing against a dark background', layout: 'tall' },
+    { file: 'IMG_5982.jpg', category: 'earth', caption: 'Earth as Element — Jellyfish, orange trace', alt: 'Orange jellyfish in dark water', layout: '' },
+    { file: 'MG_8849.jpg', category: 'earth', caption: 'Earth as Element — Desert from above', alt: 'Aerial view of desert ridges', layout: 'wide' },
+    { file: 'bug05.jpg', category: 'earth', caption: 'Earth as Element — Wing and blue', alt: 'Macro photograph of an insect wing', layout: 'tall' },
+    { file: 'bug06B.jpg', category: 'earth', caption: 'Earth as Element — Beetle in black', alt: 'Black and white macro photograph of a beetle', layout: '' },
+    { file: 'nhmla02.jpg', category: 'earth', caption: 'Earth as Element — Museum ground', alt: 'Antlers and animal legs in a museum-like natural scene', layout: 'wide' },
+    { file: 'nhmla03.jpg', category: 'earth', caption: 'Earth as Element — Forest floor', alt: 'Dark forest floor with moss and small flowers', layout: '' },
+    { file: 'nhmla04.jpg', category: 'earth', caption: 'Earth as Element — Fossil trace', alt: 'Dark study of a fossil or bone-like form on the ground', layout: '' },
 
-    { file: 'IMG_6420.jpg', category: 'trace', caption: 'Rooms & Afterimages — Car at water edge', alt: 'A car parked near water in muted light', layout: 'wide' },
-    { file: 'Makenna13.jpg', category: 'trace', caption: 'Rooms & Afterimages — Fruit and cloth', alt: 'Still life of fruit and stains on white cloth', layout: '' },
-    { file: 'Margo10.jpg', category: 'trace', caption: 'Rooms & Afterimages — Blue threshold', alt: 'Woman seen from behind in a blue corridor', layout: 'tall' },
-    { file: 'bed.jpg', category: 'trace', caption: 'Rooms & Afterimages — Unmade bed', alt: 'Dark interior photograph of an unmade bed', layout: 'wide' },
-    { file: 'random.jpg', category: 'trace', caption: 'Rooms & Afterimages — Slant of light', alt: 'Interior wall with a narrow slant of window light', layout: '' }
+    { file: 'IMG_6420.jpg', category: 'trace', caption: 'Spaces as Afterimages — Car at water edge', alt: 'A car parked near water in muted light', layout: 'wide' },
+    { file: 'Makenna13.jpg', category: 'trace', caption: 'Spaces as Afterimages — Fruit and cloth', alt: 'Still life of fruit and stains on white cloth', layout: '' },
+    { file: 'Margo10.jpg', category: 'trace', caption: 'Spaces as Afterimages — Blue threshold', alt: 'Woman seen from behind in a blue corridor', layout: 'tall' },
+    { file: 'bed.jpg', category: 'trace', caption: 'Spaces as Afterimages — Unmade bed', alt: 'Dark interior photograph of an unmade bed', layout: 'wide' },
+    { file: 'random.jpg', category: 'trace', caption: 'Spaces as Afterimages — Slant of light', alt: 'Interior wall with a narrow slant of window light', layout: '' }
 ];
 
 function renderArchiveGallery() {
@@ -80,7 +80,10 @@ function renderArchiveGallery() {
 
 function applyGalleryFilter(filter) {
     const copy = document.getElementById('portfolioChapterCopy');
+    const gallery = document.getElementById('gallery');
     const chapter = galleryChapters[filter] || galleryChapters.witness;
+    const previous = gallery?.dataset.activeCategory || 'witness';
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     document.querySelectorAll('[data-gallery-filter]').forEach((button) => {
         const active = button.dataset.galleryFilter === filter;
@@ -88,15 +91,59 @@ function applyGalleryFilter(filter) {
         button.setAttribute('aria-selected', active ? 'true' : 'false');
     });
 
-    document.querySelectorAll('#gallery [data-category]').forEach((item) => {
-        item.hidden = item.dataset.category !== filter;
-    });
+    const reveal = () => {
+        if (!gallery) return;
+        gallery.dataset.activeCategory = filter;
+        gallery.classList.remove(`gallery--${previous}`);
+        gallery.classList.add(`gallery--${filter}`);
+
+        const visibleItems = [];
+        document.querySelectorAll('#gallery [data-category]').forEach((item) => {
+            const visible = item.dataset.category === filter;
+            item.hidden = !visible;
+            item.classList.remove('gallery__item--enter');
+            if (visible) visibleItems.push(item);
+        });
+
+        visibleItems.forEach((item, index) => {
+            item.style.setProperty('--enter-delay', `${Math.min(index * 55, 520)}ms`);
+            requestAnimationFrame(() => item.classList.add('gallery__item--enter'));
+        });
+
+        gallery.classList.remove('gallery--switching');
+    };
+
+    if (gallery && !reduceMotion && previous !== filter) {
+        gallery.classList.add('gallery--switching');
+        window.setTimeout(reveal, 180);
+    } else {
+        reveal();
+    }
 
     if (copy) copy.textContent = chapter.text;
 }
 
 renderArchiveGallery();
 applyGalleryFilter('witness');
+
+function animatePortfolioChapters() {
+    const portfolio = document.getElementById('portfolio');
+    const chapters = document.getElementById('portfolioChapters');
+    if (!portfolio || !chapters) return;
+
+    const rect = portfolio.getBoundingClientRect();
+    const total = rect.height + window.innerHeight;
+    const progress = Math.min(1, Math.max(0, (window.innerHeight - rect.top) / total));
+    const active = rect.top < window.innerHeight * 0.75 && rect.bottom > window.innerHeight * 0.25;
+    const driftX = Math.sin(progress * Math.PI * 2) * 18;
+    const driftY = Math.cos(progress * Math.PI * 1.5) * 8;
+    const rotate = Math.sin(progress * Math.PI) * 1.4;
+
+    chapters.classList.toggle('portfolio__chapters--floating', active);
+    chapters.style.setProperty('--chapter-x', `${driftX.toFixed(2)}px`);
+    chapters.style.setProperty('--chapter-y', `${driftY.toFixed(2)}px`);
+    chapters.style.setProperty('--chapter-rotate', `${rotate.toFixed(2)}deg`);
+}
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -243,5 +290,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     applyGalleryFilter('witness');
+    animatePortfolioChapters();
+    window.addEventListener('scroll', animatePortfolioChapters, { passive: true });
+    window.addEventListener('resize', animatePortfolioChapters);
 
 });

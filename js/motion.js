@@ -181,12 +181,16 @@ document.addEventListener('DOMContentLoaded', () => {
             if (index < 0 || index >= items.length) return;
             currentIndex = index;
             const item = items[currentIndex];
+            const category = item.dataset.category || 'witness';
 
             // Reset image state
             lbImage.classList.remove('lightbox__image--loaded');
             lbImage.src = '';
 
             // Open the lightbox
+            lightbox.classList.remove('lightbox--witness', 'lightbox--body', 'lightbox--earth', 'lightbox--trace');
+            lightbox.classList.add(`lightbox--${category}`);
+            lightbox.dataset.category = category;
             lightbox.classList.add('lightbox--open');
             document.body.style.overflow = 'hidden';
 

@@ -11,8 +11,8 @@ const TARGET = process.env.PUBLIC_UI_URL || 'https://mossandtea.com/';
 const chapters = [
   ['Women as Witness', 'witness', 13],
   ['Body as Landscape', 'body', 8],
-  ['Earth & Element', 'earth', 9],
-  ['Rooms & Afterimages', 'trace', 5],
+  ['Earth as Element', 'earth', 9],
+  ['Spaces as Afterimages', 'trace', 5],
 ];
 
 async function visibleGalleryCount(page) {
@@ -54,6 +54,7 @@ async function run() {
 
       await page.locator('#gallery [data-lightbox]:visible').first().click();
       await page.waitForSelector('.lightbox.lightbox--open', { state: 'visible', timeout: 10000 });
+      await page.waitForSelector(`.lightbox.lightbox--${category}`, { state: 'visible', timeout: 10000 });
       await page.waitForFunction(() => {
         const img = document.querySelector('.lightbox--open img');
         return img && img.complete && img.naturalWidth > 0 && img.naturalHeight > 0;
