@@ -10,6 +10,12 @@ const galleryChapters = {
     body: {
         text: 'Body as Landscape follows bodies in water, stone, shadow, and motion. These images treat gesture as language and the body as a place where memory, strength, and vulnerability meet.'
     },
+    performance: {
+        text: 'Performance as Myth recovers Irina’s Beauty CULTure images from Annenberg: masks, veils, painted faces, theatrical doubles, and constructed selves that turn beauty into character and ritual.'
+    },
+    editorial: {
+        text: 'Editorial as Ritual gathers fashion work where garment, landscape, and model become a ceremony. The image is not selling a look so much as staging a transformation.'
+    },
     earth: {
         text: 'Earth as Element widens the field: creatures, museums, water, desert, and darkness. Irina looks at the nonhuman world with the same intimacy she gives a face.'
     },
@@ -41,6 +47,32 @@ const galleryImages = [
     { file: 'G3A1901.jpg', category: 'body', caption: 'Body as Landscape — Kneeling in sand', alt: 'Black and white figure kneeling on sand', layout: '' },
     { file: 'G3A5320.jpg', category: 'body', caption: 'Body as Landscape — Under falling water', alt: 'Figure seated beneath a waterfall', layout: 'wide' },
     { file: 'cenit_river01.jpg', category: 'body', caption: 'Body as Landscape — CENIT by the river', alt: 'Portrait of CENIT sitting beside a river', layout: 'tall' },
+
+    { file: 'harvest/annenberg-beauty-culture/annenberg_01.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, veil study I', alt: 'Archived Annenberg Beauty CULTure image by Irina Garaiacu with a face obscured by pale veil', layout: 'tall' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_02.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, profile in light', alt: 'Archived Annenberg Beauty CULTure profile portrait by Irina Garaiacu', layout: 'tall' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_03.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, veiled profile', alt: 'Archived Annenberg Beauty CULTure veiled portrait by Irina Garaiacu', layout: 'tall' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_04.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, low light gaze', alt: 'Archived Annenberg Beauty CULTure portrait by Irina Garaiacu in low light', layout: 'tall' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_05.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, blurred double', alt: 'Archived Annenberg Beauty CULTure blurred black and white portrait by Irina Garaiacu', layout: '' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_06.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, painted face', alt: 'Archived Annenberg Beauty CULTure painted face by Irina Garaiacu', layout: '' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_07.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, doll figure', alt: 'Archived Annenberg Beauty CULTure doll-like face by Irina Garaiacu', layout: 'tall' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_08.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, fracture mask', alt: 'Archived Annenberg Beauty CULTure mask portrait by Irina Garaiacu', layout: 'tall' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_09.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, fan portrait I', alt: 'Archived Annenberg Beauty CULTure fan portrait by Irina Garaiacu', layout: 'tall' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_10.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, painted blur', alt: 'Archived Annenberg Beauty CULTure painterly portrait by Irina Garaiacu', layout: 'wide' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_11.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, fan portrait II', alt: 'Archived Annenberg Beauty CULTure fan portrait by Irina Garaiacu', layout: 'tall' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_12.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, reclining figure', alt: 'Archived Annenberg Beauty CULTure reclining figure by Irina Garaiacu', layout: 'wide' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_13.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, maker and puppet', alt: 'Archived Annenberg Beauty CULTure puppet image by Irina Garaiacu', layout: 'wide' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_14.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, paper body', alt: 'Archived Annenberg Beauty CULTure paper costume image by Irina Garaiacu', layout: 'wide' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_15.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, stitched face', alt: 'Archived Annenberg Beauty CULTure stitched-face character by Irina Garaiacu', layout: 'tall' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_16.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, masked wreath', alt: 'Archived Annenberg Beauty CULTure masked figure in a wreath by Irina Garaiacu', layout: 'tall' },
+    { file: 'harvest/annenberg-beauty-culture/annenberg_17.jpg', category: 'performance', caption: 'Performance as Myth — Beauty CULTure, skin of light', alt: 'Archived Annenberg Beauty CULTure close abstract texture by Irina Garaiacu', layout: 'wide' },
+
+    { file: 'harvest/no-substance-alexis/alexis_01.jpg', category: 'editorial', caption: 'Editorial as Ritual — Alexis, garment at dusk I', alt: 'No Substance editorial photograph by Irina Garaiacu of Alexis holding a garment at dusk', layout: 'tall' },
+    { file: 'harvest/no-substance-alexis/alexis_02.jpg', category: 'editorial', caption: 'Editorial as Ritual — Alexis, field at sunset', alt: 'No Substance editorial photograph by Irina Garaiacu of Alexis standing in a field at sunset', layout: 'tall' },
+    { file: 'harvest/no-substance-alexis/alexis_03.jpg', category: 'editorial', caption: 'Editorial as Ritual — Alexis, pressed leaf', alt: 'No Substance editorial still life photograph by Irina Garaiacu of a leaf on dark fabric', layout: '' },
+    { file: 'harvest/no-substance-alexis/alexis_04.jpg', category: 'editorial', caption: 'Editorial as Ritual — Festival dress apparition', alt: 'No Substance editorial photograph by Irina Garaiacu of a pale dress hanging outdoors', layout: 'tall' },
+    { file: 'harvest/no-substance-alexis/alexis_05.jpg', category: 'editorial', caption: 'Editorial as Ritual — Ground as textile', alt: 'No Substance editorial ground texture photograph by Irina Garaiacu', layout: '' },
+    { file: 'harvest/no-substance-alexis/alexis_06.jpg', category: 'editorial', caption: 'Editorial as Ritual — Alexis, walking through dusk', alt: 'No Substance editorial photograph by Irina Garaiacu of Alexis walking outdoors', layout: 'tall' },
+    { file: 'harvest/no-substance-alexis/alexis_07.jpg', category: 'editorial', caption: 'Editorial as Ritual — Alexis, garment at dusk II', alt: 'No Substance editorial close photograph by Irina Garaiacu of Alexis with garment and sunset light', layout: 'tall' },
 
     { file: 'G3A5499.jpg', category: 'earth', caption: 'Earth as Element — Rain surface', alt: 'Close study of rain and water spray', layout: 'wide' },
     { file: 'IMG_5969.jpg', category: 'earth', caption: 'Earth as Element — Jellyfish, luminous dark', alt: 'Jellyfish glowing against a dark background', layout: 'tall' },

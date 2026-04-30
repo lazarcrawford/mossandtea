@@ -377,7 +377,7 @@ h1, h2, h3, h4 {
     top: 5.25rem;
     z-index: 80;
     display: grid;
-    grid-template-columns: repeat(4, auto);
+    grid-template-columns: repeat(6, auto);
     justify-content: center;
     gap: 0.45rem;
     padding: 0.45rem;
@@ -407,7 +407,7 @@ h1, h2, h3, h4 {
 }
 
 .portfolio__chapters--clustered {
-    grid-template-columns: repeat(2, auto);
+    grid-template-columns: repeat(3, auto);
 }
 
 .portfolio__chapter {
@@ -449,6 +449,16 @@ h1, h2, h3, h4 {
 .portfolio__chapter[data-gallery-filter="earth"].portfolio__chapter--active {
     background: rgba(222, 232, 210, 0.82);
     border-color: rgba(138, 154, 122, 0.62);
+}
+
+.portfolio__chapter[data-gallery-filter="performance"].portfolio__chapter--active {
+    background: rgba(242, 222, 237, 0.84);
+    border-color: rgba(174, 126, 166, 0.58);
+}
+
+.portfolio__chapter[data-gallery-filter="editorial"].portfolio__chapter--active {
+    background: rgba(246, 225, 204, 0.84);
+    border-color: rgba(195, 145, 101, 0.5);
 }
 
 .portfolio__chapter[data-gallery-filter="trace"].portfolio__chapter--active {
@@ -518,6 +528,14 @@ h1, h2, h3, h4 {
     animation-name: bodyEnter;
 }
 
+.gallery--performance .gallery__item--enter {
+    animation-name: performanceEnter;
+}
+
+.gallery--editorial .gallery__item--enter {
+    animation-name: editorialEnter;
+}
+
 .gallery--earth .gallery__item--enter {
     animation-name: earthEnter;
 }
@@ -534,6 +552,16 @@ h1, h2, h3, h4 {
 @keyframes bodyEnter {
     from { opacity: 0; transform: translate3d(-26px, 42px, 0) rotate(-2.5deg); filter: blur(9px); }
     to { opacity: 1; transform: translate3d(0, 0, 0) rotate(0); filter: blur(0); }
+}
+
+@keyframes performanceEnter {
+    from { opacity: 0; transform: translate3d(0, 32px, 0) scale(0.94) rotate(1.8deg); filter: blur(14px) contrast(0.75); }
+    to { opacity: 1; transform: translate3d(0, 0, 0) scale(1) rotate(0); filter: blur(0) contrast(1); }
+}
+
+@keyframes editorialEnter {
+    from { opacity: 0; transform: translate3d(34px, 18px, 0) scale(1.03); filter: blur(10px) saturate(0.8); }
+    to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0) saturate(1); }
 }
 
 @keyframes earthEnter {
@@ -976,7 +1004,7 @@ h1, h2, h3, h4 {
 
     .portfolio__chapters {
         justify-content: flex-start;
-        grid-template-columns: repeat(4, max-content);
+        grid-template-columns: repeat(6, max-content);
         overflow-x: auto;
         width: auto;
         max-width: calc(100vw - 2.5rem);
@@ -994,7 +1022,7 @@ h1, h2, h3, h4 {
     }
 
     .portfolio__chapters--clustered {
-        grid-template-columns: repeat(4, max-content);
+        grid-template-columns: repeat(6, max-content);
     }
 
     .portfolio__chapter {

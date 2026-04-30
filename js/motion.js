@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
             lbImage.src = '';
 
             // Open the lightbox
-            lightbox.classList.remove('lightbox--witness', 'lightbox--body', 'lightbox--earth', 'lightbox--trace');
+            lightbox.classList.remove('lightbox--witness', 'lightbox--body', 'lightbox--performance', 'lightbox--editorial', 'lightbox--earth', 'lightbox--trace');
             lightbox.classList.add(`lightbox--${category}`);
             lightbox.dataset.category = category;
             lightbox.classList.add('lightbox--open');

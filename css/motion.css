@@ -348,6 +348,22 @@ html.lenis {
     -webkit-backdrop-filter: blur(20px) saturate(1.05);
 }
 
+.lightbox--performance .lightbox__backdrop {
+    background:
+        radial-gradient(circle at 30% 18%, rgba(232, 176, 187, 0.24), transparent 36%),
+        linear-gradient(145deg, rgba(31, 22, 32, 0.95), rgba(16, 14, 18, 0.93));
+    backdrop-filter: blur(24px) saturate(0.86) contrast(1.08);
+    -webkit-backdrop-filter: blur(24px) saturate(0.86) contrast(1.08);
+}
+
+.lightbox--editorial .lightbox__backdrop {
+    background:
+        radial-gradient(circle at 70% 24%, rgba(246, 225, 204, 0.2), transparent 36%),
+        linear-gradient(135deg, rgba(45, 34, 28, 0.94), rgba(18, 15, 14, 0.93));
+    backdrop-filter: blur(21px) saturate(0.95);
+    -webkit-backdrop-filter: blur(21px) saturate(0.95);
+}
+
 .lightbox--trace .lightbox__backdrop {
     background:
         linear-gradient(90deg, rgba(38, 35, 32, 0.96), rgba(82, 74, 66, 0.88)),
@@ -419,6 +435,14 @@ html.lenis {
     animation: earthLightbox 0.95s cubic-bezier(0.16, 0.84, 0.2, 1) both;
 }
 
+.lightbox--performance .lightbox__image--loaded {
+    animation: performanceLightbox 1s cubic-bezier(0.16, 0.84, 0.2, 1) both;
+}
+
+.lightbox--editorial .lightbox__image--loaded {
+    animation: editorialLightbox 0.88s cubic-bezier(0.16, 0.84, 0.2, 1) both;
+}
+
 .lightbox--trace .lightbox__image--loaded {
     animation: traceLightbox 1.05s cubic-bezier(0.16, 0.84, 0.2, 1) both;
 }
@@ -436,6 +460,16 @@ html.lenis {
 @keyframes earthLightbox {
     from { opacity: 0; transform: scale(0.84); filter: blur(16px) saturate(0.5); }
     to { opacity: 1; transform: scale(1); filter: blur(0) saturate(1); }
+}
+
+@keyframes performanceLightbox {
+    from { opacity: 0; transform: translate3d(0, 28px, 0) scale(0.92) rotate(1.8deg); filter: blur(18px) contrast(0.72); }
+    to { opacity: 1; transform: translate3d(0, 0, 0) scale(1) rotate(0); filter: blur(0) contrast(1.05); }
+}
+
+@keyframes editorialLightbox {
+    from { opacity: 0; transform: translate3d(44px, 12px, 0) scale(1.04); filter: blur(13px) saturate(0.72); }
+    to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0) saturate(1); }
 }
 
 @keyframes traceLightbox {
@@ -533,6 +567,16 @@ html.lenis {
 .lightbox--earth .lightbox__chapter {
     border-color: rgba(222, 232, 210, 0.28);
     background: rgba(222, 232, 210, 0.08);
+}
+
+.lightbox--performance .lightbox__chapter {
+    border-color: rgba(242, 222, 237, 0.3);
+    background: rgba(242, 222, 237, 0.09);
+}
+
+.lightbox--editorial .lightbox__chapter {
+    border-color: rgba(246, 225, 204, 0.3);
+    background: rgba(246, 225, 204, 0.09);
 }
 
 .lightbox--trace .lightbox__chapter {
