@@ -535,23 +535,39 @@ html.lenis {
 
 .lightbox__chapter {
     position: fixed;
-    top: 2rem;
+    top: 1.4rem;
     left: 50%;
     transform: translateX(-50%);
-    color: rgba(255, 245, 247, 0.82);
+    color: rgba(255, 255, 255, 0.88);
     font-family: var(--font-sans);
-    font-size: 0.68rem;
+    font-size: 0.6rem;
     font-weight: 500;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.17em;
     text-transform: uppercase;
-    padding: 0.7rem 1rem;
-    border: 1px solid rgba(255, 220, 226, 0.26);
-    background: rgba(255, 236, 240, 0.08);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    padding: 0.54rem 0.9rem 0.64rem;
+    border: 1px solid rgba(255, 245, 248, 0.34);
+    outline: 1px solid rgba(255, 255, 255, 0.16);
+    outline-offset: -5px;
+    background: rgba(255, 255, 255, 0.025);
+    text-shadow: 0 1px 9px rgba(0, 0, 0, 0.58), 0 0 1px rgba(255, 255, 255, 0.54);
+    backdrop-filter: blur(4px) saturate(0.88);
+    -webkit-backdrop-filter: blur(4px) saturate(0.88);
     opacity: 0;
     transition: opacity 0.4s cubic-bezier(0.25, 0.1, 0.25, 1) 0.34s,
                 transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1) 0.34s;
+}
+
+.lightbox__chapter::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0.24rem;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.72;
+    transform: translateX(-50%);
 }
 
 .lightbox--open .lightbox__chapter {
@@ -560,28 +576,28 @@ html.lenis {
 }
 
 .lightbox--body .lightbox__chapter {
-    border-color: rgba(239, 215, 205, 0.26);
-    background: rgba(239, 215, 205, 0.08);
+    border-color: rgba(239, 215, 205, 0.34);
+    background: rgba(239, 215, 205, 0.026);
 }
 
 .lightbox--earth .lightbox__chapter {
-    border-color: rgba(222, 232, 210, 0.28);
-    background: rgba(222, 232, 210, 0.08);
+    border-color: rgba(222, 232, 210, 0.34);
+    background: rgba(222, 232, 210, 0.026);
 }
 
 .lightbox--performance .lightbox__chapter {
-    border-color: rgba(242, 222, 237, 0.3);
-    background: rgba(242, 222, 237, 0.09);
+    border-color: rgba(242, 222, 237, 0.36);
+    background: rgba(242, 222, 237, 0.028);
 }
 
 .lightbox--editorial .lightbox__chapter {
-    border-color: rgba(246, 225, 204, 0.3);
-    background: rgba(246, 225, 204, 0.09);
+    border-color: rgba(246, 225, 204, 0.36);
+    background: rgba(246, 225, 204, 0.028);
 }
 
 .lightbox--trace .lightbox__chapter {
-    border-color: rgba(239, 226, 219, 0.28);
-    background: rgba(239, 226, 219, 0.08);
+    border-color: rgba(239, 226, 219, 0.34);
+    background: rgba(239, 226, 219, 0.026);
 }
 
 .lightbox__nav {
