@@ -129,20 +129,26 @@ applyGalleryFilter('witness');
 function animatePortfolioChapters() {
     const portfolio = document.getElementById('portfolio');
     const chapters = document.getElementById('portfolioChapters');
-    if (!portfolio || !chapters) return;
+    const gallery = document.getElementById('gallery');
+    if (!portfolio || !chapters || !gallery) return;
 
     const rect = portfolio.getBoundingClientRect();
-    const total = rect.height + window.innerHeight;
-    const progress = Math.min(1, Math.max(0, (window.innerHeight - rect.top) / total));
-    const active = rect.top < window.innerHeight * 0.75 && rect.bottom > window.innerHeight * 0.25;
-    const driftX = Math.sin(progress * Math.PI * 2) * 18;
-    const driftY = Math.cos(progress * Math.PI * 1.5) * 8;
-    const rotate = Math.sin(progress * Math.PI) * 1.4;
+    const galleryRect = gallery.getBoundingClientRect();
+    const active = rect.top < window.innerHeight * 0.82 && rect.bottom > window.innerHeight * 0.12;
+    const floating = active && galleryRect.top < window.innerHeight * 0.18 && galleryRect.bottom > window.innerHeight * 0.42;
+    const floatProgress = Math.min(1, Math.max(0, (window.innerHeight * 0.18 - galleryRect.top) / Math.max(1, galleryRect.height * 0.55)));
+    const clustered = floating && floatProgress > 0.42;
+    const driftX = floating ? Math.sin(floatProgress * Math.PI * 2.4) * 14 : 0;
+    const driftY = floating ? Math.cos(floatProgress * Math.PI * 1.8) * 10 : 0;
+    const rotate = floating ? Math.sin(floatProgress * Math.PI * 1.5) * 0.8 : 0;
+    const top = 82 + floatProgress * 92;
 
-    chapters.classList.toggle('portfolio__chapters--floating', active);
+    chapters.classList.toggle('portfolio__chapters--floating', floating);
+    chapters.classList.toggle('portfolio__chapters--clustered', clustered);
     chapters.style.setProperty('--chapter-x', `${driftX.toFixed(2)}px`);
     chapters.style.setProperty('--chapter-y', `${driftY.toFixed(2)}px`);
     chapters.style.setProperty('--chapter-rotate', `${rotate.toFixed(2)}deg`);
+    chapters.style.setProperty('--chapter-top', `${top.toFixed(2)}px`);
 }
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -163,6 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const lbImage = document.getElementById('lightboxImage');
         const lbCaption = document.getElementById('lightboxCaption');
         const lbCounter = document.getElementById('lightboxCounter');
+        const lbChapter = document.getElementById('lightboxChapter');
         const lbClose = document.getElementById('lightboxClose');
         const lbPrev = document.getElementById('lightboxPrev');
         const lbNext = document.getElementById('lightboxNext');
@@ -206,8 +207,10 @@ document.addEventListener('DOMContentLoaded', () => {
             tempImg.src = src;
 
             // Caption and counter
+            const chapterLabel = document.querySelector(`[data-gallery-filter="${category}"]`)?.textContent?.trim() || '';
             lbCaption.textContent = item.dataset.caption || '';
             lbCounter.textContent = `${currentIndex + 1} / ${items.length}`;
+            if (lbChapter) lbChapter.textContent = chapterLabel;
         }
 
         function closeLightbox() {

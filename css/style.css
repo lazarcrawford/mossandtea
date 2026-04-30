@@ -376,49 +376,61 @@ h1, h2, h3, h4 {
     position: sticky;
     top: 5.25rem;
     z-index: 80;
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(4, auto);
     justify-content: center;
-    flex-wrap: nowrap;
-    gap: 0.55rem;
-    padding: 0.55rem;
-    background: rgba(245, 240, 235, 0.78);
-    border: 1px solid rgba(212, 203, 196, 0.72);
-    box-shadow: 0 18px 60px rgba(44, 44, 44, 0.08);
-    backdrop-filter: blur(18px) saturate(1.12);
-    -webkit-backdrop-filter: blur(18px) saturate(1.12);
+    gap: 0.45rem;
+    padding: 0.45rem;
+    background: rgba(255, 246, 247, 0.7);
+    border: 1px solid rgba(225, 187, 193, 0.58);
+    box-shadow: 0 14px 50px rgba(139, 111, 94, 0.07);
+    backdrop-filter: blur(22px) saturate(1.08);
+    -webkit-backdrop-filter: blur(22px) saturate(1.08);
     transform: translate3d(var(--chapter-x, 0), var(--chapter-y, 0), 0) rotate(var(--chapter-rotate, 0deg));
-    transition: box-shadow var(--transition), border-color var(--transition), background var(--transition), transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition: grid-template-columns 0.7s cubic-bezier(0.2, 0.8, 0.2, 1),
+                box-shadow var(--transition),
+                border-color var(--transition),
+                background var(--transition),
+                transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1),
+                top 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .portfolio__chapters--floating {
     position: fixed;
+    top: var(--chapter-top, 6.75rem);
     left: 50%;
-    max-width: calc(100vw - 4rem);
-    border-color: rgba(139, 111, 94, 0.34);
-    box-shadow: 0 24px 90px rgba(44, 44, 44, 0.13);
+    max-width: calc(100vw - 3rem);
+    border-color: rgba(232, 176, 187, 0.66);
+    background: rgba(255, 243, 245, 0.82);
+    box-shadow: 0 26px 90px rgba(145, 103, 112, 0.14);
     transform: translate3d(calc(-50% + var(--chapter-x, 0px)), var(--chapter-y, 0px), 0) rotate(var(--chapter-rotate, 0deg));
 }
 
+.portfolio__chapters--clustered {
+    grid-template-columns: repeat(2, auto);
+}
+
 .portfolio__chapter {
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--text);
-    padding: 0.75rem 1.15rem;
+    border: 1px solid rgba(214, 176, 181, 0.56);
+    background: rgba(255, 255, 255, 0.34);
+    color: #5f4f52;
+    padding: 0.68rem 1.05rem;
     font-family: var(--font-sans);
-    font-size: 0.68rem;
+    font-size: 0.66rem;
     font-weight: 500;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.13em;
     text-transform: uppercase;
     white-space: nowrap;
     cursor: pointer;
-    transition: color var(--transition), background var(--transition), border-color var(--transition), transform var(--transition);
+    transition: color var(--transition), background var(--transition), border-color var(--transition), box-shadow var(--transition), transform var(--transition);
 }
 
 .portfolio__chapter:hover,
 .portfolio__chapter--active {
-    background: var(--charcoal);
-    border-color: var(--charcoal);
-    color: var(--white);
+    background: rgba(250, 221, 226, 0.72);
+    border-color: rgba(196, 137, 147, 0.6);
+    color: #3b3032;
+    box-shadow: 0 9px 26px rgba(163, 105, 115, 0.11);
 }
 
 .portfolio__chapter:hover {
@@ -430,18 +442,18 @@ h1, h2, h3, h4 {
 }
 
 .portfolio__chapter[data-gallery-filter="body"].portfolio__chapter--active {
-    background: var(--clay);
-    border-color: var(--clay);
+    background: rgba(239, 215, 205, 0.82);
+    border-color: rgba(181, 132, 113, 0.58);
 }
 
 .portfolio__chapter[data-gallery-filter="earth"].portfolio__chapter--active {
-    background: var(--sage-dark);
-    border-color: var(--sage-dark);
+    background: rgba(222, 232, 210, 0.82);
+    border-color: rgba(138, 154, 122, 0.62);
 }
 
 .portfolio__chapter[data-gallery-filter="trace"].portfolio__chapter--active {
-    background: #6f6b66;
-    border-color: #6f6b66;
+    background: rgba(239, 226, 219, 0.86);
+    border-color: rgba(174, 150, 140, 0.58);
 }
 
 .portfolio__chapter-copy {
@@ -964,7 +976,7 @@ h1, h2, h3, h4 {
 
     .portfolio__chapters {
         justify-content: flex-start;
-        flex-wrap: nowrap;
+        grid-template-columns: repeat(4, max-content);
         overflow-x: auto;
         width: auto;
         max-width: calc(100vw - 2.5rem);
@@ -981,8 +993,12 @@ h1, h2, h3, h4 {
         transform: translate3d(0, var(--chapter-y, 0px), 0);
     }
 
+    .portfolio__chapters--clustered {
+        grid-template-columns: repeat(4, max-content);
+    }
+
     .portfolio__chapter {
-        flex: 0 0 auto;
+        min-width: max-content;
     }
 
     .portfolio__chapter-copy {

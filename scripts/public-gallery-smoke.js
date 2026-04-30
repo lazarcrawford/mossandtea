@@ -55,6 +55,7 @@ async function run() {
       await page.locator('#gallery [data-lightbox]:visible').first().click();
       await page.waitForSelector('.lightbox.lightbox--open', { state: 'visible', timeout: 10000 });
       await page.waitForSelector(`.lightbox.lightbox--${category}`, { state: 'visible', timeout: 10000 });
+      await page.locator('#lightboxChapter').filter({ hasText: label }).waitFor({ state: 'visible', timeout: 10000 });
       await page.waitForFunction(() => {
         const img = document.querySelector('.lightbox--open img');
         return img && img.complete && img.naturalWidth > 0 && img.naturalHeight > 0;
