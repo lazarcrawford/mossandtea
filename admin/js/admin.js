@@ -25,6 +25,8 @@ function displayMoney(cents, fallback = 'Quote pending') {
 // can register it at the exact right moment during alpine:init.
 // This eliminates CDN-cache timing bugs where admin.js and HTML drift apart.
 window.createAdminApp = () => {
+  const appState = () => window.Alpine?.$data(document.querySelector('[x-data="adminApp"]')) || root;
+
   const root = {
     // === NAVIGATION ===
     nav: {
@@ -52,7 +54,7 @@ window.createAdminApp = () => {
           this.loggedIn = true;
           this.user = data.user;
           // Load dashboard data via root reference (nested this can't see parent)
-          root.loadDashboard();
+          appState().loadDashboard();
         } catch (e) {
           this.error = e.message || 'Login failed';
         } finally {
@@ -143,7 +145,8 @@ window.createAdminApp = () => {
       index: 0,
 
       show(items, item) {
-        this.items = items.filter((f) => root.files.isImage(f) && root.files.getUrl(f.r2_key));
+        const app = appState();
+        this.items = items.filter((f) => app.files.isImage(f) && app.files.getUrl(f.r2_key));
         this.index = Math.max(0, this.items.findIndex((f) => f.id === item.id));
         this.open = Boolean(this.items.length);
       },
@@ -230,9 +233,10 @@ window.createAdminApp = () => {
       },
 
       viewProjects(c) {
-        root.projects.customerFilter = c.id;
-        root.nav.active = 'projects';
-        root.projects.load();
+        const app = appState();
+        app.projects.customerFilter = c.id;
+        app.nav.active = 'projects';
+        app.projects.load();
       }
     },
 
@@ -335,8 +339,9 @@ window.createAdminApp = () => {
       },
 
       openDetail(p) {
-        root.nav.active = 'files';
-        root.files.openProject(p);
+        const app = appState();
+        app.nav.active = 'files';
+        app.files.openProject(p);
       }
     },
 
@@ -424,7 +429,7 @@ window.createAdminApp = () => {
 
       openLightbox(file) {
         if (!this.isImage(file)) return;
-        root.lightbox.show(this.list, file);
+        appState().lightbox.show(this.list, file);
       },
 
       async upload() {

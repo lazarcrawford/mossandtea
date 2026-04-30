@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Moss & Tea — Admin</title>
-  <link rel="stylesheet" href="css/admin.css?v=20260430-lightbox">
+  <link rel="stylesheet" href="css/admin.css?v=20260430-ui-smoke">
 </head>
 <body>
   <!-- Login Screen -->
@@ -204,7 +204,7 @@
                 </thead>
                 <tbody>
                   <template x-for="p in projects.list" :key="p.id">
-                    <tr @dblclick="projects.openDetail(p)">
+                    <tr :data-project-title="p.title" @dblclick="projects.openDetail(p)">
                       <td><strong x-text="p.title"></strong></td>
                       <td x-text="p.customer_name"></td>
                       <td><span class="badge" :class="'badge--' + p.status" x-text="p.status.replace('_',' ')"></span></td>
@@ -217,7 +217,7 @@
                       </td>
                       <td x-text="p.file_count || 0"></td>
                       <td>
-                        <button class="btn btn--sm btn--outline" @click="projects.openDetail(p)">Open</button>
+                        <button class="btn btn--sm btn--outline" :aria-label="'Open project ' + p.title" @click="projects.openDetail(p)">Open</button>
                       </td>
                     </tr>
                   </template>
@@ -604,7 +604,7 @@
   <!-- Step 1: Supabase SDK -->
   <script src="js/supabase.min.js?v=20260430-2"></script>
   <!-- Step 2: App engine — defines window.createAdminApp -->
-  <script src="js/admin.js?v=20260430-lightbox"></script>
+  <script src="js/admin.js?v=20260430-ui-smoke"></script>
   <!-- Step 3: Register component BEFORE Alpine loads.
        alpine:init fires synchronously during Alpine's script execution,
        so the listener must exist before alpine.min.js starts. -->
