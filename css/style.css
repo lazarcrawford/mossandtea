@@ -53,6 +53,23 @@ body {
     overflow-x: hidden;
 }
 
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.22;
+    mix-blend-mode: multiply;
+    background:
+        radial-gradient(circle at 18% 24%, rgba(255, 255, 255, 0.55), transparent 0.9px),
+        radial-gradient(circle at 72% 38%, rgba(92, 73, 61, 0.18), transparent 0.7px),
+        radial-gradient(circle at 44% 82%, rgba(255, 255, 255, 0.45), transparent 0.8px),
+        linear-gradient(105deg, rgba(255, 255, 255, 0.17), transparent 22%, rgba(96, 72, 56, 0.055) 48%, transparent 72%),
+        repeating-linear-gradient(2deg, rgba(76, 58, 42, 0.035) 0 1px, transparent 1px 7px);
+    background-size: 19px 23px, 31px 29px, 37px 41px, 100% 100%, 100% 11px;
+}
+
 img {
     max-width: 100%;
     height: auto;
@@ -300,12 +317,96 @@ h1, h2, h3, h4 {
 }
 
 .hero__title {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     font-size: 4.5rem;
     font-weight: 300;
     color: var(--white);
-    margin-bottom: 1.1rem;
+    margin-bottom: 1.2rem;
     letter-spacing: -0.03em;
     line-height: 1.1;
+    isolation: isolate;
+}
+
+.hero__title-line {
+    position: relative;
+    display: block;
+    text-shadow: 0 0 22px rgba(255, 255, 255, 0.18), 0 2px 18px rgba(0, 0, 0, 0.22);
+}
+
+.hero__title-line--earth {
+    z-index: 2;
+}
+
+.hero__title-line--light {
+    z-index: 3;
+    background: linear-gradient(105deg, rgba(255, 255, 255, 0.92), rgba(245, 240, 235, 1), rgba(200, 222, 220, 0.86), rgba(255, 255, 255, 0.96));
+    background-size: 210% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: lightBreath 8s ease-in-out infinite;
+}
+
+.hero__title-line--light::after {
+    content: "";
+    position: absolute;
+    left: 18%;
+    right: 12%;
+    bottom: 0.07em;
+    height: 0.02em;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.44), rgba(141, 184, 201, 0.26), transparent);
+    transform-origin: center;
+    animation: lightThread 7s ease-in-out infinite;
+}
+
+.hero__roots {
+    position: absolute;
+    left: 50%;
+    top: 0.68em;
+    z-index: 1;
+    width: min(33rem, 72vw);
+    height: 11rem;
+    transform: translateX(-50%);
+    pointer-events: none;
+    overflow: visible;
+    opacity: 0.66;
+    filter: drop-shadow(0 8px 22px rgba(72, 58, 44, 0.28));
+}
+
+.hero__roots path {
+    fill: none;
+    stroke: rgba(238, 229, 218, 0.54);
+    stroke-width: 1.05;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 260;
+    stroke-dashoffset: 260;
+    animation: rootReach 8.5s ease-in-out infinite;
+}
+
+.hero__roots path:nth-child(2),
+.hero__roots path:nth-child(5) {
+    stroke: rgba(211, 191, 168, 0.42);
+    stroke-width: 0.85;
+    animation-delay: 0.8s;
+}
+
+.hero__roots path:nth-child(3),
+.hero__roots path:nth-child(6) {
+    stroke: rgba(191, 211, 196, 0.34);
+    stroke-width: 0.8;
+    animation-delay: 1.35s;
+}
+
+.hero__roots path:nth-child(4),
+.hero__roots path:nth-child(7),
+.hero__roots path:nth-child(8) {
+    stroke-width: 0.65;
+    opacity: 0.72;
+    animation-delay: 1.9s;
 }
 
 .sr-only {
@@ -321,6 +422,8 @@ h1, h2, h3, h4 {
 }
 
 .hero__flow {
+    position: relative;
+    z-index: 5;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1083,6 +1186,13 @@ h1, h2, h3, h4 {
         font-size: 2.8rem;
     }
 
+    .hero__roots {
+        top: 0.82em;
+        width: min(26rem, 88vw);
+        height: 8.5rem;
+        opacity: 0.36;
+    }
+
     .hero__subtitle {
         font-size: 1rem;
     }
@@ -1186,7 +1296,10 @@ h1, h2, h3, h4 {
     .portfolio__chapters,
     .portfolio__chapter,
     .gallery,
-    .gallery__item--enter {
+    .gallery__item--enter,
+    .hero__roots path,
+    .hero__title-line--light,
+    .hero__title-line--light::after {
         animation: none !important;
         transition: none !important;
         transform: none !important;
@@ -1197,6 +1310,11 @@ h1, h2, h3, h4 {
         opacity: 1 !important;
         filter: none !important;
     }
+
+    .hero__roots path {
+        stroke-dashoffset: 0;
+        opacity: 0.38;
+    }
 }
 
 @media (max-width: 480px) {
@@ -1206,6 +1324,12 @@ h1, h2, h3, h4 {
 
     .hero__title {
         font-size: 2.2rem;
+    }
+
+    .hero__roots {
+        width: 92vw;
+        height: 7.25rem;
+        opacity: 0.3;
     }
 
     .services__grid {

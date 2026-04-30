@@ -52,6 +52,59 @@ html.lenis {
     transition: transform 0.08s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
+/* --- Hero roots / watercolor light --- */
+@keyframes rootReach {
+    0% {
+        stroke-dashoffset: 260;
+        opacity: 0;
+        transform: translateY(-4px) scaleY(0.96);
+        filter: blur(0.3px);
+    }
+    32% {
+        opacity: 0.72;
+    }
+    58% {
+        stroke-dashoffset: 24;
+        opacity: 0.58;
+        transform: translateY(4px) scaleY(1.035);
+        filter: blur(0.7px);
+    }
+    78% {
+        stroke-dashoffset: 0;
+        opacity: 0.5;
+        transform: translateY(1px) scaleY(1);
+        filter: blur(0.15px);
+    }
+    100% {
+        stroke-dashoffset: 260;
+        opacity: 0;
+        transform: translateY(8px) scaleY(1.02);
+        filter: blur(1.1px);
+    }
+}
+
+@keyframes lightBreath {
+    0%, 100% {
+        background-position: 0% 50%;
+        filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.08));
+    }
+    50% {
+        background-position: 100% 50%;
+        filter: drop-shadow(0 0 22px rgba(190, 218, 214, 0.24));
+    }
+}
+
+@keyframes lightThread {
+    0%, 100% {
+        opacity: 0.18;
+        transform: scaleX(0.72) translateY(0);
+    }
+    50% {
+        opacity: 0.46;
+        transform: scaleX(1.02) translateY(2px);
+    }
+}
+
 /* --- Gaze field / shutter cursor --- */
 .attention-field {
     position: fixed;
