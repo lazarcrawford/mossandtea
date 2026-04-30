@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Moss & Tea — Admin</title>
-  <link rel="stylesheet" href="css/admin.css?v=20260430-sample">
+  <link rel="stylesheet" href="css/admin.css?v=20260430-cenit">
 </head>
 <body>
   <!-- Login Screen -->
@@ -69,8 +69,8 @@
       <!-- Main Content -->
       <main class="main-content">
         <div x-show="sampleMode.visible" class="sample-banner">
-          <strong>Sample data</strong>
-          <span>Preview records only. Use them to review the interface before entering real clients, files, contracts, or payments.</span>
+          <strong>Archive sample</strong>
+          <span>CENIT Archive is preview data built from Irina's archived portfolio images, with Sydney and Irina's History Book used to exercise each admin page.</span>
         </div>
 
         <!-- Dashboard -->
@@ -576,7 +576,7 @@
   <!-- Step 1: Supabase SDK -->
   <script src="js/supabase.min.js?v=20260430-2"></script>
   <!-- Step 2: App engine — defines window.createAdminApp -->
-  <script src="js/admin.js?v=20260430-sample"></script>
+  <script src="js/admin.js?v=20260430-cenit"></script>
   <!-- Step 3: Register component BEFORE Alpine loads.
        alpine:init fires synchronously during Alpine's script execution,
        so the listener must exist before alpine.min.js starts. -->

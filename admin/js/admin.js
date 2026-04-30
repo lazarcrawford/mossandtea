@@ -121,10 +121,14 @@ window.createAdminApp = () => {
         this.stats.deliveredThisMonth = delivered;
         this.stats.revenue = revenue;
         this.stats.recentProjects = projectList.slice(0, 5);
-        this.sampleMode.visible = projectList.some((p) =>
-          String(p.title || '').toLowerCase().includes('sample') ||
-          String(p.customer_name || '').toLowerCase().includes('sample')
-        );
+        this.sampleMode.visible = projectList.some((p) => {
+          const customer = String(p.customer_name || '').toLowerCase();
+          const title = String(p.title || '').toLowerCase();
+          return customer.includes('cenit archive') ||
+            title === 'sydney' ||
+            title.includes('history book') ||
+            title.includes('sample');
+        });
       } catch (e) {
         console.error('Dashboard load error:', e.message);
       }
@@ -464,17 +468,15 @@ window.createAdminApp = () => {
         try {
           const { data } = await supabase
             .from('contracts')
-            .select(`
-              *,
-              project:project_id ( title ),
-              customer:project_id ( customer_id ( first_name, last_name ) )
-            `)
+            .select('*, project:project_id ( title, customer:customer_id ( first_name, last_name ) )')
             .order('created_at', { ascending: false });
 
           this.list = (data || []).map(c => ({
             ...c,
             project_title: c.project?.title || '—',
-            customer_name: c.customer?.first_name + ' ' + c.customer?.last_name || '—'
+            customer_name: c.project?.customer
+              ? `${c.project.customer.first_name} ${c.project.customer.last_name}`
+              : '—'
           }));
         } catch (e) { console.error(e); }
         finally { this.loading = false; }
