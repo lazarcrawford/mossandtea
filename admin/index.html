@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Moss & Tea — Admin</title>
-  <link rel="stylesheet" href="css/admin.css?v=20260430-3">
+  <link rel="stylesheet" href="css/admin.css?v=20260430-final">
 </head>
 <body>
   <!-- Login Screen -->
@@ -13,7 +13,7 @@
     <div x-show="!auth.loggedIn" class="login-page">
       <div class="login-card">
         <h1>Moss & Tea</h1>
-        <p>Admin Panel</p>
+        <p>Studio Operations</p>
         <form @submit.prevent="auth.login()">
           <div class="form-group">
             <label>Email</label>
@@ -38,31 +38,31 @@
       <nav class="sidebar">
         <div class="sidebar__brand">
           <h2>Moss & Tea</h2>
-          <span>Admin</span>
+          <span>Studio Operations</span>
         </div>
         <div class="sidebar__nav">
           <a class="sidebar__link" :class="nav.active === 'dashboard' && 'sidebar__link--active'" @click="nav.active = 'dashboard'">
-            <span class="icon">📊</span> <span>Dashboard</span>
+            <span class="icon">OV</span> <span>Dashboard</span>
           </a>
           <a class="sidebar__link" :class="nav.active === 'customers' && 'sidebar__link--active'" @click="nav.active = 'customers'; customers.load()">
-            <span class="icon">👥</span> <span>Customers</span>
+            <span class="icon">CL</span> <span>Customers</span>
           </a>
           <a class="sidebar__link" :class="nav.active === 'projects' && 'sidebar__link--active'" @click="nav.active = 'projects'; projects.load()">
-            <span class="icon">📁</span> <span>Projects</span>
+            <span class="icon">PR</span> <span>Projects</span>
           </a>
           <a class="sidebar__link" :class="nav.active === 'files' && 'sidebar__link--active'" @click="nav.active = 'files'; files.load()">
-            <span class="icon">🖼️</span> <span>File Gallery</span>
+            <span class="icon">IM</span> <span>File Gallery</span>
           </a>
           <a class="sidebar__link" :class="nav.active === 'contracts' && 'sidebar__link--active'" @click="nav.active = 'contracts'; contracts.load()">
-            <span class="icon">📄</span> <span>Contracts</span>
+            <span class="icon">CN</span> <span>Contracts</span>
           </a>
           <a class="sidebar__link" :class="nav.active === 'payments' && 'sidebar__link--active'" @click="nav.active = 'payments'; payments.load()">
-            <span class="icon">💰</span> <span>Payments</span>
+            <span class="icon">PY</span> <span>Payments</span>
           </a>
         </div>
         <div class="sidebar__footer">
           <span x-text="auth.user?.email"></span>
-          <button class="btn--icon" @click="auth.logout()" title="Sign out">🚪</button>
+          <button class="btn--icon" @click="auth.logout()" title="Sign out">Out</button>
         </div>
       </nav>
 

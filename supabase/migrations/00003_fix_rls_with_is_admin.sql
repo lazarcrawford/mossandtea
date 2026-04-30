@@ -15,6 +15,24 @@ AS $$
   SELECT EXISTS (SELECT 1 FROM admins WHERE admins.email = auth.jwt() ->> 'email');
 $$;
 
+-- Replace legacy policies from the initial schema and earlier fixes.
+DROP POLICY IF EXISTS "admins_full_access" ON customers;
+DROP POLICY IF EXISTS "customers_self" ON customers;
+DROP POLICY IF EXISTS "projects_customer_own" ON projects;
+DROP POLICY IF EXISTS "projects_admin_all" ON projects;
+DROP POLICY IF EXISTS "files_customer_read" ON project_files;
+DROP POLICY IF EXISTS "files_admin_all" ON project_files;
+DROP POLICY IF EXISTS "contracts_customer_read" ON contracts;
+DROP POLICY IF EXISTS "contracts_admin_all" ON contracts;
+DROP POLICY IF EXISTS "payments_customer_read" ON payments;
+DROP POLICY IF EXISTS "payments_admin_all" ON payments;
+DROP POLICY IF EXISTS "messages_project_access" ON messages;
+DROP POLICY IF EXISTS "messages_admin_insert" ON messages;
+DROP POLICY IF EXISTS "messages_customer_insert" ON messages;
+DROP POLICY IF EXISTS "admin_upload" ON storage.objects;
+DROP POLICY IF EXISTS "admin_delete" ON storage.objects;
+DROP POLICY IF EXISTS "authenticated_read" ON storage.objects;
+
 -- Customers
 CREATE POLICY "admins_full_access" ON customers FOR ALL USING (is_admin());
 CREATE POLICY "customers_self" ON customers FOR ALL USING (auth.uid() = id);

@@ -7,6 +7,7 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 SITE_DIR="$SCRIPT_DIR/.."
+WORKER_URL="${WORKER_URL:-https://mossandtea.lazar-99d.workers.dev}"
 
 echo "═══════════════════════════════════════"
 echo "  🚀 Deploy Pipeline"
@@ -23,15 +24,19 @@ python3 "$SCRIPT_DIR/test.py" || {
 
 echo ""
 
-# Step 2: Git push
-echo "📤 Step 2: Pushing to GitHub (auto-deploys Cloudflare Pages)..."
-git push origin main 2>&1 | tail -3
+# Step 2: Optional Git push
+if [ "${DEPLOY_PUSH:-0}" = "1" ]; then
+  echo "📤 Step 2: Pushing to GitHub..."
+  git push origin main 2>&1 | tail -3
+else
+  echo "📤 Step 2: Skipping git push (set DEPLOY_PUSH=1 to push first)."
+fi
 
 echo ""
 
 # Step 3: Deploy Worker
 echo "⚡ Step 3: Deploying Cloudflare Worker..."
-wrangler deploy --assets "$SITE_DIR" 2>&1 | tail -5
+wrangler deploy 2>&1 | tail -8
 
 echo ""
 
@@ -42,11 +47,12 @@ sleep 2
 smoke_test() {
   local url="$1"
   local name="$2"
+  local expected="${3:-200}"
   local status=$(curl -s -o /dev/null -w "%{http_code}" --connect-timeout 10 "$url" 2>/dev/null)
-  if [ "$status" = "200" ]; then
+  if [ "$status" = "$expected" ]; then
     echo -e "  \033[0;32m✓\033[0m $name ($status)"
   else
-    echo -e "  \033[0;31m✗\033[0m $name — got $status"
+    echo -e "  \033[0;31m✗\033[0m $name — got $status, expected $expected"
     FAILED=1
   fi
 }
@@ -57,6 +63,8 @@ smoke_test "$WORKER_URL/admin/" "Admin panel"
 smoke_test "$WORKER_URL/api/health" "Health API"
 smoke_test "$WORKER_URL/css/style.css" "CSS"
 smoke_test "$WORKER_URL/admin/js/admin.js" "Admin JS"
+smoke_test "$WORKER_URL/supabase/config.toml" "Supabase config blocked" "404"
+smoke_test "$WORKER_URL/scripts/deploy.sh" "Deploy script blocked" "404"
 
 echo ""
 if [ "$FAILED" = "1" ]; then

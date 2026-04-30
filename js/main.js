@@ -64,31 +64,55 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Contact form handler ---
     const form = document.getElementById('contactForm');
     if (form) {
-        form.addEventListener('submit', (e) => {
+        const status = document.getElementById('contactStatus');
+
+        function setStatus(message, type = '') {
+            if (!status) return;
+            status.textContent = message;
+            status.className = `form__status ${type ? `form__status--${type}` : ''}`;
+        }
+
+        function mailtoFallback(values) {
+            const mailtoLink = `mailto:hello@mossandtea.com?subject=${encodeURIComponent(values.subject)}&body=${encodeURIComponent(
+                `Name: ${values.name}\nEmail: ${values.email}\n\n${values.message}`
+            )}`;
+            window.location.href = mailtoLink;
+        }
+
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = form.querySelector('button[type="submit"]');
             const originalText = btn.textContent;
             btn.textContent = 'Sending...';
             btn.disabled = true;
+            setStatus('');
 
-            // Build mailto fallback
-            const name = form.querySelector('input[placeholder="Name"]').value;
-            const email = form.querySelector('input[placeholder="Email"]').value;
-            const subject = form.querySelector('input[placeholder="Subject"]').value || 'Photography Inquiry';
-            const message = form.querySelector('textarea').value;
+            const values = {
+                name: form.elements.name.value.trim(),
+                email: form.elements.email.value.trim(),
+                subject: form.elements.subject.value.trim() || 'Photography Inquiry',
+                message: form.elements.message.value.trim(),
+            };
 
-            const mailtoLink = `mailto:hello@mossandtea.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
-                `Name: ${name}\nEmail: ${email}\n\n${message}`
-            )}`;
-
-            // Open mailto as fallback
-            window.location.href = mailtoLink;
-
-            // Reset button after a moment
-            setTimeout(() => {
+            try {
+                const resp = await fetch('/api/inquiries', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(values),
+                });
+                const data = await resp.json().catch(() => ({}));
+                if (!resp.ok || !data.ok) {
+                    throw new Error(data.message || data.error || 'Inquiry endpoint unavailable');
+                }
+                form.reset();
+                setStatus('Thank you. Your note was sent.', 'success');
+            } catch (err) {
+                setStatus('Opening your email app as a backup.', 'error');
+                mailtoFallback(values);
+            } finally {
                 btn.textContent = originalText;
                 btn.disabled = false;
-            }, 3000);
+            }
         });
     }
 

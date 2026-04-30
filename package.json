@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "build": "python3 scripts/build_public.py",
     "test": "python3 scripts/test.py",
     "deploy": "bash scripts/deploy.sh",
     "smoke": "python3 scripts/smoke.py"

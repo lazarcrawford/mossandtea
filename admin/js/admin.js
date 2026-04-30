@@ -305,6 +305,7 @@ window.createAdminApp = () => {
       uploading: false,
       uploadProgress: '',
       uploadSuccess: false,
+      signedUrls: {},
 
       async load() {
         this.loading = true;
@@ -317,8 +318,23 @@ window.createAdminApp = () => {
           if (this.projectFilter) query = query.eq('project_id', this.projectFilter);
           const { data } = await query.order('created_at', { ascending: false });
           this.list = data || [];
+          await this.signUrls();
         } catch (e) { console.error(e); }
         finally { this.loading = false; }
+      },
+
+      async signUrls() {
+        const urls = {};
+        for (const file of this.list) {
+          if (!file.r2_key) continue;
+          const { data, error } = await supabase.storage
+            .from('project-files')
+            .createSignedUrl(file.r2_key, 60 * 60);
+          if (!error && data?.signedUrl) {
+            urls[file.r2_key] = data.signedUrl;
+          }
+        }
+        this.signedUrls = urls;
       },
 
       openUpload() {
@@ -333,8 +349,7 @@ window.createAdminApp = () => {
       },
 
       getUrl(r2Key) {
-        // Direct Supabase Storage URL
-        return `https://ixfmstlnwnfjkocpordu.supabase.co/storage/v1/object/public/project-files/${r2Key}`;
+        return this.signedUrls[r2Key] || '';
       },
 
       async upload() {
@@ -487,8 +502,15 @@ window.createAdminApp = () => {
         } catch (e) { alert('Error: ' + e.message); }
       },
 
-      download(c) {
-        window.open(`https://ixfmstlnwnfjkocpordu.supabase.co/storage/v1/object/public/project-files/${c.r2_key}`, '_blank');
+      async download(c) {
+        const { data, error } = await supabase.storage
+          .from('project-files')
+          .createSignedUrl(c.r2_key, 60 * 60);
+        if (error || !data?.signedUrl) {
+          alert('Could not create a secure contract link');
+          return;
+        }
+        window.open(data.signedUrl, '_blank');
       }
     },
 

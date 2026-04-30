@@ -293,6 +293,18 @@ h1, h2, h3, h4 {
     line-height: 1.1;
 }
 
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+}
+
 .hero__subtitle {
     font-size: 1.1rem;
     opacity: 0.8;
@@ -598,6 +610,21 @@ h1, h2, h3, h4 {
 .form__textarea {
     resize: vertical;
     min-height: 120px;
+}
+
+.form__status {
+    min-height: 1.4rem;
+    margin: 0.25rem 0 0;
+    color: rgba(255,255,255,0.58);
+    font-size: 0.8rem;
+}
+
+.form__status--success {
+    color: #CFE5D3;
+}
+
+.form__status--error {
+    color: #F4C8C0;
 }
 
 /* --- Footer --- */

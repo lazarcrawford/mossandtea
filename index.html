@@ -201,10 +201,11 @@
                     </div>
                 </div>
                 <form class="contact__form reveal reveal--right" id="contactForm">
-                    <input type="text" class="form__input" placeholder="Name" required>
-                    <input type="email" class="form__input" placeholder="Email" required>
-                    <input type="text" class="form__input" placeholder="Subject">
-                    <textarea class="form__textarea" placeholder="Tell me about your project..." rows="5" required></textarea>
+                    <input type="text" class="form__input" name="name" placeholder="Name" autocomplete="name" required>
+                    <input type="email" class="form__input" name="email" placeholder="Email" autocomplete="email" required>
+                    <input type="text" class="form__input" name="subject" placeholder="Subject">
+                    <textarea class="form__textarea" name="message" placeholder="Tell me about your project..." rows="5" required></textarea>
+                    <p class="form__status" id="contactStatus" role="status" aria-live="polite"></p>
                     <button type="submit" class="btn btn--primary btn--full">Send Message</button>
                 </form>
             </div>

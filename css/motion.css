@@ -507,5 +507,3 @@ html.lenis {
     .lightbox__caption { max-width: 85vw; font-size: 0.85rem; bottom: 4rem; }
     .lightbox__counter { bottom: 1.5rem; }
 }
-LIGHTboxEOF
-echo "Lightbox CSS appended"
