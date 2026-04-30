@@ -125,7 +125,7 @@ window.createAdminApp = () => {
           const customer = String(p.customer_name || '').toLowerCase();
           const title = String(p.title || '').toLowerCase();
           return customer.includes('cenit archive') ||
-            title === 'sydney' ||
+            title === 'cenit' ||
             title.includes('history book') ||
             title.includes('sample');
         });
@@ -135,6 +135,37 @@ window.createAdminApp = () => {
     },
 
     displayMoney,
+
+    // === IMAGE LIGHTBOX ===
+    lightbox: {
+      open: false,
+      items: [],
+      index: 0,
+
+      show(items, item) {
+        this.items = items.filter((f) => root.files.isImage(f) && root.files.getUrl(f.r2_key));
+        this.index = Math.max(0, this.items.findIndex((f) => f.id === item.id));
+        this.open = Boolean(this.items.length);
+      },
+
+      close() {
+        this.open = false;
+      },
+
+      current() {
+        return this.items[this.index] || null;
+      },
+
+      next() {
+        if (!this.items.length) return;
+        this.index = (this.index + 1) % this.items.length;
+      },
+
+      prev() {
+        if (!this.items.length) return;
+        this.index = (this.index - 1 + this.items.length) % this.items.length;
+      }
+    },
 
     // === CUSTOMERS ===
     customers: {
@@ -305,8 +336,7 @@ window.createAdminApp = () => {
 
       openDetail(p) {
         root.nav.active = 'files';
-        root.files.projectFilter = p.id;
-        root.files.load();
+        root.files.openProject(p);
       }
     },
 
@@ -315,6 +345,7 @@ window.createAdminApp = () => {
       list: [],
       projectList: [],
       projectFilter: '',
+      selectedProject: null,
       loading: false,
       showUpload: false,
       uploadProject: '',
@@ -327,8 +358,14 @@ window.createAdminApp = () => {
         this.loading = true;
         try {
           // Load projects for filter
-          const { data: projs } = await supabase.from('project_details').select('id, title');
+          const { data: projs } = await supabase
+            .from('project_details')
+            .select('id, title, customer_name, status, shoot_date, file_count, price_cents, total_paid_cents')
+            .order('title');
           this.projectList = projs || [];
+          this.selectedProject = this.projectFilter
+            ? this.projectList.find((p) => p.id === this.projectFilter) || this.selectedProject
+            : null;
 
           let query = supabase.from('project_files').select('*');
           if (this.projectFilter) query = query.eq('project_id', this.projectFilter);
@@ -337,6 +374,19 @@ window.createAdminApp = () => {
           await this.signUrls();
         } catch (e) { console.error(e); }
         finally { this.loading = false; }
+      },
+
+      openProject(project) {
+        this.selectedProject = project;
+        this.projectFilter = project.id;
+        this.uploadProject = project.id;
+        this.showUpload = false;
+        this.load();
+      },
+
+      clearProject() {
+        this.selectedProject = null;
+        this.projectFilter = '';
       },
 
       async signUrls() {
@@ -366,6 +416,15 @@ window.createAdminApp = () => {
 
       getUrl(r2Key) {
         return this.signedUrls[r2Key] || '';
+      },
+
+      isImage(file) {
+        return String(file?.mime_type || '').startsWith('image/');
+      },
+
+      openLightbox(file) {
+        if (!this.isImage(file)) return;
+        root.lightbox.show(this.list, file);
       },
 
       async upload() {

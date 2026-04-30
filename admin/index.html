@@ -5,11 +5,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Moss & Tea — Admin</title>
-  <link rel="stylesheet" href="css/admin.css?v=20260430-cenit">
+  <link rel="stylesheet" href="css/admin.css?v=20260430-lightbox">
 </head>
 <body>
   <!-- Login Screen -->
-  <div x-data="adminApp" x-init="init()" x-cloak>
+  <div x-data="adminApp" x-init="init()" @keydown.escape.window="lightbox.close()" @keydown.arrow-right.window="lightbox.open && lightbox.next()" @keydown.arrow-left.window="lightbox.open && lightbox.prev()" x-cloak>
     <div x-show="!auth.loggedIn" class="login-page">
       <div class="login-card">
         <h1>Moss & Tea</h1>
@@ -50,7 +50,7 @@
           <a class="sidebar__link" :class="nav.active === 'projects' && 'sidebar__link--active'" @click="nav.active = 'projects'; projects.load()">
             <span class="icon">PR</span> <span>Projects</span>
           </a>
-          <a class="sidebar__link" :class="nav.active === 'files' && 'sidebar__link--active'" @click="nav.active = 'files'; files.load()">
+          <a class="sidebar__link" :class="nav.active === 'files' && 'sidebar__link--active'" @click="nav.active = 'files'; files.clearProject(); files.load()">
             <span class="icon">IM</span> <span>File Gallery</span>
           </a>
           <a class="sidebar__link" :class="nav.active === 'contracts' && 'sidebar__link--active'" @click="nav.active = 'contracts'; contracts.load()">
@@ -242,6 +242,21 @@
               <button class="btn btn--primary" @click="files.openUpload()">+ Upload</button>
             </div>
           </div>
+          <div x-show="files.selectedProject" class="card project-workspace">
+            <div>
+              <span>Project Workspace</span>
+              <h3 x-text="files.selectedProject?.title"></h3>
+              <p>
+                <span x-text="files.selectedProject?.customer_name"></span>
+                <span> / </span>
+                <span x-text="files.selectedProject?.status?.replace('_',' ')"></span>
+              </p>
+            </div>
+            <div class="project-workspace__stats">
+              <span><strong x-text="files.list.length"></strong> files</span>
+              <span><strong x-text="displayMoney(files.selectedProject?.price_cents)"></strong></span>
+            </div>
+          </div>
           <!-- Upload Zone -->
           <div x-show="files.showUpload" class="card" style="margin-bottom:1rem">
             <h3 style="font-family:var(--font-display);margin-bottom:1rem;font-weight:400">Upload Files</h3>
@@ -271,9 +286,10 @@
             </div>
             <div class="file-grid">
               <template x-for="f in files.list" :key="f.id">
-                <div class="file-item">
-                  <img :src="files.getUrl(f.r2_key)" :alt="f.original_name" loading="lazy">
-                  <button class="delete-btn" @click="files.delete(f)">×</button>
+                <div class="file-item" :class="files.isImage(f) && 'file-item--clickable'" @click="files.openLightbox(f)">
+                  <img x-show="files.isImage(f)" :src="files.getUrl(f.r2_key)" :alt="f.original_name" loading="lazy">
+                  <div x-show="!files.isImage(f)" class="file-placeholder">File</div>
+                  <button class="delete-btn" @click.stop="files.delete(f)">×</button>
                   <div class="file-overlay" x-text="f.original_name"></div>
                 </div>
               </template>
@@ -381,6 +397,18 @@
     </div>
 
     <!-- Modals -->
+    <div class="lightbox" :class="lightbox.open && 'lightbox--open'" @click.self="lightbox.close()">
+      <button class="lightbox__close" @click="lightbox.close()" title="Close">Close</button>
+      <button class="lightbox__nav lightbox__nav--prev" @click.stop="lightbox.prev()" title="Previous">Prev</button>
+      <figure class="lightbox__figure" x-show="lightbox.current()">
+        <img :src="files.getUrl(lightbox.current()?.r2_key)" :alt="lightbox.current()?.original_name">
+        <figcaption>
+          <span x-text="lightbox.current()?.original_name"></span>
+          <small x-text="(lightbox.index + 1) + ' / ' + lightbox.items.length"></small>
+        </figcaption>
+      </figure>
+      <button class="lightbox__nav lightbox__nav--next" @click.stop="lightbox.next()" title="Next">Next</button>
+    </div>
 
     <!-- Customer Modal -->
     <div class="modal-overlay" :class="customers.modalOpen && 'modal-overlay--open'" @click.self="customers.modalOpen = false">
@@ -576,7 +604,7 @@
   <!-- Step 1: Supabase SDK -->
   <script src="js/supabase.min.js?v=20260430-2"></script>
   <!-- Step 2: App engine — defines window.createAdminApp -->
-  <script src="js/admin.js?v=20260430-cenit"></script>
+  <script src="js/admin.js?v=20260430-lightbox"></script>
   <!-- Step 3: Register component BEFORE Alpine loads.
        alpine:init fires synchronously during Alpine's script execution,
        so the listener must exist before alpine.min.js starts. -->
