@@ -106,52 +106,73 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Custom Cursor ---
-    if (window.matchMedia('(pointer: fine)').matches) {
+    // --- Attention shutter cursor ---
+    if (window.matchMedia('(pointer: fine)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const field = document.createElement('div');
+        field.className = 'attention-field';
+        field.setAttribute('aria-hidden', 'true');
+
         const cursor = document.createElement('div');
         cursor.className = 'cursor-follower';
-        cursor.innerHTML = '<div class="cursor-dot"></div><div class="cursor-ring"></div>';
-
-        const style = document.createElement('style');
-        style.textContent = `
-            .cursor-follower {
-                position: fixed; pointer-events: none; z-index: 9999;
-                top: 0; left: 0;
-                transition: transform 0.1s cubic-bezier(0.25,0.1,0.25,1);
-            }
-            .cursor-dot {
-                width: 6px; height: 6px; background: var(--clay);
-                border-radius: 50%; position: absolute; top: -3px; left: -3px;
-            }
-            .cursor-ring {
-                width: 32px; height: 32px;
-                border: 1px solid rgba(139,111,94,0.3);
-                border-radius: 50%; position: absolute; top: -16px; left: -16px;
-                transition: all 0.3s cubic-bezier(0.25,0.1,0.25,1);
-            }
-            .cursor-follower--active .cursor-ring {
-                width: 48px; height: 48px; top: -24px; left: -24px;
-                border-color: var(--sage);
-                background: rgba(138,154,122,0.08);
-            }
-        `;
-        document.head.appendChild(style);
+        cursor.setAttribute('aria-hidden', 'true');
+        cursor.innerHTML = '<div class="cursor-aura"></div><div class="cursor-shutter"></div><div class="cursor-dot"></div>';
+        document.body.classList.add('has-attention-cursor');
+        document.body.appendChild(field);
         document.body.appendChild(cursor);
 
-        let mx2 = 0, my2 = 0, dx = 0, dy = 0;
-        document.addEventListener('mousemove', (e) => { mx2 = e.clientX; my2 = e.clientY; });
+        let mx2 = window.innerWidth / 2;
+        let my2 = window.innerHeight / 2;
+        let dx = mx2;
+        let dy = my2;
+        let lastX = mx2;
+        let lastY = my2;
+
+        document.documentElement.style.setProperty('--gaze-x', `${mx2}px`);
+        document.documentElement.style.setProperty('--gaze-y', `${my2}px`);
+
+        document.addEventListener('mousemove', (e) => {
+            mx2 = e.clientX;
+            my2 = e.clientY;
+            document.documentElement.style.setProperty('--gaze-x', `${mx2}px`);
+            document.documentElement.style.setProperty('--gaze-y', `${my2}px`);
+        }, { passive: true });
+
+        document.addEventListener('mousedown', () => {
+            cursor.classList.add('cursor-follower--pulse');
+            window.setTimeout(() => cursor.classList.remove('cursor-follower--pulse'), 260);
+        });
 
         function animateDot() {
-            dx += (mx2 - dx) * 0.25;
-            dy += (my2 - dy) * 0.25;
-            cursor.style.transform = `translate(${dx}px, ${dy}px)`;
+            const vx = mx2 - lastX;
+            const vy = my2 - lastY;
+            const speed = Math.min(1, Math.hypot(vx, vy) / 56);
+            const angle = Math.atan2(vy, vx) * 180 / Math.PI;
+            const hue = (185 + (mx2 / Math.max(1, window.innerWidth)) * 85 + (my2 / Math.max(1, window.innerHeight)) * 32) % 360;
+
+            dx += (mx2 - dx) * 0.18;
+            dy += (my2 - dy) * 0.18;
+            cursor.style.setProperty('--cursor-speed', speed.toFixed(3));
+            cursor.style.setProperty('--cursor-hue', `${hue.toFixed(1)}deg`);
+            cursor.style.setProperty('--cursor-tilt', `${angle.toFixed(2)}deg`);
+            cursor.style.transform = `translate3d(${dx.toFixed(2)}px, ${dy.toFixed(2)}px, 0)`;
+
+            lastX += (mx2 - lastX) * 0.32;
+            lastY += (my2 - lastY) * 0.32;
             requestAnimationFrame(animateDot);
         }
         animateDot();
 
-        document.querySelectorAll('a, button, .gallery__item, .service-card').forEach(el => {
+        document.querySelectorAll('a, button, .gallery__item, .service-card, input, textarea').forEach(el => {
             el.addEventListener('mouseenter', () => cursor.classList.add('cursor-follower--active'));
             el.addEventListener('mouseleave', () => cursor.classList.remove('cursor-follower--active'));
+        });
+
+        document.querySelectorAll('.gallery__item, .service-card, .about__image').forEach(el => {
+            el.addEventListener('mousemove', (event) => {
+                const rect = el.getBoundingClientRect();
+                el.style.setProperty('--local-gaze-x', `${event.clientX - rect.left}px`);
+                el.style.setProperty('--local-gaze-y', `${event.clientY - rect.top}px`);
+            }, { passive: true });
         });
     }
 

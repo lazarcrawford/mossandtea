@@ -52,6 +52,189 @@ html.lenis {
     transition: transform 0.08s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
+/* --- Gaze field / shutter cursor --- */
+.attention-field {
+    position: fixed;
+    inset: 0;
+    z-index: 12;
+    pointer-events: none;
+    opacity: 0.34;
+    mix-blend-mode: soft-light;
+    background:
+        radial-gradient(circle at var(--gaze-x, 50%) var(--gaze-y, 50%), rgba(255, 255, 255, 0.34), transparent 7rem),
+        radial-gradient(circle at var(--gaze-x, 50%) var(--gaze-y, 50%), rgba(141, 184, 201, 0.19), transparent 18rem),
+        conic-gradient(from 142deg at var(--gaze-x, 50%) var(--gaze-y, 50%),
+            rgba(232, 176, 187, 0.14),
+            rgba(235, 199, 157, 0.12),
+            rgba(155, 175, 134, 0.13),
+            rgba(141, 184, 201, 0.13),
+            rgba(184, 164, 216, 0.11),
+            rgba(232, 176, 187, 0.14));
+    filter: blur(18px) saturate(1.15);
+    transition: opacity 0.4s ease;
+}
+
+.has-attention-cursor,
+.has-attention-cursor a,
+.has-attention-cursor button,
+.has-attention-cursor input,
+.has-attention-cursor textarea {
+    cursor: none;
+}
+
+.cursor-follower {
+    --cursor-speed: 0;
+    --cursor-hue: 210deg;
+    --cursor-tilt: 0deg;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+    width: 1px;
+    height: 1px;
+    pointer-events: none;
+    color: hsl(var(--cursor-hue) 45% 76%);
+    will-change: transform;
+}
+
+.cursor-aura {
+    position: absolute;
+    width: 76px;
+    height: 76px;
+    left: -38px;
+    top: -38px;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent 28%),
+        conic-gradient(from var(--cursor-tilt),
+            rgba(232, 176, 187, 0.24),
+            rgba(235, 199, 157, 0.2),
+            rgba(155, 175, 134, 0.22),
+            rgba(141, 184, 201, 0.22),
+            rgba(184, 164, 216, 0.2),
+            rgba(232, 176, 187, 0.24));
+    filter: blur(13px);
+    opacity: calc(0.2 + (var(--cursor-speed) * 0.34));
+    transform: scale(calc(0.72 + (var(--cursor-speed) * 0.55)));
+    transition: opacity 0.25s ease;
+}
+
+.cursor-shutter {
+    position: absolute;
+    width: 38px;
+    height: 38px;
+    left: -19px;
+    top: -19px;
+    border: 1px solid rgba(255, 255, 255, 0.62);
+    border-radius: 50%;
+    background:
+        radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent 47%),
+        conic-gradient(from var(--cursor-tilt),
+            rgba(255, 255, 255, 0.78) 0deg 7deg,
+            transparent 7deg 45deg,
+            rgba(255, 255, 255, 0.72) 45deg 52deg,
+            transparent 52deg 90deg,
+            rgba(255, 255, 255, 0.68) 90deg 97deg,
+            transparent 97deg 135deg,
+            rgba(255, 255, 255, 0.72) 135deg 142deg,
+            transparent 142deg 180deg,
+            rgba(255, 255, 255, 0.68) 180deg 187deg,
+            transparent 187deg 225deg,
+            rgba(255, 255, 255, 0.72) 225deg 232deg,
+            transparent 232deg 270deg,
+            rgba(255, 255, 255, 0.68) 270deg 277deg,
+            transparent 277deg 315deg,
+            rgba(255, 255, 255, 0.72) 315deg 322deg,
+            transparent 322deg 360deg);
+    box-shadow:
+        0 0 0 1px rgba(44, 44, 44, 0.16),
+        0 0 24px rgba(141, 184, 201, 0.24);
+    opacity: 0.78;
+    transform: rotate(var(--cursor-tilt)) scale(calc(0.82 + (var(--cursor-speed) * 0.18)));
+    transition: border-color 0.28s ease, box-shadow 0.28s ease, opacity 0.28s ease;
+}
+
+.cursor-shutter::after {
+    content: "";
+    position: absolute;
+    inset: 12px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    background: rgba(20, 20, 20, 0.18);
+    transform: scale(calc(1 + (var(--cursor-speed) * 0.55)));
+}
+
+.cursor-dot {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    left: -2px;
+    top: -2px;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 12px currentColor;
+}
+
+.cursor-follower--active .cursor-aura {
+    opacity: 0.58;
+    transform: scale(calc(1.05 + (var(--cursor-speed) * 0.5)));
+}
+
+.cursor-follower--active .cursor-shutter {
+    border-color: rgba(255, 255, 255, 0.9);
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.18),
+        0 0 30px hsla(var(--cursor-hue) 70% 72% / 0.3);
+    opacity: 0.95;
+}
+
+.cursor-follower--pulse .cursor-shutter {
+    animation: shutterPulse 0.26s cubic-bezier(0.18, 0.8, 0.2, 1);
+}
+
+@keyframes shutterPulse {
+    0% { transform: rotate(var(--cursor-tilt)) scale(0.82); }
+    52% { transform: rotate(calc(var(--cursor-tilt) + 18deg)) scale(1.18); }
+    100% { transform: rotate(var(--cursor-tilt)) scale(0.9); }
+}
+
+.gallery__item::before,
+.about__image::after,
+.service-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    background:
+        radial-gradient(circle at var(--local-gaze-x, 50%) var(--local-gaze-y, 50%), rgba(255, 255, 255, 0.18), transparent 18%),
+        linear-gradient(125deg, rgba(232, 176, 187, 0.1), rgba(155, 175, 134, 0.08), rgba(141, 184, 201, 0.1));
+    mix-blend-mode: screen;
+    transition: opacity 0.45s ease;
+    z-index: 1;
+}
+
+.gallery__item:hover::before,
+.about__image:hover::after,
+.service-card:hover::before {
+    opacity: 0.34;
+}
+
+.gallery__overlay {
+    z-index: 2;
+}
+
+.about__image,
+.service-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.service-card > * {
+    position: relative;
+    z-index: 2;
+}
+
 /* --- Reveal animations --- */
 .reveal {
     opacity: 0;
@@ -206,10 +389,31 @@ html.lenis {
     left: 0;
     width: 0%;
     height: 2px;
-    background: linear-gradient(90deg, var(--clay), var(--sage));
+    background: linear-gradient(90deg, var(--rain-rose), var(--rain-apricot), var(--rain-moss), var(--rain-water), var(--rain-violet));
     z-index: 1000;
     will-change: width;
     transition: width 0.1s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.section__label,
+.hero__label {
+    background: linear-gradient(90deg, var(--clay), var(--rain-moss), var(--rain-water), var(--rain-violet));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.btn,
+.portfolio__chapter,
+.form__input:focus,
+.form__textarea:focus {
+    border-color: color-mix(in srgb, var(--rain-water) 38%, var(--border));
+}
+
+.btn--primary {
+    background:
+        linear-gradient(135deg, rgba(139, 111, 94, 0.92), rgba(107, 125, 92, 0.88)),
+        linear-gradient(90deg, var(--rain-rose), var(--rain-apricot), var(--rain-moss), var(--rain-water));
 }
 
 /* --- Soft image reveal borders --- */

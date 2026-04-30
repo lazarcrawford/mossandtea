@@ -22,6 +22,13 @@
     --text-light: #7A7A7A;
     --white: #FFFFFF;
     --border: #D4CBC4;
+    --rain-rose: #E8B0BB;
+    --rain-apricot: #EBC79D;
+    --rain-moss: #9BAF86;
+    --rain-water: #8DB8C9;
+    --rain-violet: #B8A4D8;
+    --gaze-x: 50%;
+    --gaze-y: 50%;
     --font-serif: 'Cormorant Garamond', Georgia, serif;
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     --max-width: 1280px;
@@ -38,7 +45,10 @@ body {
     font-family: var(--font-sans);
     font-weight: 300;
     color: var(--text);
-    background: var(--cream);
+    background:
+        radial-gradient(circle at var(--gaze-x) var(--gaze-y), rgba(141, 184, 201, 0.055), transparent 24rem),
+        linear-gradient(115deg, rgba(232, 176, 187, 0.07), transparent 24%, rgba(155, 175, 134, 0.055) 56%, rgba(184, 164, 216, 0.055)),
+        var(--cream);
     line-height: 1.7;
     overflow-x: hidden;
 }
@@ -386,12 +396,20 @@ h1, h2, h3, h4 {
     box-shadow: none;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
-    transform: translate3d(var(--chapter-x, 0), var(--chapter-y, 0), 0) rotate(var(--chapter-rotate, 0deg));
+    opacity: 1;
+    filter: none;
+    transform: translate3d(
+        calc(var(--chapter-x, 0px) + var(--chapter-phase-x, 0px)),
+        calc(var(--chapter-y, 0px) + var(--chapter-phase-y, 0px)),
+        0
+    ) scale(var(--chapter-phase-scale, 1)) rotate(var(--chapter-rotate, 0deg));
     transition: grid-template-columns 0.7s cubic-bezier(0.2, 0.8, 0.2, 1),
                 box-shadow var(--transition),
                 border-color var(--transition),
                 background var(--transition),
-                transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1),
+                opacity 0.28s ease,
+                filter 0.28s ease,
+                transform 0.45s cubic-bezier(0.18, 0.9, 0.2, 1),
                 top 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
@@ -405,7 +423,47 @@ h1, h2, h3, h4 {
     box-shadow: none;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
-    transform: translate3d(calc(-50% + var(--chapter-x, 0px)), var(--chapter-y, 0px), 0) rotate(var(--chapter-rotate, 0deg));
+    transform: translate3d(
+        calc(-50% + var(--chapter-x, 0px) + var(--chapter-phase-x, 0px)),
+        calc(var(--chapter-y, 0px) + var(--chapter-phase-y, 0px)),
+        0
+    ) scale(var(--chapter-phase-scale, 1)) rotate(var(--chapter-rotate, 0deg));
+}
+
+.portfolio__chapters--phase-out {
+    --chapter-phase-x: -34px;
+    --chapter-phase-y: -8px;
+    --chapter-phase-scale: 0.985;
+    opacity: 0;
+    filter: blur(10px) saturate(0.7);
+    pointer-events: none;
+}
+
+.portfolio__chapters--phase-in {
+    --chapter-phase-x: 24px;
+    --chapter-phase-y: 6px;
+    --chapter-phase-scale: 0.99;
+    opacity: 0;
+    filter: blur(9px) saturate(1.18);
+    pointer-events: none;
+    animation: chapterDissolveIn 0.56s cubic-bezier(0.16, 0.9, 0.18, 1) forwards;
+}
+
+@keyframes chapterDissolveIn {
+    0% {
+        --chapter-phase-x: 24px;
+        --chapter-phase-y: 6px;
+        --chapter-phase-scale: 0.99;
+        opacity: 0;
+        filter: blur(9px) saturate(1.18);
+    }
+    100% {
+        --chapter-phase-x: 0px;
+        --chapter-phase-y: 0px;
+        --chapter-phase-scale: 1;
+        opacity: 1;
+        filter: blur(0) saturate(1);
+    }
 }
 
 .portfolio__chapters--clustered {
@@ -1061,7 +1119,11 @@ h1, h2, h3, h4 {
         left: 1.25rem;
         right: 1.25rem;
         max-width: none;
-        transform: translate3d(0, var(--chapter-y, 0px), 0);
+        transform: translate3d(
+            var(--chapter-phase-x, 0px),
+            calc(var(--chapter-y, 0px) + var(--chapter-phase-y, 0px)),
+            0
+        ) scale(var(--chapter-phase-scale, 1)) rotate(var(--chapter-rotate, 0deg));
     }
 
     .portfolio__chapters--clustered {
@@ -1110,6 +1172,12 @@ h1, h2, h3, h4 {
         animation: none !important;
         transition: none !important;
         transform: none !important;
+    }
+
+    .portfolio__chapters--phase-out,
+    .portfolio__chapters--phase-in {
+        opacity: 1 !important;
+        filter: none !important;
     }
 }
 
