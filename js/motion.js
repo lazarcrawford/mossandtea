@@ -168,13 +168,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const lbNext = document.getElementById('lightboxNext');
         const lbCloseArea = document.getElementById('lightboxCloseArea');
 
-        // Collect all lightbox items sorted by data-lightbox index
-        const items = Array.from(document.querySelectorAll('[data-lightbox]'))
-            .sort((a, b) => parseInt(a.dataset.lightbox) - parseInt(b.dataset.lightbox));
-
         let currentIndex = 0;
 
+        function getItems() {
+            return Array.from(document.querySelectorAll('[data-lightbox]'))
+                .filter((item) => !item.hidden)
+                .sort((a, b) => parseInt(a.dataset.lightbox) - parseInt(b.dataset.lightbox));
+        }
+
         function openLightbox(index) {
+            const items = getItems();
             if (index < 0 || index >= items.length) return;
             currentIndex = index;
             const item = items[currentIndex];
@@ -209,15 +212,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         function navigate(direction) {
+            const items = getItems();
             const newIndex = currentIndex + direction;
             if (newIndex >= 0 && newIndex < items.length) {
                 openLightbox(newIndex);
             }
         }
 
-        // Click on gallery items
-        items.forEach((item, i) => {
-            item.addEventListener('click', () => openLightbox(i));
+        // Click on visible gallery items, including dynamically filtered chapters.
+        document.addEventListener('click', (event) => {
+            const item = event.target.closest('[data-lightbox]');
+            if (!item || item.hidden) return;
+            const items = getItems();
+            const index = items.indexOf(item);
+            if (index >= 0) openLightbox(index);
         });
 
         // Close handlers

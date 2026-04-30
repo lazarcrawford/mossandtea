@@ -3,6 +3,101 @@
    Interactions
    ============================================ */
 
+const galleryChapters = {
+    witness: {
+        text: 'Women as Witness gathers portraits where the subject keeps her interior life intact. The camera becomes a companion to gaze, refusal, adornment, concealment, and self-possession.'
+    },
+    body: {
+        text: 'Body as Landscape follows bodies in water, stone, shadow, and motion. These images treat gesture as language and the body as a place where memory, strength, and vulnerability meet.'
+    },
+    earth: {
+        text: 'Earth & Element widens the field: creatures, museums, water, desert, and darkness. Irina looks at the nonhuman world with the same intimacy she gives a face.'
+    },
+    trace: {
+        text: 'Rooms & Afterimages holds what remains after the figure leaves: beds, thresholds, fruit, cars, and slanted light. The ordinary becomes evidence of a life passing through.'
+    }
+};
+
+const galleryImages = [
+    { file: 'Abby06BW.jpg', category: 'witness', caption: 'Women as Witness — Mask, fruit, and gaze', alt: 'Black and white portrait with face paint beneath fruit branches', layout: 'tall' },
+    { file: 'Abby08.jpg', category: 'witness', caption: 'Women as Witness — Figure among oranges', alt: 'Portrait of a woman standing among orange trees', layout: 'wide' },
+    { file: 'Braina05.jpg', category: 'witness', caption: 'Women as Witness — Seated in the forest', alt: 'Black and white portrait of a woman seated among fallen leaves', layout: '' },
+    { file: 'Braina11BW.jpg', category: 'witness', caption: 'Women as Witness — Crowned in shadow', alt: 'Black and white close portrait of a woman with a floral crown', layout: 'tall' },
+    { file: 'G3A5407B.jpg', category: 'witness', caption: 'Women as Witness — Leaf over the eyes', alt: 'Black and white close portrait with a leaf held over the face', layout: 'wide' },
+    { file: 'Ganna08.jpg', category: 'witness', caption: 'Women as Witness — Veil and hand', alt: 'Black and white portrait partly hidden by draped fabric', layout: 'tall' },
+    { file: 'MG_1382.jpg', category: 'witness', caption: 'Women as Witness — Embrace', alt: 'Black and white close portrait of two women embracing', layout: '' },
+    { file: 'Makenna09S.jpg', category: 'witness', caption: 'Women as Witness — Matchlight', alt: 'Low-key portrait of a woman holding a match', layout: 'tall' },
+    { file: 'berit21B.jpg', category: 'witness', caption: 'Women as Witness — Skin, grain, breath', alt: 'Black and white close portrait focused on cheek, lips, and freckles', layout: '' },
+    { file: 'cenit_12B.jpg', category: 'witness', caption: 'Women as Witness — CENIT, eyes closed', alt: 'Black and white portrait of CENIT with eyes closed and a necklace', layout: 'tall' },
+    { file: 'cenit_21B.jpg', category: 'witness', caption: 'Women as Witness — CENIT, guarded light', alt: 'Black and white portrait of CENIT with hands covering her eyes', layout: '' },
+    { file: 'cenit_28.jpg', category: 'witness', caption: 'Women as Witness — CENIT, hand and necklace', alt: 'Black and white portrait crop of CENIT leaning forward', layout: 'tall' },
+    { file: 'noemie8bw.jpg', category: 'witness', caption: 'Women as Witness — Face in leaves', alt: 'Black and white portrait of a woman framed by leaves', layout: '' },
+
+    { file: 'BB16.jpg', category: 'body', caption: 'Body as Landscape — Rest on concrete', alt: 'Black and white image of a figure lying on the ground', layout: 'wide' },
+    { file: 'Braina10.jpg', category: 'body', caption: 'Body as Landscape — Back turned to the river', alt: 'Black and white portrait from behind near a river', layout: 'tall' },
+    { file: 'Braina14.jpg', category: 'body', caption: 'Body as Landscape — Green at the waterline', alt: 'Woman in a green dress sitting near blue water', layout: '' },
+    { file: 'Braina20.jpg', category: 'body', caption: 'Body as Landscape — Bones and hand', alt: 'Black and white portrait with hand covering face and skeleton print shirt', layout: 'wide' },
+    { file: 'G3A1886.jpg', category: 'body', caption: 'Body as Landscape — Arched on sand', alt: 'Black and white figure arching backward on sand', layout: 'tall' },
+    { file: 'G3A1901.jpg', category: 'body', caption: 'Body as Landscape — Kneeling in sand', alt: 'Black and white figure kneeling on sand', layout: '' },
+    { file: 'G3A5320.jpg', category: 'body', caption: 'Body as Landscape — Under falling water', alt: 'Figure seated beneath a waterfall', layout: 'wide' },
+    { file: 'cenit_river01.jpg', category: 'body', caption: 'Body as Landscape — CENIT by the river', alt: 'Portrait of CENIT sitting beside a river', layout: 'tall' },
+
+    { file: 'G3A5499.jpg', category: 'earth', caption: 'Earth & Element — Rain surface', alt: 'Close study of rain and water spray', layout: 'wide' },
+    { file: 'IMG_5969.jpg', category: 'earth', caption: 'Earth & Element — Jellyfish, luminous dark', alt: 'Jellyfish glowing against a dark background', layout: 'tall' },
+    { file: 'IMG_5982.jpg', category: 'earth', caption: 'Earth & Element — Jellyfish, orange trace', alt: 'Orange jellyfish in dark water', layout: '' },
+    { file: 'MG_8849.jpg', category: 'earth', caption: 'Earth & Element — Desert from above', alt: 'Aerial view of desert ridges', layout: 'wide' },
+    { file: 'bug05.jpg', category: 'earth', caption: 'Earth & Element — Wing and blue', alt: 'Macro photograph of an insect wing', layout: 'tall' },
+    { file: 'bug06B.jpg', category: 'earth', caption: 'Earth & Element — Beetle in black', alt: 'Black and white macro photograph of a beetle', layout: '' },
+    { file: 'nhmla02.jpg', category: 'earth', caption: 'Earth & Element — Museum ground', alt: 'Antlers and animal legs in a museum-like natural scene', layout: 'wide' },
+    { file: 'nhmla03.jpg', category: 'earth', caption: 'Earth & Element — Forest floor', alt: 'Dark forest floor with moss and small flowers', layout: '' },
+    { file: 'nhmla04.jpg', category: 'earth', caption: 'Earth & Element — Fossil trace', alt: 'Dark study of a fossil or bone-like form on the ground', layout: '' },
+
+    { file: 'IMG_6420.jpg', category: 'trace', caption: 'Rooms & Afterimages — Car at water edge', alt: 'A car parked near water in muted light', layout: 'wide' },
+    { file: 'Makenna13.jpg', category: 'trace', caption: 'Rooms & Afterimages — Fruit and cloth', alt: 'Still life of fruit and stains on white cloth', layout: '' },
+    { file: 'Margo10.jpg', category: 'trace', caption: 'Rooms & Afterimages — Blue threshold', alt: 'Woman seen from behind in a blue corridor', layout: 'tall' },
+    { file: 'bed.jpg', category: 'trace', caption: 'Rooms & Afterimages — Unmade bed', alt: 'Dark interior photograph of an unmade bed', layout: 'wide' },
+    { file: 'random.jpg', category: 'trace', caption: 'Rooms & Afterimages — Slant of light', alt: 'Interior wall with a narrow slant of window light', layout: '' }
+];
+
+function renderArchiveGallery() {
+    const gallery = document.getElementById('gallery');
+    if (!gallery) return;
+
+    gallery.innerHTML = galleryImages.map((image, index) => {
+        const classes = ['gallery__item'];
+        if (image.layout) classes.push(`gallery__item--${image.layout}`);
+
+        return `
+            <button class="${classes.join(' ')}" type="button" data-category="${image.category}" data-lightbox="${index + 1}" data-src="images/irina/${image.file}" data-caption="${image.caption}">
+                <img src="images/irina/${image.file}" alt="${image.alt}" loading="lazy">
+                <span class="gallery__overlay">
+                    <span>${image.caption}</span>
+                </span>
+            </button>
+        `;
+    }).join('');
+}
+
+function applyGalleryFilter(filter) {
+    const copy = document.getElementById('portfolioChapterCopy');
+    const chapter = galleryChapters[filter] || galleryChapters.witness;
+
+    document.querySelectorAll('[data-gallery-filter]').forEach((button) => {
+        const active = button.dataset.galleryFilter === filter;
+        button.classList.toggle('portfolio__chapter--active', active);
+        button.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+
+    document.querySelectorAll('#gallery [data-category]').forEach((item) => {
+        item.hidden = item.dataset.category !== filter;
+    });
+
+    if (copy) copy.textContent = chapter.text;
+}
+
+renderArchiveGallery();
+applyGalleryFilter('witness');
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- Nav scroll effect ---
@@ -142,16 +237,11 @@ document.addEventListener('DOMContentLoaded', () => {
         fadeObserver.observe(el);
     });
 
-    // --- Gallery item click (future: Lightbox) ---
-    document.querySelectorAll('.gallery__item').forEach(item => {
-        item.addEventListener('click', () => {
-            // Placeholder for lightbox future enhancement
-            const img = item.querySelector('img');
-            if (img) {
-                console.log('Gallery item clicked:', img.src);
-                // Future: Open in lightbox
-            }
-        });
+    // --- Portfolio chapter filters ---
+    document.querySelectorAll('[data-gallery-filter]').forEach((button) => {
+        button.addEventListener('click', () => applyGalleryFilter(button.dataset.galleryFilter));
     });
+
+    applyGalleryFilter('witness');
 
 });

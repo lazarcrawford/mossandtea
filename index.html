@@ -54,48 +54,26 @@
         <div class="container">
             <div class="section__header reveal">
                 <p class="section__label">Portfolio</p>
-                <h2 class="section__title">Moments Between Frames</h2>
-                <p class="section__desc">Every photograph is a conversation between light and subject — a pause in time that tells a story without words.</p>
+                <h2 class="section__title">A Woman's Archive of Earth, Body, and Witness</h2>
+                <p class="section__desc">Irina's photographs move through a lineage of women making images as testimony: the body not as spectacle, but as landscape, ritual, memory, and voice.</p>
             </div>
+            <div class="portfolio__essay reveal">
+                <p>
+                    Across the recovered archive, the strongest thread is authorship. Women in these frames are not flattened into muses; they meet the camera, turn away from it, conceal themselves, dissolve into water, hold their own shadows, and claim the natural world as a collaborator.
+                </p>
+                <p>
+                    The gallery is organized as four living chapters so the full archive can be seen without turning the homepage into a long scroll.
+                </p>
+            </div>
+            <div class="portfolio__chapters" role="tablist" aria-label="Portfolio chapters">
+                <button class="portfolio__chapter portfolio__chapter--active" type="button" data-gallery-filter="witness" role="tab" aria-selected="true">Women as Witness</button>
+                <button class="portfolio__chapter" type="button" data-gallery-filter="body" role="tab" aria-selected="false">Body as Landscape</button>
+                <button class="portfolio__chapter" type="button" data-gallery-filter="earth" role="tab" aria-selected="false">Earth & Element</button>
+                <button class="portfolio__chapter" type="button" data-gallery-filter="trace" role="tab" aria-selected="false">Rooms & Afterimages</button>
+            </div>
+            <div class="portfolio__chapter-copy" id="portfolioChapterCopy" aria-live="polite"></div>
         </div>
-        <div class="gallery">
-            <div class="gallery__item gallery__item--wide" data-lightbox="1" data-src="https://images.squarespace-cdn.com/content/v1/5408e52ce4b0bf6cd12edcbb/1437611862367-46OX37E09DGPY7TYGM64/_G3A5499.jpg?format=2500w" data-caption="Editorial — Natural Light">
-                <img src="images/irina/G3A5499.jpg" alt="Editorial portrait" loading="lazy">
-                <div class="gallery__overlay">
-                    <span>Editorial — Natural Light</span>
-                </div>
-            </div>
-            <div class="gallery__item gallery__item--tall" data-lightbox="2" data-src="https://images.squarespace-cdn.com/content/v1/5408e52ce4b0bf6cd12edcbb/1437611954536-FH3ZXITCD81B7GUMAOLW/Braina10.jpg?format=2500w" data-caption="Portrait — Braina">
-                <img src="images/irina/Braina10.jpg" alt="Portrait study" loading="lazy">
-                <div class="gallery__overlay">
-                    <span>Portrait — Braina</span>
-                </div>
-            </div>
-            <div class="gallery__item" data-lightbox="3" data-src="https://images.squarespace-cdn.com/content/v1/5408e52ce4b0bf6cd12edcbb/1437613842421-TT2IVFYVICR6GL15W7M2/nhmla02.jpg?format=2500w" data-caption="Architecture — NHMLA">
-                <img src="images/irina/nhmla02.jpg" alt="Museum architecture" loading="lazy">
-                <div class="gallery__overlay">
-                    <span>Architecture — NHMLA</span>
-                </div>
-            </div>
-            <div class="gallery__item" data-lightbox="4" data-src="https://images.squarespace-cdn.com/content/v1/5408e52ce4b0bf6cd12edcbb/1437785029235-YYG96353VOE0QNVPAN60/cenit_river01.jpg?format=2500w" data-caption="Landscape — Cenit River">
-                <img src="images/irina/cenit_river01.jpg" alt="River landscape" loading="lazy">
-                <div class="gallery__overlay">
-                    <span>Landscape — Cenit River</span>
-                </div>
-            </div>
-            <div class="gallery__item gallery__item--wide" data-lightbox="5" data-src="https://images.squarespace-cdn.com/content/v1/5408e52ce4b0bf6cd12edcbb/1437611646641-TKISEALT65BR88DTB6CP/Makenna09S.jpg?format=2500w" data-caption="Portrait — Makenna">
-                <img src="images/irina/Makenna09S.jpg" alt="Portrait in soft light" loading="lazy">
-                <div class="gallery__overlay">
-                    <span>Portrait — Makenna</span>
-                </div>
-            </div>
-            <div class="gallery__item gallery__item--tall" data-lightbox="6" data-src="https://images.squarespace-cdn.com/content/v1/5408e52ce4b0bf6cd12edcbb/1437613722051-0UT6H0IH7YDXCXPXD7SW/Ganna08.jpg?format=2500w" data-caption="Editorial — Ganna">
-                <img src="images/irina/Ganna08.jpg" alt="Editorial fashion portrait" loading="lazy">
-                <div class="gallery__overlay">
-                    <span>Editorial — Ganna</span>
-                </div>
-            </div>
-        </div>
+        <div class="gallery" id="gallery" aria-live="polite"></div>
     </section>
 
     <!-- About -->
