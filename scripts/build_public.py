@@ -20,8 +20,10 @@ FILES = [
 DIRS = [
     "admin",
     "css",
+    "hermitage",
     "images",
     "js",
+    "portal",
     "telegram-console",
 ]
 

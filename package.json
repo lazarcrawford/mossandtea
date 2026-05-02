@@ -3,6 +3,8 @@
     "build": "python3 scripts/build_public.py",
     "test": "python3 scripts/test.py",
     "test:admin-ui": "node scripts/admin-ui-smoke.js",
+    "test:admin-ui:setup": "ADMIN_SMOKE_SETUP_USER=1 node scripts/admin-ui-smoke.js",
+    "test:hermitage-ui": "node scripts/client-portal-smoke.js",
     "test:public-ui": "node scripts/public-gallery-smoke.js",
     "test:responsive-ui": "node scripts/public-responsive-smoke.js",
     "deploy:doctor": "python3 scripts/ops_preflight.py",

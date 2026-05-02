@@ -779,6 +779,48 @@ strong {
   opacity: 1;
 }
 
+.file-controls {
+  position: absolute;
+  left: 0.5rem;
+  right: 0.5rem;
+  bottom: 0.5rem;
+  z-index: 4;
+  display: grid;
+  gap: 0.3rem;
+  padding: 0.55rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-sm);
+  background: rgba(36, 27, 24, 0.84);
+  color: white;
+  font-size: 0.68rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition);
+  backdrop-filter: blur(12px);
+}
+
+.file-item:hover .file-controls,
+.file-controls:focus-within {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.file-controls label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.45rem;
+}
+
+.file-controls input[type="number"] {
+  width: 4.2rem;
+  padding: 0.2rem 0.35rem;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+}
+
 .upload-zone {
   margin-top: 1rem;
   padding: 2rem;

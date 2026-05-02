@@ -84,7 +84,6 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname;
     const supabaseUrl = env.SUPABASE_URL || DEFAULT_SUPABASE_URL;
-    const storageUrl = `${supabaseUrl}/storage/v1/object/public/project-files`;
 
     try {
       if (request.method === 'OPTIONS' && path.startsWith('/api/')) {
@@ -101,6 +100,11 @@ export default {
         return json({ status: 'ok', project: 'Moss & Tea' });
       }
 
+      // ── Compatibility redirect for old portal references ──
+      if (path === '/portal' || path === '/portal/') {
+        return Response.redirect(`${url.origin}/hermitage/${url.hash || ''}`, 302);
+      }
+
       // ── Public inquiry capture ──
       if (path === '/api/inquiries' && request.method === 'POST') {
         const result = await persistInquiry(request, env);
@@ -109,32 +113,12 @@ export default {
 
       // ── Serve files from Supabase Storage ──
       if (path.startsWith('/api/files/')) {
-        if (env.ENABLE_PUBLIC_FILE_PROXY !== '1') {
-          return json({ error: 'File proxy is disabled. Use authenticated signed URLs.' }, { status: 403 });
-        }
-        const key = path.replace('/api/files/', '');
-        const resp = await fetch(`${storageUrl}/${key}`);
-        return new Response(resp.body, {
-          headers: {
-            'Content-Type': resp.headers.get('Content-Type') || 'application/octet-stream',
-            'Cache-Control': 'public, max-age=31536000',
-          }
-        });
+        return json({ error: 'File proxy is disabled. Use authenticated signed URLs.' }, { status: 403 });
       }
 
       // ── Serve contract PDFs from Supabase Storage ──
       if (path.startsWith('/api/contracts/')) {
-        if (env.ENABLE_PUBLIC_FILE_PROXY !== '1') {
-          return json({ error: 'Contract proxy is disabled. Use authenticated signed URLs.' }, { status: 403 });
-        }
-        const key = path.replace('/api/contracts/', '');
-        const resp = await fetch(`${storageUrl}/${key}`);
-        return new Response(resp.body, {
-          headers: {
-            'Content-Type': resp.headers.get('Content-Type') || 'application/pdf',
-            'Content-Disposition': `inline; filename="${key.split('/').pop()}"`,
-          }
-        });
+        return json({ error: 'Contract proxy is disabled. Use authenticated signed URLs.' }, { status: 403 });
       }
 
       // ── Unknown API route ──

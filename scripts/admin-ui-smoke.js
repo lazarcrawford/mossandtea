@@ -9,6 +9,7 @@ const BRAVE = '/Applications/Brave Browser.app/Contents/MacOS/Brave Browser';
 const TARGET = process.env.ADMIN_UI_URL || 'https://mossandtea.com/admin/';
 const TEST_EMAIL = process.env.ADMIN_TEST_EMAIL || 'codex-admin-ui@mossandtea.test';
 const TEST_PASSWORD = process.env.ADMIN_TEST_PASSWORD || 'CodexAdminUiTest!2026';
+const SETUP_USER = process.env.ADMIN_SMOKE_SETUP_USER === '1';
 
 function readEnv() {
   const env = {};
@@ -113,7 +114,7 @@ async function openProjectByTitle(page, title) {
 
 async function run() {
   if (!fs.existsSync(BRAVE)) throw new Error(`Brave executable not found at ${BRAVE}`);
-  await ensureAdminUser();
+  if (SETUP_USER) await ensureAdminUser();
 
   const browser = await chromium.launch({
     executablePath: BRAVE,
@@ -145,8 +146,12 @@ async function run() {
     await openProjectByTitle(page, 'CENIT');
     await expectVisible(page, '.project-workspace h3:text("CENIT")', 'CENIT project workspace');
     const cenitCount = await expectCountAtLeast(page, '.file-grid .file-item--clickable', 4, 'CENIT project files');
+    await page.waitForFunction(() => {
+      const img = document.querySelector('.file-grid .file-item--clickable img');
+      return img && img.getAttribute('src') && img.getAttribute('src').startsWith('http');
+    }, null, { timeout: 20000 });
 
-    await page.locator('.file-grid .file-item--clickable img').first().click({ position: { x: 72, y: 72 } });
+    await page.locator('.file-grid .file-item--clickable').first().evaluate((el) => el.click());
     await expectVisible(page, '.lightbox.lightbox--open', 'CENIT lightbox');
     await page.waitForFunction(() => {
       const img = document.querySelector('.lightbox--open img');
@@ -158,7 +163,11 @@ async function run() {
 
     await clickText(page, 'File Gallery');
     const allCount = await expectCountAtLeast(page, '.file-grid .file-item--clickable', 35, 'all gallery files');
-    await page.locator('.file-grid .file-item--clickable img').nth(1).click({ position: { x: 72, y: 72 } });
+    await page.waitForFunction(() => {
+      const images = Array.from(document.querySelectorAll('.file-grid .file-item--clickable img'));
+      return images.filter((img) => img.getAttribute('src')?.startsWith('http')).length >= 2;
+    }, null, { timeout: 20000 });
+    await page.locator('.file-grid .file-item--clickable').nth(1).evaluate((el) => el.click());
     await expectVisible(page, '.lightbox.lightbox--open', 'all gallery lightbox');
     await page.keyboard.press('Escape');
 

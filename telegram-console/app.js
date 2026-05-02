@@ -29,6 +29,8 @@
     "Node 1": "CSG - Node 1",
     "LucidBridge": "CSG - LucidBridge",
     "Mission Control": "Crawford Mission Control",
+    "Bridge Ops": "Telegram Bridge Ops",
+    "CSG": "CSG Workspace",
   };
   let theme = localStorage.getItem("codex-console-theme") || "harness";
   let pointer = { x: window.innerWidth / 2, y: window.innerHeight / 2, active: false };

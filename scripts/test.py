@@ -46,6 +46,8 @@ required_files = [
     "index.html", "css/style.css", "css/motion.css", "js/main.js",
     "admin/index.html", "admin/css/admin.css", "admin/js/admin.js",
     "admin/js/alpine.min.js", "admin/js/supabase.min.js",
+    "hermitage/index.html", "hermitage/css/hermitage.css", "hermitage/js/hermitage.js",
+    "portal/index.html",
     "telegram-console/index.html", "telegram-console/style.css", "telegram-console/app.js",
     "worker.js", "wrangler.toml"
 ]
@@ -56,6 +58,8 @@ public_required = [
     "index.html", "css/style.css", "css/motion.css", "js/main.js",
     "admin/index.html", "admin/css/admin.css", "admin/js/admin.js",
     "admin/js/alpine.min.js", "admin/js/supabase.min.js",
+    "hermitage/index.html", "hermitage/css/hermitage.css", "hermitage/js/hermitage.js",
+    "portal/index.html",
     "telegram-console/index.html", "telegram-console/style.css", "telegram-console/app.js",
 ]
 for f in public_required:
@@ -66,7 +70,7 @@ print()
 
 # === 2. HTML Structure ===
 print("📝 HTML Structure")
-for html in ["public/index.html", "public/admin/index.html"]:
+for html in ["public/index.html", "public/admin/index.html", "public/hermitage/index.html", "public/portal/index.html"]:
     if file_exists(html):
         p = os.path.join(SITE_DIR, html)
         with open(p) as f:
@@ -87,7 +91,7 @@ print()
 
 # === 3. JS Syntax ===
 print("🔍 JavaScript")
-for js in ["js/main.js", "admin/js/admin.js", "telegram-console/app.js", "worker.js"]:
+for js in ["js/main.js", "admin/js/admin.js", "hermitage/js/hermitage.js", "telegram-console/app.js", "worker.js"]:
     if file_exists(js):
         result = subprocess.run(["node", "--check", os.path.join(SITE_DIR, js)],
                                 capture_output=True, text=True)
@@ -118,7 +122,7 @@ print()
 
 # === 5. CSS sanity ===
 print("🎨 CSS")
-for css in ["css/style.css", "css/motion.css", "admin/css/admin.css"]:
+for css in ["css/style.css", "css/motion.css", "admin/css/admin.css", "hermitage/css/hermitage.css"]:
     if file_exists(css):
         with open(os.path.join(SITE_DIR, css)) as f:
             c = f.read()
@@ -126,6 +130,18 @@ for css in ["css/style.css", "css/motion.css", "admin/css/admin.css"]:
             check(f"{css}: has body selector", "body" in c or "body{" in c.replace(" ", ""))
         check(f"{css}: has CSS variables", ":root" in c or "--" in c)
         check(f"{css}: no shell heredoc artifacts", "LIGHTboxEOF" not in c and "echo " not in c)
+print()
+
+# === 6. Portal security assertions ===
+print("🔐 Portal Security")
+for migration in ["supabase/migrations/00006_client_portal.sql"]:
+    check(f"{migration} exists", file_exists(migration))
+check("worker disables legacy file proxy", grep_file("worker.js", r"File proxy is disabled") and not grep_file("worker.js", r"ENABLE_PUBLIC_FILE_PROXY"))
+check("worker redirects /portal to /hermitage", grep_file("worker.js", r"/portal") and grep_file("worker.js", r"/hermitage/"))
+if file_exists("supabase/migrations/00006_client_portal.sql"):
+    check("00006 drops authenticated_read storage policy", grep_file("supabase/migrations/00006_client_portal.sql", r'DROP POLICY IF EXISTS "authenticated_read"'))
+    check("00006 uses customer_users access model", grep_file("supabase/migrations/00006_client_portal.sql", r"customer_users") and grep_file("supabase/migrations/00006_client_portal.sql", r"can_access_project"))
+    check("00006 gates storage through project_files", grep_file("supabase/migrations/00006_client_portal.sql", r"customer_storage_read_visible_project_files"))
 print()
 
 # === Summary ===

@@ -473,7 +473,10 @@ window.createAdminApp = () => {
                 mime_type: file.type,
                 file_size: file.size,
                 r2_key: key,
-                uploaded_by: 'admin'
+                uploaded_by: 'admin',
+                is_client_visible: false,
+                download_allowed: false,
+                sort_order: 0
               });
 
             if (dbError) {
@@ -492,6 +495,23 @@ window.createAdminApp = () => {
           alert('Upload failed: ' + e.message);
         } finally {
           this.uploading = false;
+        }
+      },
+
+      async updatePortalField(file, field, value) {
+        const allowed = ['is_client_visible', 'download_allowed', 'sort_order'];
+        if (!allowed.includes(field)) return;
+        const previous = file[field];
+        file[field] = value;
+        try {
+          const { error } = await supabase
+            .from('project_files')
+            .update({ [field]: value })
+            .eq('id', file.id);
+          if (error) throw error;
+        } catch (e) {
+          file[field] = previous;
+          alert('Portal setting update failed: ' + e.message);
         }
       },
 

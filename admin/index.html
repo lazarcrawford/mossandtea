@@ -291,6 +291,20 @@
                   <div x-show="!files.isImage(f)" class="file-placeholder">File</div>
                   <button class="delete-btn" @click.stop="files.delete(f)">×</button>
                   <div class="file-overlay" x-text="f.original_name"></div>
+                  <div class="file-controls" @click.stop>
+                    <label>
+                      <input type="checkbox" :checked="f.is_client_visible" @change="files.updatePortalField(f, 'is_client_visible', $event.target.checked)">
+                      Client visible
+                    </label>
+                    <label>
+                      <input type="checkbox" :checked="f.download_allowed" @change="files.updatePortalField(f, 'download_allowed', $event.target.checked)">
+                      Download
+                    </label>
+                    <label>
+                      Order
+                      <input type="number" :value="f.sort_order || 0" @change="files.updatePortalField(f, 'sort_order', Number($event.target.value || 0))">
+                    </label>
+                  </div>
                 </div>
               </template>
             </div>
