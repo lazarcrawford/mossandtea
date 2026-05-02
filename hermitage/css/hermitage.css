@@ -194,9 +194,9 @@ h3 {
 
 .hero {
   position: relative;
-  min-height: clamp(430px, 55vh, 620px);
+  min-height: clamp(430px, 52vh, 590px);
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(330px, 450px);
+  grid-template-columns: minmax(0, 1.2fr) minmax(300px, 390px);
   align-items: stretch;
   gap: clamp(18px, 4vw, 56px);
   overflow: hidden;
@@ -254,11 +254,11 @@ h3 {
 }
 
 h1 {
-  max-width: 660px;
+  max-width: 740px;
   margin-bottom: 16px;
   color: var(--salt);
-  font-size: clamp(3.3rem, 6.2vw, 7.4rem);
-  line-height: 0.83;
+  font-size: clamp(3.15rem, 5.25vw, 6.25rem);
+  line-height: 0.88;
   text-shadow: 0 0 24px rgba(242, 191, 108, 0.12);
 }
 
@@ -331,10 +331,13 @@ h3 {
   z-index: 2;
   align-self: center;
   display: grid;
-  gap: 18px;
-  margin: clamp(20px, 3vw, 34px);
-  padding: clamp(20px, 3vw, 34px);
-  box-shadow: var(--shadow), var(--glow);
+  gap: 14px;
+  margin: clamp(18px, 2.4vw, 28px);
+  padding: clamp(18px, 2.4vw, 26px);
+  background:
+    linear-gradient(135deg, rgba(242, 191, 108, 0.08), transparent 42%),
+    rgba(9, 8, 7, 0.62);
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.36), 0 0 28px rgba(242, 191, 108, 0.08);
 }
 
 .hero__room-card::after,
@@ -352,7 +355,7 @@ h3 {
 
 .hero__room-card h2 {
   margin: 0;
-  font-size: clamp(2.3rem, 3.4vw, 3.7rem);
+  font-size: clamp(2.05rem, 3vw, 3.2rem);
 }
 
 .room-card__next {
@@ -361,7 +364,7 @@ h3 {
   margin: 0;
   border-top: 1px solid rgba(242, 191, 108, 0.24);
   border-bottom: 1px solid rgba(242, 191, 108, 0.24);
-  padding: 14px 0;
+  padding: 12px 0;
 }
 
 .room-card__next span,
@@ -377,7 +380,7 @@ h3 {
 .room-card__next strong {
   color: var(--salt);
   font-family: var(--serif);
-  font-size: clamp(1.55rem, 2vw, 2.1rem);
+  font-size: clamp(1.35rem, 1.8vw, 1.85rem);
   font-weight: 300;
   line-height: 1;
 }
@@ -400,7 +403,7 @@ h3 {
   margin: 6px 0 0;
   color: var(--salt);
   font-family: var(--serif);
-  font-size: 1.55rem;
+  font-size: 1.35rem;
   line-height: 1;
   text-transform: capitalize;
 }
@@ -594,11 +597,21 @@ input {
 
 .selection-tray strong {
   display: block;
-  margin-bottom: 12px;
+  margin-bottom: 6px;
   color: var(--lantern);
   font-family: var(--serif);
   font-size: 2rem;
   font-weight: 300;
+}
+
+.edit-ledger {
+  margin: 0 0 4px;
+  color: rgba(244, 239, 228, 0.66);
+  font-size: 0.78rem;
+}
+
+.edit-ledger--fee {
+  color: var(--lantern);
 }
 
 .selection-strip {
@@ -658,6 +671,18 @@ input {
 
 .overview-copy {
   align-self: stretch;
+  min-width: 0;
+  padding: clamp(18px, 2.8vw, 30px);
+}
+
+.overview-copy h3 {
+  font-size: clamp(2.25rem, 3.2vw, 3.75rem);
+  line-height: 0.96;
+}
+
+.timeline-card,
+.note-card {
+  padding: clamp(18px, 2.8vw, 30px);
 }
 
 .timeline-card,
@@ -726,6 +751,134 @@ input {
   margin-bottom: 16px;
 }
 
+.proofing-ledger {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.proofing-ledger div,
+.submission-banner,
+.purchase-panel,
+.submission-note,
+.proof-drawer {
+  border: 1px solid rgba(242, 191, 108, 0.2);
+  border-radius: 5px;
+  background:
+    linear-gradient(135deg, rgba(155, 199, 189, 0.05), transparent 34%),
+    rgba(9, 8, 7, 0.38);
+}
+
+.proofing-ledger div {
+  display: grid;
+  gap: 6px;
+  min-height: 82px;
+  padding: 14px;
+}
+
+.proofing-ledger span,
+.proof-drawer summary span {
+  color: var(--lantern);
+  font-size: 0.64rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.proofing-ledger strong {
+  color: var(--salt);
+  font-family: var(--serif);
+  font-size: clamp(1.45rem, 2vw, 2.15rem);
+  font-weight: 300;
+  line-height: 1;
+}
+
+.proofing-note {
+  margin: -4px 0 14px;
+  color: rgba(244, 239, 228, 0.62);
+  font-size: 0.86rem;
+}
+
+.submission-banner,
+.purchase-panel {
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 14px 0;
+  padding: 16px;
+}
+
+.submission-banner:not([hidden]),
+.purchase-panel:not([hidden]) {
+  display: flex;
+}
+
+.submission-banner strong,
+.purchase-panel strong {
+  display: block;
+  color: var(--salt);
+  font-family: var(--serif);
+  font-size: 1.8rem;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.submission-banner span,
+.purchase-panel span {
+  color: rgba(244, 239, 228, 0.68);
+}
+
+.submission-note {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0;
+  padding: 14px;
+}
+
+textarea {
+  width: 100%;
+  resize: vertical;
+  border: 1px solid rgba(242, 191, 108, 0.24);
+  border-radius: 4px;
+  padding: 12px;
+  color: var(--salt);
+  background: rgba(9, 8, 7, 0.64);
+}
+
+.proof-drawer {
+  overflow: hidden;
+  margin-top: 14px;
+}
+
+.proof-drawer summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 54px;
+  padding: 0 16px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.proof-drawer summary::-webkit-details-marker {
+  display: none;
+}
+
+.proof-drawer summary strong {
+  color: rgba(244, 239, 228, 0.72);
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  font-weight: 300;
+}
+
+.proof-drawer .proofing-tools,
+.proof-drawer .gallery-grid {
+  margin: 0;
+  padding: 14px;
+}
+
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -745,6 +898,32 @@ input {
   background:
     linear-gradient(180deg, rgba(111, 61, 33, 0.2), rgba(9, 8, 7, 0.68)),
     rgba(17, 16, 13, 0.66);
+}
+
+.image-card.is-picked {
+  border-color: rgba(242, 191, 108, 0.52);
+}
+
+.image-card.is-edit-requested {
+  box-shadow: inset 0 0 0 1px rgba(155, 199, 189, 0.36), 0 0 30px rgba(155, 199, 189, 0.08);
+}
+
+.image-card.is-submitted::before {
+  content: "Submitted";
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 3;
+  border: 1px solid rgba(155, 199, 189, 0.45);
+  border-radius: 999px;
+  padding: 5px 10px;
+  color: var(--salt);
+  background: rgba(9, 8, 7, 0.62);
+  backdrop-filter: blur(12px);
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .image-card:nth-child(6n + 1),
@@ -782,9 +961,8 @@ input {
 .image-meta {
   position: relative;
   z-index: 2;
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 12px;
   min-height: 94px;
   padding: 16px;
@@ -821,10 +999,42 @@ input {
   text-transform: uppercase;
 }
 
-.pick-toggle.is-selected {
+.proof-actions {
+  display: grid;
+  gap: 8px;
+  min-width: 132px;
+}
+
+.edit-toggle {
+  position: relative;
+  z-index: 11;
+  min-height: 36px;
+  border: 1px solid rgba(155, 199, 189, 0.28);
+  border-radius: 2px;
+  padding: 0 12px;
+  background: rgba(9, 8, 7, 0.32);
+  color: var(--salt);
+  cursor: pointer;
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.pick-toggle.is-selected,
+.edit-toggle.is-selected {
   border-color: var(--lantern);
   background: linear-gradient(180deg, var(--lantern), var(--brass));
   color: var(--night);
+}
+
+.edit-toggle.is-selected {
+  border-color: rgba(155, 199, 189, 0.7);
+  background: linear-gradient(180deg, rgba(155, 199, 189, 0.94), rgba(181, 129, 67, 0.82));
+}
+
+.edit-note {
+  grid-column: 1 / -1;
 }
 
 .list-stack {
@@ -953,31 +1163,32 @@ input {
   }
 
   .hero__content {
-    padding: 18px 16px 12px;
+    padding: 14px 16px 8px;
   }
 
   .hero__room-card {
     align-self: auto;
-    gap: 10px;
-    margin: 0 14px 14px;
-    padding: 14px;
+    gap: 8px;
+    margin: 0 10px 10px;
+    padding: 12px;
   }
 
   .room-card__actions {
     display: grid;
+    grid-template-columns: 1fr 1fr;
   }
 
   .hero__room-card h2 {
-    font-size: 2rem;
+    font-size: 1.65rem;
   }
 
   .hero__room-card dd {
-    font-size: 1.08rem;
+    font-size: 0.98rem;
   }
 
   h1 {
-    font-size: clamp(2.8rem, 14vw, 4rem);
-    margin-bottom: 10px;
+    font-size: clamp(2.45rem, 12vw, 3.45rem);
+    margin-bottom: 8px;
   }
 
   h2 {
@@ -998,7 +1209,7 @@ input {
   }
 
   .hero__actions {
-    margin-top: 12px;
+    margin-top: 10px;
   }
 
   .hero__relics {
@@ -1006,11 +1217,26 @@ input {
   }
 
   .lede {
-    font-size: 0.92rem;
+    font-size: 0.86rem;
+    line-height: 1.45;
   }
 
   .room-card__next {
-    padding: 10px 0;
+    padding: 8px 0;
+  }
+
+  .room-card__next strong {
+    font-size: 1.18rem;
+  }
+
+  .hero__room-card dl div {
+    padding-top: 7px;
+  }
+
+  .button,
+  .text-button,
+  .signal {
+    min-height: 40px;
   }
 
   .workspace {
@@ -1035,7 +1261,8 @@ input {
 
   .detail-grid,
   .selection-strip,
-  .timeline {
+  .timeline,
+  .proofing-ledger {
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -1054,12 +1281,21 @@ input {
 
   .image-meta {
     align-items: start;
-    flex-direction: column;
+    grid-template-columns: 1fr;
     padding: 14px;
   }
 
-  .pick-toggle {
+  .proof-actions,
+  .pick-toggle,
+  .edit-toggle {
+    width: 100%;
     align-self: start;
+  }
+
+  .submission-banner:not([hidden]),
+  .purchase-panel:not([hidden]) {
+    align-items: stretch;
+    flex-direction: column;
   }
 
   .lightbox {

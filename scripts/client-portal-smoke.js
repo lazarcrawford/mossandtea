@@ -27,6 +27,8 @@ function staticChecks() {
   assert(html.includes('data-gallery'), 'Hermitage should include gallery surface');
   assert(html.includes('data-documents'), 'Hermitage should include documents surface');
   assert(html.includes('data-invoices'), 'Hermitage should include billing surface');
+  assert(html.includes('data-proofing-ledger'), 'Hermitage should include proofing ledger');
+  assert(html.includes('data-purchase-panel'), 'Hermitage should include edit purchase panel');
   assert(css.includes('@media (max-width: 720px)'), 'Hermitage CSS should include mobile breakpoint');
   assert(
     css.includes('--lantern') && css.includes('--brass') && css.includes('--sea-glass') && css.includes('--canopy'),
@@ -35,6 +37,8 @@ function staticChecks() {
   assert(js.includes('signInWithOtp'), 'Hermitage JS should use magic-link auth');
   assert(js.includes('createSignedUrl'), 'Hermitage JS should use signed Storage URLs');
   assert(js.includes('client_file_selections'), 'Hermitage JS should persist selections');
+  assert(js.includes('editRequested'), 'Hermitage JS should persist edit request intent');
+  assert(js.includes('submitted_at'), 'Hermitage JS should submit proofing state');
   assert(js.includes('demoMode'), 'Hermitage JS should include local demo mode');
   assert(redirect.includes('/hermitage/'), 'Portal compatibility page should redirect to Hermitage');
 }
@@ -90,6 +94,12 @@ async function run() {
       await page.waitForSelector('.gallery-grid .image-card', { timeout: 10000 });
       await page.locator('[data-select-file]').first().click();
       await page.waitForFunction(() => document.querySelector('[data-selection-count]')?.textContent.includes('1 selected'), null, { timeout: 10000 });
+      await page.locator('[data-edit-file]').first().click();
+      await page.locator('[data-edit-note]').first().fill('Keep the shadow soft and protect the skin texture.');
+      await page.waitForFunction(() => document.querySelector('[data-proof-edit-count]')?.textContent.includes('1 / 6'), null, { timeout: 10000 });
+      await page.locator('[data-submit-selections]').click();
+      await page.waitForFunction(() => document.querySelector('[data-proof-state]')?.textContent.includes('Submitted'), null, { timeout: 10000 });
+      await page.waitForSelector('.image-card.is-submitted', { timeout: 10000 });
       await page.locator('[data-open-image]').first().click();
       await page.waitForSelector('.lightbox:not([hidden]) img[src]', { timeout: 10000 });
       await page.locator('[data-lightbox-next]').evaluate((el) => el.click());

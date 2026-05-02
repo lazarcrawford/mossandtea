@@ -34,21 +34,21 @@
           <img src="../images/hermitage/lantern-house-room-v1.jpg" alt="">
         </div>
         <div class="hero__content">
-          <p class="eyebrow">Lantern House</p>
-          <h1>The private room is lit.</h1>
-          <p class="lede">A client room at the edge of archive and tide: proofs on the table, documents in the cabinet, and the next studio action held in warm light.</p>
+          <p class="eyebrow">Private room</p>
+          <h1>The private living room is lit.</h1>
+          <p class="lede">A client room at the edge of archive and memory: proofs on the table, documents in the cabinet, and the next studio action held in soft room light.</p>
           <div class="hero__actions">
             <a class="button" href="#gallery" data-jump-gallery>Enter the proofs</a>
             <span class="signal" aria-live="polite"><i data-status-dot></i><span data-status>Checking session...</span></span>
           </div>
           <div class="hero__relics" aria-hidden="true">
-            <span>tide</span>
             <span>proof</span>
-            <span>archive</span>
+            <span>edits</span>
+            <span>delivery</span>
           </div>
         </div>
         <aside class="hero__room-card" aria-label="Current room summary">
-          <p class="eyebrow">Instrument panel</p>
+          <p class="eyebrow">Room ledger</p>
           <h2 data-hero-project-title>CENIT Portrait Study</h2>
           <p class="room-card__next"><span>Next</span><strong data-hero-next-action>Choose final picks</strong></p>
           <dl>
@@ -103,6 +103,8 @@
             <div class="rail-card selection-tray" data-selection-tray>
               <p class="eyebrow">Final picks</p>
               <strong data-selection-count>0 selected</strong>
+              <p class="edit-ledger" data-edit-ledger>0 of 6 included edits requested</p>
+              <p class="edit-ledger edit-ledger--fee" data-edit-fee>No edit fee</p>
               <div class="selection-strip" data-selection-strip></div>
             </div>
           </aside>
@@ -139,17 +141,58 @@
                 <div>
                   <p class="eyebrow">Proofing table</p>
                   <h3>Mark the frames that keep glowing.</h3>
-                  <p class="muted">Open any photograph for a closer pass. Final picks collect in the tray like prints set aside under lamplight.</p>
+                  <p class="muted">Pick the finals, request the edits that matter, and leave clear notes for the studio pass.</p>
                 </div>
                 <button class="button" type="button" data-submit-selections>Submit final picks</button>
               </div>
-              <div class="proofing-tools">
-                <button type="button" class="tool-chip is-active" data-filter="all">All</button>
-                <button type="button" class="tool-chip" data-filter="favorite">Suggested</button>
-                <button type="button" class="tool-chip" data-filter="download">Downloadable</button>
-                <button type="button" class="tool-chip" data-filter="selected">Selected</button>
+              <div class="proofing-ledger" data-proofing-ledger>
+                <div>
+                  <span>Final picks</span>
+                  <strong data-proof-pick-count>0</strong>
+                </div>
+                <div>
+                  <span>Included edits</span>
+                  <strong data-proof-edit-count>0 / 6</strong>
+                </div>
+                <div>
+                  <span>Edit overage</span>
+                  <strong data-proof-overage>No fee</strong>
+                </div>
+                <div>
+                  <span>State</span>
+                  <strong data-proof-state>Open</strong>
+                </div>
               </div>
-              <div class="gallery-grid" data-gallery></div>
+              <p class="proofing-note">Six edits are included in the room. Additional edit requests are $79 each and can be approved inline.</p>
+              <div class="submission-banner" data-submission-banner hidden>
+                <strong>Proof selection submitted.</strong>
+                <span data-submission-summary>The studio has your final picks.</span>
+              </div>
+              <div class="purchase-panel" data-purchase-panel hidden>
+                <div>
+                  <p class="eyebrow">Edit purchase</p>
+                  <strong data-purchase-total>$0</strong>
+                  <span data-purchase-copy>Additional edits are ready to approve.</span>
+                </div>
+                <button class="button button--secondary" type="button" data-confirm-purchase>Approve edit charge</button>
+              </div>
+              <label class="submission-note">
+                Studio note for this selection
+                <textarea data-submission-note rows="3" placeholder="Anything Irina should know before the edit pass?"></textarea>
+              </label>
+              <details class="proof-drawer" open data-proof-drawer>
+                <summary>
+                  <span>Open proof table</span>
+                  <strong data-proof-drawer-summary>6 photographs</strong>
+                </summary>
+                <div class="proofing-tools">
+                  <button type="button" class="tool-chip is-active" data-filter="all">All</button>
+                  <button type="button" class="tool-chip" data-filter="favorite">Suggested</button>
+                  <button type="button" class="tool-chip" data-filter="download">Downloadable</button>
+                  <button type="button" class="tool-chip" data-filter="selected">Selected</button>
+                </div>
+                <div class="gallery-grid" data-gallery></div>
+              </details>
             </div>
 
             <div class="panel" data-view="documents" hidden>

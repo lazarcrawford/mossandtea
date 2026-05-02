@@ -14,8 +14,11 @@ const state = {
   invoices: [],
   signedUrls: {},
   selections: new Set(),
+  editRequests: new Map(),
   filter: 'all',
   lightboxIndex: 0,
+  submittedAt: null,
+  purchaseConfirmed: false,
 };
 const demoMode = new URLSearchParams(window.location.search).has('demo');
 
@@ -60,8 +63,44 @@ function money(cents) {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(cents / 100);
 }
 
+function projectEditLimit() {
+  return Number(state.selectedProject?.included_edit_count || 6);
+}
+
+function projectEditFeeCents() {
+  return Number(state.selectedProject?.additional_edit_fee_cents || 7900);
+}
+
+function editCount() {
+  return state.editRequests.size;
+}
+
+function overageEditCount() {
+  return Math.max(0, editCount() - projectEditLimit());
+}
+
+function editFeeTotalCents() {
+  return overageEditCount() * projectEditFeeCents();
+}
+
+function currentSelectedFiles() {
+  return state.files.filter((file) => state.selections.has(file.id));
+}
+
+function parseSelectionNote(note) {
+  if (!note) return {};
+  try {
+    const parsed = JSON.parse(note);
+    return parsed && typeof parsed === 'object' ? parsed : { submissionNote: note };
+  } catch {
+    return { submissionNote: note };
+  }
+}
+
 function nextAction(project) {
   if (!project) return 'Open the project room';
+  if (state.submittedAt && editFeeTotalCents() && !state.purchaseConfirmed) return 'Approve edit charge';
+  if (state.submittedAt) return 'Selection submitted';
   if (state.selections.size) return 'Submit or refine final picks';
   if (state.files.length) return 'Choose the first final set';
   if (state.documents.length) return 'Review studio documents';
@@ -110,11 +149,13 @@ function loadDemoState() {
   state.projects = [{
     id: 'demo-project',
     title: 'CENIT Portrait Study',
-    description: 'A Lantern House proofing room for a portrait session that moves between icon, body, nature, and myth. The goal is simple: set aside the frames that keep glowing after the first look.',
+    description: 'A private proofing room for a portrait session shaped by Irina’s quiet attention to presence, gesture, shadow, and the charged spaces between expression and stillness.',
     status: 'editing',
     shoot_date: '2026-04-18',
     delivery_date: '2026-05-08',
-    studio_note: 'Start with the suggested frames, then make a second pass from instinct. Choose the images that feel like presence, not performance; the final set will gather here like prints on the table.',
+    studio_note: 'Begin with the suggested frames, then make a second pass from instinct. Choose the images that still feel alive after the first look; edit notes can stay simple and exact.',
+    included_edit_count: 6,
+    additional_edit_fee_cents: 7900,
     customers: { first_name: 'CENIT', last_name: '' },
   }];
   state.selectedProject = state.projects[0];
@@ -123,7 +164,7 @@ function loadDemoState() {
     demoFile('demo-2', 'cenit_21B.jpg', 'Black form, held still', 'Table mark', true, true, '48% 42%'),
     demoFile('demo-3', 'cenit_28.jpg', 'Threshold portrait', 'Quiet power', false, false, '50% 28%'),
     demoFile('demo-4', 'cenit_river01.jpg', 'River study', 'Water / afterimage', false, true, '50% 38%'),
-    demoFile('demo-5', 'G3A5320.jpg', 'Soft field', 'Sea air', true, false, '50% 58%'),
+    demoFile('demo-5', 'G3A5320.jpg', 'Soft field', 'Breath', true, false, '50% 58%'),
     demoFile('demo-6', 'G3A5407B.jpg', 'Line and breath', 'Gesture', false, false, '50% 34%'),
   ];
   state.signedUrls = Object.fromEntries(
@@ -187,6 +228,10 @@ async function loadProjects() {
 async function selectProject(projectId) {
   state.selectedProject = state.projects.find((project) => project.id === projectId) || null;
   state.filter = 'all';
+  state.selections = new Set();
+  state.editRequests = new Map();
+  state.submittedAt = null;
+  state.purchaseConfirmed = false;
   renderProjects();
   renderOverview();
   if (demoMode) {
@@ -197,6 +242,8 @@ async function selectProject(projectId) {
     return;
   }
   await Promise.all([loadFiles(projectId), loadDocuments(projectId), loadInvoices(projectId)]);
+  await loadSelections(projectId);
+  renderAll();
 }
 
 async function loadFiles(projectId) {
@@ -256,6 +303,31 @@ async function loadInvoices(projectId) {
   renderInvoices();
 }
 
+async function loadSelections(projectId) {
+  if (!projectId) return;
+  const { data, error } = await supabase
+    .from('client_file_selections')
+    .select('project_file_id, selection_type, note, submitted_at')
+    .eq('project_id', projectId)
+    .eq('selection_type', 'final_pick');
+  if (error) {
+    state.selections = new Set();
+    state.editRequests = new Map();
+    state.submittedAt = null;
+    return;
+  }
+  const rows = data || [];
+  state.selections = new Set(rows.map((row) => row.project_file_id));
+  state.editRequests = new Map();
+  rows.forEach((row) => {
+    const payload = parseSelectionNote(row.note);
+    if (payload.editRequested) {
+      state.editRequests.set(row.project_file_id, payload.editNote || '');
+    }
+  });
+  state.submittedAt = rows.find((row) => row.submitted_at)?.submitted_at || null;
+}
+
 function renderAll() {
   renderProjects();
   renderOverview();
@@ -263,6 +335,7 @@ function renderAll() {
   renderDocuments();
   renderInvoices();
   renderSelectionTray();
+  renderProofingLedger();
 }
 
 function renderProjects() {
@@ -302,6 +375,7 @@ function renderOverview() {
   $('[data-studio-note]').textContent = project?.studio_note || 'The studio will leave a note here when the next pass is ready.';
   if (heroFile) $('[data-project-hero]').src = state.signedUrls[heroFile.id];
   renderTimeline(project);
+  renderProofingLedger();
 }
 
 function renderTimeline(project) {
@@ -340,22 +414,35 @@ function renderGallery() {
   gallery.innerHTML = files.map((file) => {
     const src = state.signedUrls[file.id] || '';
     const selected = state.selections.has(file.id);
+    const editRequested = state.editRequests.has(file.id);
+    const submitted = Boolean(state.submittedAt && selected);
     const caption = file.caption || file.client_caption || file.original_name || file.filename;
     const tag = file.tag || (file.download_allowed ? 'Download ready' : 'Proof');
     const position = file.position ? ` style="object-position:${escapeHtml(file.position)}"` : '';
     return `
-      <article class="image-card">
+      <article class="image-card ${selected ? 'is-picked' : ''} ${editRequested ? 'is-edit-requested' : ''} ${submitted ? 'is-submitted' : ''}">
         <button class="image-card__open" type="button" data-open-image="${escapeHtml(file.id)}" ${src ? '' : 'disabled'}>
           ${src ? `<img src="${escapeHtml(src)}" alt="${escapeHtml(caption)}" loading="lazy"${position}>` : '<span>Preview pending</span>'}
         </button>
         <div class="image-meta">
           <div>
             <strong>${escapeHtml(caption)}</strong>
-            <span>${escapeHtml(tag)}</span>
+            <span>${escapeHtml(submitted ? 'Submitted' : tag)}</span>
           </div>
-          <button type="button" class="pick-toggle ${selected ? 'is-selected' : ''}" data-select-file="${escapeHtml(file.id)}">
-            ${selected ? 'Picked' : 'Pick'}
-          </button>
+          <div class="proof-actions">
+            <button type="button" class="pick-toggle ${selected ? 'is-selected' : ''}" data-select-file="${escapeHtml(file.id)}">
+              ${selected ? 'Picked' : 'Pick'}
+            </button>
+            <button type="button" class="edit-toggle ${editRequested ? 'is-selected' : ''}" data-edit-file="${escapeHtml(file.id)}">
+              ${editRequested ? 'Edit requested' : 'Request edit'}
+            </button>
+          </div>
+          ${editRequested ? `
+            <label class="edit-note">
+              Edit note
+              <textarea data-edit-note="${escapeHtml(file.id)}" rows="2" placeholder="Skin tone, crop, contrast, blemish, mood...">${escapeHtml(state.editRequests.get(file.id) || '')}</textarea>
+            </label>
+          ` : ''}
         </div>
       </article>
     `;
@@ -366,17 +453,32 @@ function renderGallery() {
       toggleSelection(button.dataset.selectFile);
     });
   });
+  $$('[data-edit-file]').forEach((button) => {
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
+      toggleEditRequest(button.dataset.editFile);
+    });
+  });
+  $$('[data-edit-note]').forEach((input) => {
+    input.addEventListener('input', () => {
+      state.editRequests.set(input.dataset.editNote, input.value);
+      renderProofingLedger();
+    });
+  });
   $$('[data-open-image]').forEach((button) => {
     button.addEventListener('click', () => openLightbox(button.dataset.openImage));
   });
+  renderProofingLedger();
 }
 
 function renderSelectionTray() {
-  const selectedFiles = state.files.filter((file) => state.selections.has(file.id));
+  const selectedFiles = currentSelectedFiles();
   $('[data-selection-count]').textContent = `${selectedFiles.length} selected`;
   setText('[data-hero-selection-count]', String(selectedFiles.length));
   setText('[data-hero-next-action]', nextAction(state.selectedProject));
   setText('[data-room-phase]', `${statusLabel(state.selectedProject?.status)} - ${nextAction(state.selectedProject)}`);
+  setText('[data-edit-ledger]', `${editCount()} of ${projectEditLimit()} included edits requested`);
+  setText('[data-edit-fee]', editFeeTotalCents() ? `${money(editFeeTotalCents())} edit overage` : 'No edit fee');
   const strip = $('[data-selection-strip]');
   if (!selectedFiles.length) {
     strip.innerHTML = '<p class="muted">Your final set will collect here.</p>';
@@ -389,6 +491,31 @@ function renderSelectionTray() {
   `).join('');
   $$('.selection-thumb[data-open-image]').forEach((button) => {
     button.addEventListener('click', () => openLightbox(button.dataset.openImage));
+  });
+}
+
+function renderProofingLedger() {
+  const limit = projectEditLimit();
+  const overage = overageEditCount();
+  const fee = editFeeTotalCents();
+  setText('[data-proof-pick-count]', String(state.selections.size));
+  setText('[data-proof-edit-count]', `${editCount()} / ${limit}`);
+  setText('[data-proof-overage]', fee ? `${overage} extra · ${money(fee)}` : 'No fee');
+  setText('[data-proof-state]', state.submittedAt ? 'Submitted' : 'Open');
+  setText('[data-proof-drawer-summary]', `${visibleFiles().length || state.files.length} photograph${(visibleFiles().length || state.files.length) === 1 ? '' : 's'}`);
+  const banner = $('[data-submission-banner]');
+  if (banner) {
+    banner.hidden = !state.submittedAt;
+    setText('[data-submission-summary]', `${state.selections.size} final pick${state.selections.size === 1 ? '' : 's'} and ${editCount()} edit request${editCount() === 1 ? '' : 's'} submitted.`);
+  }
+  const purchasePanel = $('[data-purchase-panel]');
+  if (purchasePanel) {
+    purchasePanel.hidden = !(state.submittedAt && fee && !state.purchaseConfirmed);
+    setText('[data-purchase-total]', money(fee));
+    setText('[data-purchase-copy]', `${overage} edit${overage === 1 ? '' : 's'} beyond the included ${limit}.`);
+  }
+  $$('[data-submit-selections]').forEach((button) => {
+    button.textContent = state.submittedAt ? 'Update selection' : 'Submit final picks';
   });
 }
 
@@ -429,8 +556,24 @@ function renderInvoices() {
 function toggleSelection(fileId) {
   if (state.selections.has(fileId)) state.selections.delete(fileId);
   else state.selections.add(fileId);
+  if (!state.selections.has(fileId)) state.editRequests.delete(fileId);
+  state.submittedAt = null;
   renderGallery();
   renderSelectionTray();
+  renderProofingLedger();
+  updateLightboxControls();
+}
+
+function toggleEditRequest(fileId) {
+  if (state.editRequests.has(fileId)) state.editRequests.delete(fileId);
+  else {
+    state.selections.add(fileId);
+    state.editRequests.set(fileId, '');
+  }
+  state.submittedAt = null;
+  renderGallery();
+  renderSelectionTray();
+  renderProofingLedger();
   updateLightboxControls();
 }
 
@@ -439,20 +582,49 @@ async function submitSelections() {
     setStatus('Choose at least one image first.', false);
     return;
   }
+  const submittedAt = new Date().toISOString();
+  const submissionNote = $('[data-submission-note]')?.value || '';
   if (demoMode) {
-    setStatus(`${state.selections.size} demo final pick${state.selections.size === 1 ? '' : 's'} held in the tray.`, true);
+    state.submittedAt = submittedAt;
+    if (editFeeTotalCents()) {
+      state.invoices = [{
+        id: 'demo-edit-overage',
+        title: 'Additional edit approval',
+        amount_cents: editFeeTotalCents(),
+        status: state.purchaseConfirmed ? 'paid' : 'pending',
+        payment_url: '',
+      }, ...state.invoices.filter((invoice) => invoice.id !== 'demo-edit-overage')];
+      renderInvoices();
+    }
+    setStatus(`${state.selections.size} final pick${state.selections.size === 1 ? '' : 's'} submitted.`, true);
+    renderGallery();
+    renderSelectionTray();
+    renderProofingLedger();
     return;
   }
   const rows = Array.from(state.selections).map((fileId) => ({
     project_id: state.selectedProject.id,
     project_file_id: fileId,
     selection_type: 'final_pick',
+    submitted_at: submittedAt,
+    note: JSON.stringify({
+      editRequested: state.editRequests.has(fileId),
+      editNote: state.editRequests.get(fileId) || '',
+      submissionNote,
+      includedEditCount: projectEditLimit(),
+      editFeeCents: projectEditFeeCents(),
+      overageEditCount: overageEditCount(),
+    }),
   }));
   const { error } = await supabase.from('client_file_selections').upsert(rows, {
     onConflict: 'project_file_id,user_id,selection_type',
   });
   if (error) throw error;
+  state.submittedAt = submittedAt;
   setStatus('Final picks saved.', true);
+  renderGallery();
+  renderSelectionTray();
+  renderProofingLedger();
 }
 
 function openLightbox(fileId) {
@@ -572,6 +744,17 @@ function bindEvents() {
     const file = visibleFiles()[state.lightboxIndex];
     if (file) toggleSelection(file.id);
     renderLightbox();
+  });
+  $('[data-confirm-purchase]').addEventListener('click', () => {
+    state.purchaseConfirmed = true;
+    if (demoMode) {
+      state.invoices = state.invoices.map((invoice) => (
+        invoice.id === 'demo-edit-overage' ? { ...invoice, status: 'paid' } : invoice
+      ));
+      renderInvoices();
+    }
+    setStatus('Edit charge approved.', true);
+    renderProofingLedger();
   });
   $('[data-lightbox]').addEventListener('click', (event) => {
     if (event.target === event.currentTarget) closeLightbox();
