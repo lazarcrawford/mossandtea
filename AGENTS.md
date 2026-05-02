@@ -43,6 +43,45 @@ Progress usually means converting a design or operating decision into committed 
 
 Keep the rule: anything that matters goes to git. Use issues for open decisions and PRs for reviewable design or implementation changes.
 
+## Production Parity Protocol
+
+For any user-facing website, portal, admin panel, console, or deployable workflow, **done means merged to `origin/main` and verified in the deployed production target**. A commit on an agent branch, a passing local demo, or a direct Wrangler deploy from a feature branch is not production completion.
+
+### Source-Of-Truth Rule
+
+`origin/main` is the production source of truth. Cloudflare production may temporarily diverge only during an explicit break-glass deploy. If that happens, the agent who performs it must immediately create a follow-up issue or PR that either merges the deployed state to `main` or intentionally rolls it back.
+
+### Before Opening Or Updating A PR
+
+- Fetch `origin/main`.
+- Confirm the PR base is `main` unless the user explicitly asked for a stacked review.
+- If the PR is stacked, name the full dependency chain and the final PR that must land on `main`.
+- Confirm whether the branch contains deployable user-facing changes, docs only, or both.
+- Avoid broad PRs that mix public website, admin, portal, deployment, and planning changes unless they cannot function separately.
+
+### Before Declaring User-Facing Work Complete
+
+- Report branch, HEAD SHA, PR URL/status, and whether the work is merged to `origin/main`.
+- Compare intended production state against `origin/main`, not only the current working branch.
+- Run build/test/smoke checks from the production-equivalent merged result.
+- Verify the deployed production URL after merge when visible behavior changed.
+- If production differs from the approved branch or intended state, stop and call it production drift.
+
+### Production Deploy Guard
+
+`npm run deploy` must run from a checkout whose `HEAD` equals `origin/main`. Non-main production deploys require `ALLOW_NON_MAIN_PROD_DEPLOY=1` and are considered break-glass operations that require immediate reconciliation.
+
+### Agent Handoff Requirements
+
+Every handoff for deployable work must include:
+
+- Intended production version or feature state.
+- Source branch and HEAD SHA.
+- PR chain, base branches, and merge status.
+- Build/deploy verification commands and results.
+- Production URL verification result when applicable.
+- Known drift, blockers, rollback risks, and next concrete action.
+
 ## File Management Rules
 
 1. **Commit early, commit often.** A document that exists only on disk is a document that can vanish. If you wrote something worth keeping, commit it. If you're not sure, commit it to a branch — you can always squash later.
@@ -128,6 +167,10 @@ Before ending a session, check:
 - [ ] Are all documents I created or edited committed to git?
 - [ ] Are there any untracked files that should be committed or gitignored?
 - [ ] Am I on the right branch for the work I'm doing?
+- [ ] Is the intended user-facing change present on `origin/main`, or clearly marked as not yet merged?
+- [ ] Was the PR based on current `origin/main`, not an obsolete branch or hidden stack?
+- [ ] Have I verified production/deploy parity for user-facing changes?
+- [ ] Does my handoff name branch, SHA, PR, deploy state, and remaining drift?
 - [ ] Have I opened issues for open decisions I identified?
 - [ ] Have I opened PRs for documents that need review?
 - [ ] Is my commit history clean, or does it mix unrelated concerns?

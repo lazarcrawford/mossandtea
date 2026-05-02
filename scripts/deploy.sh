@@ -23,6 +23,38 @@ echo "  🚀 Deploy Pipeline"
 echo "═══════════════════════════════════════"
 echo ""
 
+echo "🧭 Step 0: Checking production source parity..."
+cd "$SITE_DIR"
+
+if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  CURRENT_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+  CURRENT_SHA="$(git rev-parse HEAD)"
+  git fetch origin main --quiet
+  ORIGIN_MAIN_SHA="$(git rev-parse origin/main)"
+
+  if [ "${ALLOW_NON_MAIN_PROD_DEPLOY:-0}" != "1" ]; then
+    if [ "$CURRENT_BRANCH" != "main" ] || [ "$CURRENT_SHA" != "$ORIGIN_MAIN_SHA" ]; then
+      echo -e "\n❌ Production deploy blocked."
+      echo "   Production deploys must run from a checkout whose HEAD equals origin/main."
+      echo "   Current branch: $CURRENT_BRANCH"
+      echo "   Current HEAD:   $CURRENT_SHA"
+      echo "   origin/main:    $ORIGIN_MAIN_SHA"
+      echo ""
+      echo "   Merge the intended release to main first, then deploy."
+      echo "   Emergency override: ALLOW_NON_MAIN_PROD_DEPLOY=1 npm run deploy"
+      exit 1
+    fi
+  else
+    echo "  ⚠ Break-glass deploy enabled from $CURRENT_BRANCH@$CURRENT_SHA"
+    echo "  ⚠ Follow up by merging or reverting origin/main immediately."
+  fi
+else
+  echo -e "\n❌ Production deploy blocked: not inside a git work tree."
+  exit 1
+fi
+
+echo ""
+
 # Step 1: Run tests
 echo "📋 Step 1: Running validation suite..."
 python3 "$SCRIPT_DIR/test.py" || {
@@ -46,6 +78,10 @@ echo ""
 # Step 3: Optional Git push
 if [ "${DEPLOY_PUSH:-0}" = "1" ]; then
   echo "📤 Step 3: Pushing to GitHub..."
+  if [ "$(git rev-parse --abbrev-ref HEAD)" != "main" ]; then
+    echo -e "\n❌ DEPLOY_PUSH=1 requires local branch main."
+    exit 1
+  fi
   git push origin main 2>&1 | tail -3
 else
   echo "📤 Step 3: Skipping git push (set DEPLOY_PUSH=1 to push first)."
