@@ -5,14 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hermitage - Moss &amp; Tea</title>
   <meta name="description" content="Hermitage is the Moss & Tea private client room for project status, image review, selections, documents, and delivery.">
-  <meta name="theme-color" content="#171513">
+  <meta name="theme-color" content="#15120f">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/hermitage.css">
   <script src="../admin/js/supabase.min.js"></script>
 </head>
 <body>
+  <div class="grain" aria-hidden="true"></div>
   <div class="page-shell" data-app>
     <header class="topbar">
       <a class="wordmark" href="#/" aria-label="Hermitage home">
@@ -20,31 +21,34 @@
         <strong>Hermitage</strong>
       </a>
       <nav aria-label="Project navigation">
-        <a href="#/projects">Projects</a>
-        <a href="#/gallery">Gallery</a>
-        <a href="#/documents">Documents</a>
+        <a href="#/room" data-nav-view="overview">Room</a>
+        <a href="#/proofs" data-nav-view="gallery">Proofs</a>
+        <a href="#/documents" data-nav-view="documents">Documents</a>
       </nav>
       <button class="text-button" type="button" data-sign-out hidden>Sign out</button>
     </header>
 
     <main>
       <section class="hero">
-        <div>
-          <p class="eyebrow">Private client room</p>
-          <h1>Your photographs, held with care.</h1>
-          <p class="lede">Hermitage keeps each Moss &amp; Tea project quiet, clear, and close to the work: gallery review, selections, documents, and the next step in one place.</p>
+        <div class="hero__image" aria-hidden="true">
+          <img src="../images/irina/cenit_28.jpg" alt="">
         </div>
-        <aside class="status-card" aria-live="polite">
-          <span class="status-dot" data-status-dot></span>
-          <p data-status>Checking session...</p>
-        </aside>
+        <div class="hero__content">
+          <p class="eyebrow">Private client room</p>
+          <h1>A quiet room for the work to gather.</h1>
+          <p class="lede">Review the current edit, choose final images, return to documents, and see what the studio needs next. Hermitage is built to feel private, calm, and close to Irina's eye.</p>
+          <div class="hero__actions">
+            <a class="button" href="#gallery" data-jump-gallery>Enter the proofs</a>
+            <span class="signal" aria-live="polite"><i data-status-dot></i><span data-status>Checking session...</span></span>
+          </div>
+        </div>
       </section>
 
       <section class="auth-panel" data-auth-panel>
         <div>
           <p class="eyebrow">Invite access</p>
           <h2>Enter with your client email.</h2>
-          <p>Hermitage uses a private Supabase magic link or invite. No password is required for the MVP.</p>
+          <p>Hermitage opens from a private invite or magic link. No password is required for this first client-room version.</p>
         </div>
         <form data-login-form>
           <label>
@@ -57,55 +61,94 @@
       </section>
 
       <section class="workspace" data-workspace hidden>
-        <div class="workspace__header">
+        <div class="workspace__masthead">
           <div>
-            <p class="eyebrow">Project room</p>
-            <h2 data-client-name>Your projects</h2>
+            <p class="eyebrow">Client atelier</p>
+            <h2 data-client-name>Your Hermitage</h2>
           </div>
           <div class="segmented" role="tablist" aria-label="Workspace sections">
             <button type="button" class="is-active" data-view-button="overview">Overview</button>
-            <button type="button" data-view-button="gallery">Gallery</button>
+            <button type="button" data-view-button="gallery">Proofs</button>
             <button type="button" data-view-button="documents">Documents</button>
             <button type="button" data-view-button="billing">Billing</button>
           </div>
         </div>
 
         <div class="layout">
-          <aside class="project-list" data-project-list aria-label="Accessible projects"></aside>
+          <aside class="project-rail" aria-label="Accessible projects">
+            <div class="rail-card">
+              <p class="eyebrow">Projects</p>
+              <div class="project-list" data-project-list></div>
+            </div>
+            <div class="rail-card selection-tray" data-selection-tray>
+              <p class="eyebrow">Final picks</p>
+              <strong data-selection-count>0 selected</strong>
+              <div class="selection-strip" data-selection-strip></div>
+            </div>
+          </aside>
 
           <section class="project-detail">
-            <div class="panel" data-view="overview">
-              <p class="eyebrow">Overview</p>
-              <h3 data-project-title>Select a project</h3>
-              <p data-project-description class="muted">Your visible projects will appear after sign-in.</p>
-              <dl class="detail-grid">
-                <div><dt>Status</dt><dd data-project-status>--</dd></div>
-                <div><dt>Shoot</dt><dd data-project-shoot>--</dd></div>
-                <div><dt>Delivery</dt><dd data-project-delivery>--</dd></div>
-                <div><dt>Files</dt><dd data-project-file-count>--</dd></div>
-              </dl>
+            <div class="panel overview-panel" data-view="overview">
+              <div class="project-portrait">
+                <img src="../images/irina/cenit_12B.jpg" alt="" data-project-hero>
+              </div>
+              <div class="overview-copy">
+                <p class="eyebrow">Current project</p>
+                <h3 data-project-title>Select a project</h3>
+                <p data-project-description class="muted">Your visible projects will appear after sign-in.</p>
+                <dl class="detail-grid">
+                  <div><dt>Status</dt><dd data-project-status>--</dd></div>
+                  <div><dt>Shoot</dt><dd data-project-shoot>--</dd></div>
+                  <div><dt>Delivery</dt><dd data-project-delivery>--</dd></div>
+                  <div><dt>Visible proofs</dt><dd data-project-file-count>--</dd></div>
+                </dl>
+              </div>
+              <div class="timeline-card">
+                <p class="eyebrow">Studio path</p>
+                <ol class="timeline" data-timeline></ol>
+              </div>
+              <div class="note-card">
+                <p class="eyebrow">Irina's note</p>
+                <p data-studio-note>The first pass will appear here with the next clear action.</p>
+                <button class="button button--secondary" type="button" data-enter-gallery>Review proofs</button>
+              </div>
             </div>
 
-            <div class="panel" data-view="gallery" hidden>
+            <div class="panel proofing-panel" data-view="gallery" hidden id="gallery">
               <div class="panel-heading">
                 <div>
-                  <p class="eyebrow">Gallery</p>
-                  <h3>Review and choose.</h3>
+                  <p class="eyebrow">Proofing room</p>
+                  <h3>Choose what should become final.</h3>
+                  <p class="muted">Open any frame for a closer pass. Mark final picks here; the tray keeps your set visible while you move through the edit.</p>
                 </div>
-                <button class="button button--secondary" type="button" data-submit-selections>Submit final picks</button>
+                <button class="button" type="button" data-submit-selections>Submit final picks</button>
+              </div>
+              <div class="proofing-tools">
+                <button type="button" class="tool-chip is-active" data-filter="all">All</button>
+                <button type="button" class="tool-chip" data-filter="favorite">Suggested</button>
+                <button type="button" class="tool-chip" data-filter="download">Downloadable</button>
+                <button type="button" class="tool-chip" data-filter="selected">Selected</button>
               </div>
               <div class="gallery-grid" data-gallery></div>
             </div>
 
             <div class="panel" data-view="documents" hidden>
-              <p class="eyebrow">Documents</p>
-              <h3>Prepared files and agreements.</h3>
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Documents</p>
+                  <h3>Agreements, releases, and studio notes.</h3>
+                </div>
+              </div>
               <div class="list-stack" data-documents></div>
             </div>
 
             <div class="panel" data-view="billing" hidden>
-              <p class="eyebrow">Billing</p>
-              <h3>Payment links.</h3>
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Billing</p>
+                  <h3>Payment links and balances.</h3>
+                </div>
+              </div>
               <div class="list-stack" data-invoices></div>
             </div>
           </section>
@@ -115,15 +158,17 @@
   </div>
 
   <div class="lightbox" data-lightbox hidden>
-    <button type="button" class="lightbox__close" data-close-lightbox>Close</button>
-    <img alt="">
+    <button type="button" class="lightbox__close" data-close-lightbox aria-label="Close image">Close</button>
+    <button type="button" class="lightbox__nav lightbox__nav--prev" data-lightbox-prev aria-label="Previous image">Prev</button>
+    <figure>
+      <img alt="">
+      <figcaption>
+        <span data-lightbox-caption></span>
+        <button type="button" class="button button--secondary" data-lightbox-select>Mark final pick</button>
+      </figcaption>
+    </figure>
+    <button type="button" class="lightbox__nav lightbox__nav--next" data-lightbox-next aria-label="Next image">Next</button>
   </div>
-
-  <template data-empty-template>
-    <article class="empty">
-      <p>No client-visible items are ready here yet.</p>
-    </article>
-  </template>
 
   <script src="js/hermitage.js"></script>
 </body>

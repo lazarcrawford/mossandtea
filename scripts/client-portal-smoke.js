@@ -27,7 +27,7 @@ function staticChecks() {
   assert(html.includes('data-gallery'), 'Hermitage should include gallery surface');
   assert(html.includes('data-documents'), 'Hermitage should include documents surface');
   assert(html.includes('data-invoices'), 'Hermitage should include billing surface');
-  assert(css.includes('@media (max-width: 560px)'), 'Hermitage CSS should include mobile breakpoint');
+  assert(css.includes('@media (max-width: 720px)'), 'Hermitage CSS should include mobile breakpoint');
   assert(css.includes('--bronze') && css.includes('--wine') && css.includes('--moss'), 'Hermitage CSS should include full palette');
   assert(js.includes('signInWithOtp'), 'Hermitage JS should use magic-link auth');
   assert(js.includes('createSignedUrl'), 'Hermitage JS should use signed Storage URLs');
@@ -79,8 +79,15 @@ async function run() {
       assert(layout.scrollWidth <= layout.viewportWidth + 1, `${name}: horizontal overflow (${layout.scrollWidth}px > ${layout.viewportWidth}px)`);
       assert(layout.heroHeight > 260, `${name}: hero is unexpectedly short`);
       await page.waitForSelector('[data-workspace]:not([hidden])', { timeout: 10000 });
-      await page.getByRole('button', { name: /Gallery/i }).click();
+      await page.locator('[data-view-button="gallery"]').click();
       await page.waitForSelector('.gallery-grid .image-card', { timeout: 10000 });
+      await page.locator('[data-select-file]').first().click();
+      await page.waitForFunction(() => document.querySelector('[data-selection-count]')?.textContent.includes('1 selected'), null, { timeout: 10000 });
+      await page.locator('[data-open-image]').first().click();
+      await page.waitForSelector('.lightbox:not([hidden]) img[src]', { timeout: 10000 });
+      await page.locator('[data-lightbox-next]').evaluate((el) => el.click());
+      await page.keyboard.press('Escape');
+      await page.waitForSelector('.lightbox', { state: 'hidden', timeout: 10000 });
       await page.close();
     }
 

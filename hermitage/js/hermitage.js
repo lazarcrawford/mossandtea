@@ -14,11 +14,23 @@ const state = {
   invoices: [],
   signedUrls: {},
   selections: new Set(),
+  filter: 'all',
+  lightboxIndex: 0,
 };
 const demoMode = new URLSearchParams(window.location.search).has('demo');
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => Array.from(document.querySelectorAll(selector));
+
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  }[char]));
+}
 
 function setStatus(message, active = false) {
   $('[data-status]').textContent = message;
@@ -39,7 +51,7 @@ function statusLabel(value) {
 }
 
 function money(cents) {
-  if (!cents) return 'Pending';
+  if (!cents) return 'No balance due';
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(cents / 100);
 }
 
@@ -85,54 +97,41 @@ function loadDemoState() {
   state.projects = [{
     id: 'demo-project',
     title: 'CENIT Portrait Study',
-    description: 'A quiet review room for a private portrait session. Choose favorites, mark final picks, and keep the next step clear.',
+    description: 'A private proofing room for a portrait session that moves between icon, body, nature, and myth. The goal is simple: identify the frames that still feel alive after the first look.',
     status: 'editing',
     shoot_date: '2026-04-18',
     delivery_date: '2026-05-08',
+    studio_note: 'Start with the suggested frames, then make a second pass from instinct. Choose the images that feel like presence, not performance.',
     customers: { first_name: 'CENIT', last_name: '' },
   }];
   state.selectedProject = state.projects[0];
   state.files = [
+    demoFile('demo-1', 'cenit_12B.jpg', 'Figure among oranges', 'Suggested', true, false, '50% 36%'),
+    demoFile('demo-2', 'cenit_21B.jpg', 'Black form, held still', 'Body landscape', true, true, '48% 42%'),
+    demoFile('demo-3', 'cenit_28.jpg', 'Threshold portrait', 'Quiet power', false, false, '50% 28%'),
+    demoFile('demo-4', 'cenit_river01.jpg', 'River study', 'Water / afterimage', false, true, '50% 38%'),
+    demoFile('demo-5', 'G3A5320.jpg', 'Soft field', 'Atmosphere', true, false, '50% 58%'),
+    demoFile('demo-6', 'G3A5407B.jpg', 'Line and breath', 'Gesture', false, false, '50% 34%'),
+  ];
+  state.signedUrls = Object.fromEntries(
+    state.files.map((file) => [file.id, `../images/irina/${file.filename}`])
+  );
+  state.documents = [
     {
-      id: 'demo-1',
-      project_id: 'demo-project',
-      original_name: 'cenit_12B.jpg',
-      filename: 'cenit_12B.jpg',
-      mime_type: 'image/jpeg',
-      is_client_visible: true,
-      download_allowed: false,
+      id: 'demo-doc',
+      title: 'Sample CENIT Agreement',
+      document_type: 'agreement',
+      status: 'draft',
+      file_url: '',
     },
     {
-      id: 'demo-2',
-      project_id: 'demo-project',
-      original_name: 'G3A5320.jpg',
-      filename: 'G3A5320.jpg',
-      mime_type: 'image/jpeg',
-      is_client_visible: true,
-      download_allowed: true,
-    },
-    {
-      id: 'demo-3',
-      project_id: 'demo-project',
-      original_name: 'Braina14.jpg',
-      filename: 'Braina14.jpg',
-      mime_type: 'image/jpeg',
-      is_client_visible: true,
-      download_allowed: false,
+      id: 'demo-release',
+      title: 'Retouching Direction Notes',
+      document_type: 'studio note',
+      status: 'ready for review',
+      file_url: '',
     },
   ];
-  state.signedUrls = {
-    'demo-1': '../images/irina/cenit_12B.jpg',
-    'demo-2': '../images/irina/G3A5320.jpg',
-    'demo-3': '../images/irina/Braina14.jpg',
-  };
-  state.documents = [{
-    id: 'demo-doc',
-    title: 'Sample CENIT Agreement',
-    document_type: 'agreement',
-    status: 'draft',
-    file_url: '',
-  }];
   state.invoices = [{
     id: 'demo-invoice',
     title: 'Sample Invoice Draft',
@@ -141,12 +140,24 @@ function loadDemoState() {
     payment_url: '',
   }];
   showWorkspace(true);
-  setStatus('Demo mode. No client data is being used.', true);
-  renderProjects();
-  renderOverview();
-  renderGallery();
-  renderDocuments();
-  renderInvoices();
+  setStatus('Demo room. No client data is being used.', true);
+  renderAll();
+}
+
+function demoFile(id, filename, caption, tag, favorite, downloadAllowed, position) {
+  return {
+    id,
+    project_id: 'demo-project',
+    original_name: filename,
+    filename,
+    caption,
+    tag,
+    favorite,
+    mime_type: 'image/jpeg',
+    is_client_visible: true,
+    download_allowed: downloadAllowed,
+    position,
+  };
 }
 
 async function loadProjects() {
@@ -162,12 +173,14 @@ async function loadProjects() {
 
 async function selectProject(projectId) {
   state.selectedProject = state.projects.find((project) => project.id === projectId) || null;
+  state.filter = 'all';
   renderProjects();
   renderOverview();
   if (demoMode) {
     renderGallery();
     renderDocuments();
     renderInvoices();
+    renderSelectionTray();
     return;
   }
   await Promise.all([loadFiles(projectId), loadDocuments(projectId), loadInvoices(projectId)]);
@@ -177,7 +190,7 @@ async function loadFiles(projectId) {
   if (!projectId) return;
   const { data, error } = await supabase
     .from('project_files')
-    .select('id, project_id, original_name, filename, mime_type, r2_key, is_client_visible, download_allowed, sort_order, created_at')
+    .select('id, project_id, original_name, filename, mime_type, r2_key, is_client_visible, download_allowed, sort_order, created_at, client_caption')
     .eq('project_id', projectId)
     .eq('is_client_visible', true)
     .order('sort_order', { ascending: true })
@@ -186,6 +199,8 @@ async function loadFiles(projectId) {
   state.files = data || [];
   await signVisibleFiles();
   renderGallery();
+  renderOverview();
+  renderSelectionTray();
 }
 
 async function signVisibleFiles() {
@@ -228,6 +243,15 @@ async function loadInvoices(projectId) {
   renderInvoices();
 }
 
+function renderAll() {
+  renderProjects();
+  renderOverview();
+  renderGallery();
+  renderDocuments();
+  renderInvoices();
+  renderSelectionTray();
+}
+
 function renderProjects() {
   const list = $('[data-project-list]');
   if (!state.projects.length) {
@@ -235,10 +259,10 @@ function renderProjects() {
     return;
   }
   list.innerHTML = state.projects.map((project) => `
-    <button type="button" class="project-card ${state.selectedProject?.id === project.id ? 'is-active' : ''}" data-project-id="${project.id}">
-      <span>${statusLabel(project.status)}</span>
-      <strong>${project.title}</strong>
-      <small>${formatDate(project.shoot_date)}</small>
+    <button type="button" class="project-card ${state.selectedProject?.id === project.id ? 'is-active' : ''}" data-project-id="${escapeHtml(project.id)}">
+      <span>${escapeHtml(statusLabel(project.status))}</span>
+      <strong>${escapeHtml(project.title)}</strong>
+      <small>${escapeHtml(formatDate(project.shoot_date))}</small>
     </button>
   `).join('');
   $$('[data-project-id]').forEach((button) => {
@@ -249,6 +273,7 @@ function renderProjects() {
 function renderOverview() {
   const project = state.selectedProject;
   const customer = project?.customers;
+  const heroFile = state.files.find((file) => state.signedUrls[file.id]) || null;
   $('[data-client-name]').textContent = customer?.first_name ? `${customer.first_name}'s Hermitage` : 'Your Hermitage';
   $('[data-project-title]').textContent = project?.title || 'Select a project';
   $('[data-project-description]').textContent = project?.description || 'Review project status, gallery files, documents, and billing links.';
@@ -256,37 +281,92 @@ function renderOverview() {
   $('[data-project-shoot]').textContent = formatDate(project?.shoot_date);
   $('[data-project-delivery]').textContent = formatDate(project?.delivery_date);
   $('[data-project-file-count]').textContent = String(state.files.length || 0);
+  $('[data-studio-note]').textContent = project?.studio_note || 'The studio will leave a note here when the next pass is ready.';
+  if (heroFile) $('[data-project-hero]').src = state.signedUrls[heroFile.id];
+  renderTimeline(project);
+}
+
+function renderTimeline(project) {
+  const status = statusLabel(project?.status);
+  const steps = [
+    ['Session held', formatDate(project?.shoot_date)],
+    ['First edit', status === 'editing' ? 'In progress now' : 'Prepared'],
+    ['Client proofing', `${state.files.length || 0} visible images`],
+    ['Final delivery', formatDate(project?.delivery_date)],
+  ];
+  $('[data-timeline]').innerHTML = steps.map(([title, detail]) => `
+    <li><div></div><p><strong>${escapeHtml(title)}</strong><span>${escapeHtml(detail)}</span></p></li>
+  `).join('');
+}
+
+function visibleFiles() {
+  return state.files.filter((file) => {
+    if (state.filter === 'favorite') return Boolean(file.favorite);
+    if (state.filter === 'download') return Boolean(file.download_allowed);
+    if (state.filter === 'selected') return state.selections.has(file.id);
+    return true;
+  });
 }
 
 function renderGallery() {
   const gallery = $('[data-gallery]');
   $('[data-project-file-count]').textContent = String(state.files.length || 0);
-  if (!state.files.length) {
-    gallery.innerHTML = '<article class="empty"><p>No client-visible images are ready yet.</p></article>';
+  $$('[data-filter]').forEach((button) => {
+    button.classList.toggle('is-active', button.dataset.filter === state.filter);
+  });
+  const files = visibleFiles();
+  if (!files.length) {
+    gallery.innerHTML = '<article class="empty"><p>No images match this view yet.</p></article>';
     return;
   }
-  gallery.innerHTML = state.files.map((file) => {
+  gallery.innerHTML = files.map((file) => {
     const src = state.signedUrls[file.id] || '';
     const selected = state.selections.has(file.id);
+    const caption = file.caption || file.client_caption || file.original_name || file.filename;
+    const tag = file.tag || (file.download_allowed ? 'Download ready' : 'Proof');
+    const position = file.position ? ` style="object-position:${escapeHtml(file.position)}"` : '';
     return `
       <article class="image-card">
-        <button type="button" data-open-image="${file.id}" ${src ? '' : 'disabled'}>
-          ${src ? `<img src="${src}" alt="${file.original_name || file.filename}" loading="lazy">` : '<span>Preview pending</span>'}
+        <button class="image-card__open" type="button" data-open-image="${escapeHtml(file.id)}" ${src ? '' : 'disabled'}>
+          ${src ? `<img src="${escapeHtml(src)}" alt="${escapeHtml(caption)}" loading="lazy"${position}>` : '<span>Preview pending</span>'}
         </button>
-        <div>
-          <strong>${file.original_name || file.filename}</strong>
-          <label><input type="checkbox" data-select-file="${file.id}" ${selected ? 'checked' : ''}> Final pick</label>
+        <div class="image-meta">
+          <div>
+            <strong>${escapeHtml(caption)}</strong>
+            <span>${escapeHtml(tag)}</span>
+          </div>
+          <button type="button" class="pick-toggle ${selected ? 'is-selected' : ''}" data-select-file="${escapeHtml(file.id)}">
+            ${selected ? 'Picked' : 'Pick'}
+          </button>
         </div>
       </article>
     `;
   }).join('');
-  $$('[data-select-file]').forEach((input) => {
-    input.addEventListener('change', () => {
-      if (input.checked) state.selections.add(input.dataset.selectFile);
-      else state.selections.delete(input.dataset.selectFile);
+  $$('[data-select-file]').forEach((button) => {
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
+      toggleSelection(button.dataset.selectFile);
     });
   });
   $$('[data-open-image]').forEach((button) => {
+    button.addEventListener('click', () => openLightbox(button.dataset.openImage));
+  });
+}
+
+function renderSelectionTray() {
+  const selectedFiles = state.files.filter((file) => state.selections.has(file.id));
+  $('[data-selection-count]').textContent = `${selectedFiles.length} selected`;
+  const strip = $('[data-selection-strip]');
+  if (!selectedFiles.length) {
+    strip.innerHTML = '<p class="muted">Your final set will collect here.</p>';
+    return;
+  }
+  strip.innerHTML = selectedFiles.map((file) => `
+    <button type="button" class="selection-thumb" data-open-image="${escapeHtml(file.id)}" aria-label="Open ${escapeHtml(file.original_name || file.filename)}">
+      <img src="${escapeHtml(state.signedUrls[file.id])}" alt="">
+    </button>
+  `).join('');
+  $$('.selection-thumb[data-open-image]').forEach((button) => {
     button.addEventListener('click', () => openLightbox(button.dataset.openImage));
   });
 }
@@ -300,10 +380,10 @@ function renderDocuments() {
   target.innerHTML = state.documents.map((doc) => `
     <article class="list-item">
       <div>
-        <strong>${doc.title}</strong>
-        <span>${doc.document_type || 'document'} - ${doc.status || 'ready'}</span>
+        <strong>${escapeHtml(doc.title)}</strong>
+        <span>${escapeHtml(doc.document_type || 'document')} - ${escapeHtml(doc.status || 'ready')}</span>
       </div>
-      ${doc.file_url ? `<a class="text-button" href="${doc.file_url}" target="_blank" rel="noreferrer">Open</a>` : ''}
+      ${doc.file_url ? `<a class="text-button" href="${escapeHtml(doc.file_url)}" target="_blank" rel="noreferrer">Open</a>` : '<span>Preview only</span>'}
     </article>
   `).join('');
 }
@@ -317,12 +397,20 @@ function renderInvoices() {
   target.innerHTML = state.invoices.map((invoice) => `
     <article class="list-item">
       <div>
-        <strong>${invoice.title}</strong>
-        <span>${money(invoice.amount_cents)} - ${invoice.status || 'pending'}</span>
+        <strong>${escapeHtml(invoice.title)}</strong>
+        <span>${escapeHtml(money(invoice.amount_cents))} - ${escapeHtml(invoice.status || 'pending')}</span>
       </div>
-      ${invoice.payment_url ? `<a class="button button--secondary" href="${invoice.payment_url}" target="_blank" rel="noreferrer">Pay</a>` : ''}
+      ${invoice.payment_url ? `<a class="button button--secondary" href="${escapeHtml(invoice.payment_url)}" target="_blank" rel="noreferrer">Pay</a>` : '<span>Sample only</span>'}
     </article>
   `).join('');
+}
+
+function toggleSelection(fileId) {
+  if (state.selections.has(fileId)) state.selections.delete(fileId);
+  else state.selections.add(fileId);
+  renderGallery();
+  renderSelectionTray();
+  updateLightboxControls();
 }
 
 async function submitSelections() {
@@ -331,7 +419,7 @@ async function submitSelections() {
     return;
   }
   if (demoMode) {
-    setStatus(`${state.selections.size} demo final pick${state.selections.size === 1 ? '' : 's'} marked.`, true);
+    setStatus(`${state.selections.size} demo final pick${state.selections.size === 1 ? '' : 's'} held in the tray.`, true);
     return;
   }
   const rows = Array.from(state.selections).map((fileId) => ({
@@ -347,14 +435,42 @@ async function submitSelections() {
 }
 
 function openLightbox(fileId) {
-  const file = state.files.find((candidate) => candidate.id === fileId);
-  const src = state.signedUrls[fileId];
+  const files = visibleFiles();
+  const index = files.findIndex((candidate) => candidate.id === fileId);
+  if (index < 0) return;
+  state.lightboxIndex = index;
+  renderLightbox();
+  $('[data-lightbox]').hidden = false;
+}
+
+function renderLightbox() {
+  const files = visibleFiles();
+  const file = files[state.lightboxIndex];
+  const src = file ? state.signedUrls[file.id] : '';
   if (!file || !src) return;
   const lightbox = $('[data-lightbox]');
   const image = lightbox.querySelector('img');
   image.src = src;
-  image.alt = file.original_name || file.filename;
-  lightbox.hidden = false;
+  image.alt = file.caption || file.original_name || file.filename;
+  $('[data-lightbox-caption]').textContent = file.caption || file.original_name || file.filename;
+  updateLightboxControls();
+}
+
+function updateLightboxControls() {
+  const files = visibleFiles();
+  const file = files[state.lightboxIndex];
+  const button = $('[data-lightbox-select]');
+  if (!button || !file) return;
+  const selected = state.selections.has(file.id);
+  button.textContent = selected ? 'Remove final pick' : 'Mark final pick';
+  button.classList.toggle('is-selected', selected);
+}
+
+function moveLightbox(direction) {
+  const files = visibleFiles();
+  if (!files.length) return;
+  state.lightboxIndex = (state.lightboxIndex + direction + files.length) % files.length;
+  renderLightbox();
 }
 
 function closeLightbox() {
@@ -390,7 +506,7 @@ function bindEvents() {
     }
   });
   $('[data-sign-out]').addEventListener('click', async () => {
-    await supabase.auth.signOut();
+    if (supabase) await supabase.auth.signOut();
     state.session = null;
     showWorkspace(false);
     setStatus('Signed out.', false);
@@ -398,13 +514,45 @@ function bindEvents() {
   $$('[data-view-button]').forEach((button) => {
     button.addEventListener('click', () => setView(button.dataset.viewButton));
   });
+  $$('[data-enter-gallery], [data-jump-gallery]').forEach((button) => {
+    button.addEventListener('click', (event) => {
+      event.preventDefault();
+      if ($('[data-workspace]').hidden) return;
+      setView('gallery');
+      $('[data-view="gallery"]').scrollIntoView({ block: 'start' });
+    });
+  });
+  $$('[data-nav-view]').forEach((link) => {
+    link.addEventListener('click', (event) => {
+      event.preventDefault();
+      if ($('[data-workspace]').hidden) return;
+      setView(link.dataset.navView);
+      $('[data-workspace]').scrollIntoView({ block: 'start' });
+    });
+  });
+  $$('[data-filter]').forEach((button) => {
+    button.addEventListener('click', () => {
+      state.filter = button.dataset.filter;
+      renderGallery();
+    });
+  });
   $('[data-submit-selections]').addEventListener('click', () => submitSelections().catch(reportError));
   $('[data-close-lightbox]').addEventListener('click', closeLightbox);
+  $('[data-lightbox-prev]').addEventListener('click', () => moveLightbox(-1));
+  $('[data-lightbox-next]').addEventListener('click', () => moveLightbox(1));
+  $('[data-lightbox-select]').addEventListener('click', () => {
+    const file = visibleFiles()[state.lightboxIndex];
+    if (file) toggleSelection(file.id);
+    renderLightbox();
+  });
   $('[data-lightbox]').addEventListener('click', (event) => {
     if (event.target === event.currentTarget) closeLightbox();
   });
   window.addEventListener('keydown', (event) => {
+    if ($('[data-lightbox]').hidden) return;
     if (event.key === 'Escape') closeLightbox();
+    if (event.key === 'ArrowLeft') moveLightbox(-1);
+    if (event.key === 'ArrowRight') moveLightbox(1);
   });
 }
 
