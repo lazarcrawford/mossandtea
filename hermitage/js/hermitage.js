@@ -64,7 +64,7 @@ function money(cents) {
 }
 
 function projectEditLimit() {
-  return Number(state.selectedProject?.included_edit_count || 6);
+  return Number(state.selectedProject?.included_edit_count || 3);
 }
 
 function projectEditFeeCents() {
@@ -98,7 +98,7 @@ function parseSelectionNote(note) {
 }
 
 function nextAction(project) {
-  if (!project) return 'Open the project room';
+  if (!project) return 'Open the project';
   if (state.submittedAt && editFeeTotalCents() && !state.purchaseConfirmed) return 'Approve edit charge';
   if (state.submittedAt) return 'Selection submitted';
   if (state.selections.size) return 'Submit or refine final picks';
@@ -149,18 +149,18 @@ function loadDemoState() {
   state.projects = [{
     id: 'demo-project',
     title: 'CENIT Portrait Study',
-    description: 'A private proofing room for a portrait session shaped by Irina’s quiet attention to presence, gesture, shadow, and the charged spaces between expression and stillness.',
+    description: 'A private proofing space for a portrait session shaped by Irina’s quiet attention to presence, gesture, shadow, and the charged spaces between expression and stillness.',
     status: 'editing',
     shoot_date: '2026-04-18',
     delivery_date: '2026-05-08',
     studio_note: 'Begin with the suggested frames, then make a second pass from instinct. Choose the images that still feel alive after the first look; edit notes can stay simple and exact.',
-    included_edit_count: 6,
+    included_edit_count: 3,
     additional_edit_fee_cents: 7900,
     customers: { first_name: 'CENIT', last_name: '' },
   }];
   state.selectedProject = state.projects[0];
   state.files = [
-    demoFile('demo-1', 'cenit_12B.jpg', 'Figure among oranges', 'First lantern', true, false, '50% 36%'),
+    demoFile('demo-1', 'cenit_12B.jpg', 'Figure among oranges', 'Suggested', true, false, '50% 36%'),
     demoFile('demo-2', 'cenit_21B.jpg', 'Black form, held still', 'Table mark', true, true, '48% 42%'),
     demoFile('demo-3', 'cenit_28.jpg', 'Threshold portrait', 'Quiet power', false, false, '50% 28%'),
     demoFile('demo-4', 'cenit_river01.jpg', 'River study', 'Water / afterimage', false, true, '50% 38%'),
@@ -194,7 +194,7 @@ function loadDemoState() {
     payment_url: '',
   }];
   showWorkspace(true);
-  setStatus('Demo room. No client data is being used.', true);
+  setStatus('Demo portal. No client data is being used.', true);
   renderAll();
 }
 
@@ -360,9 +360,9 @@ function renderOverview() {
   const project = state.selectedProject;
   const customer = project?.customers;
   const heroFile = state.files.find((file) => state.signedUrls[file.id]) || null;
-  $('[data-client-name]').textContent = customer?.first_name ? `${customer.first_name}'s Hermitage` : 'Your Hermitage';
+  $('[data-client-name]').textContent = customer?.first_name ? `${customer.first_name}'s Client Portal` : 'Your Client Portal';
   $('[data-project-title]').textContent = project?.title || 'Select a project';
-  setText('[data-hero-project-title]', project?.title || 'Project room');
+  setText('[data-hero-project-title]', project?.title || 'Project');
   setText('[data-hero-next-action]', nextAction(project));
   setText('[data-room-phase]', `${statusLabel(project?.status)} - ${nextAction(project)}`);
   $('[data-project-description]').textContent = project?.description || 'Review project status, gallery files, documents, and billing links.';

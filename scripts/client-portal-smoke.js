@@ -22,7 +22,7 @@ function staticChecks() {
   const js = fs.readFileSync(path.join(ROOT, 'hermitage', 'js', 'hermitage.js'), 'utf8');
   const redirect = fs.readFileSync(path.join(ROOT, 'portal', 'index.html'), 'utf8');
 
-  assert(html.includes('Hermitage'), 'Hermitage HTML should include brand');
+  assert(html.includes('Client Portal'), 'Client portal HTML should include product name');
   assert(html.includes('data-login-form'), 'Hermitage should include invite login form');
   assert(html.includes('data-gallery'), 'Hermitage should include gallery surface');
   assert(html.includes('data-documents'), 'Hermitage should include documents surface');
@@ -31,8 +31,8 @@ function staticChecks() {
   assert(html.includes('data-purchase-panel'), 'Hermitage should include edit purchase panel');
   assert(css.includes('@media (max-width: 720px)'), 'Hermitage CSS should include mobile breakpoint');
   assert(
-    css.includes('--lantern') && css.includes('--brass') && css.includes('--sea-glass') && css.includes('--canopy'),
-    'Hermitage CSS should include Lantern House palette'
+    css.includes('--moss') && css.includes('--sea') && css.includes('--cream') && css.includes('--clay'),
+    'Client portal CSS should include Moss & Tea palette'
   );
   assert(js.includes('signInWithOtp'), 'Hermitage JS should use magic-link auth');
   assert(js.includes('createSignedUrl'), 'Hermitage JS should use signed Storage URLs');
@@ -96,9 +96,14 @@ async function run() {
       await page.waitForFunction(() => document.querySelector('[data-selection-count]')?.textContent.includes('1 selected'), null, { timeout: 10000 });
       await page.locator('[data-edit-file]').first().click();
       await page.locator('[data-edit-note]').first().fill('Keep the shadow soft and protect the skin texture.');
-      await page.waitForFunction(() => document.querySelector('[data-proof-edit-count]')?.textContent.includes('1 / 6'), null, { timeout: 10000 });
+      await page.waitForFunction(() => document.querySelector('[data-proof-edit-count]')?.textContent.includes('1 / 3'), null, { timeout: 10000 });
+      for (const index of [1, 2, 3]) {
+        await page.locator('[data-edit-file]').nth(index).click();
+      }
+      await page.waitForFunction(() => document.querySelector('[data-proof-overage]')?.textContent.includes('$79.00'), null, { timeout: 10000 });
       await page.locator('[data-submit-selections]').click();
       await page.waitForFunction(() => document.querySelector('[data-proof-state]')?.textContent.includes('Submitted'), null, { timeout: 10000 });
+      await page.waitForSelector('[data-purchase-panel]:not([hidden])', { timeout: 10000 });
       await page.waitForSelector('.image-card.is-submitted', { timeout: 10000 });
       await page.locator('[data-open-image]').first().click();
       await page.waitForSelector('.lightbox:not([hidden]) img[src]', { timeout: 10000 });
