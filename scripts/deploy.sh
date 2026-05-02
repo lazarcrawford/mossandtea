@@ -3,10 +3,19 @@
 # Moss & Tea — Deploy Script
 # Runs validation, then deploys to Cloudflare
 # ============================================
-set -e
+set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 SITE_DIR="$SCRIPT_DIR/.."
+OPS_ENV="${MOSSANDTEA_OPS_ENV:-$HOME/.hermes/workspaces/mossandtea.env}"
+
+if [[ -f "$OPS_ENV" ]]; then
+  set -a
+  # shellcheck disable=SC1090
+  source "$OPS_ENV"
+  set +a
+fi
+
 WORKER_URL="${WORKER_URL:-https://mossandtea.lazar-99d.workers.dev}"
 
 echo "═══════════════════════════════════════"
@@ -24,24 +33,34 @@ python3 "$SCRIPT_DIR/test.py" || {
 
 echo ""
 
-# Step 2: Optional Git push
+# Step 2: Deploy readiness
+echo "🧭 Step 2: Checking deploy readiness..."
+python3 "$SCRIPT_DIR/ops_preflight.py" || {
+  echo -e "\n❌ Deploy readiness failed. Deploy aborted."
+  echo "   Fix the blocked checks above or update $OPS_ENV."
+  exit 1
+}
+
+echo ""
+
+# Step 3: Optional Git push
 if [ "${DEPLOY_PUSH:-0}" = "1" ]; then
-  echo "📤 Step 2: Pushing to GitHub..."
+  echo "📤 Step 3: Pushing to GitHub..."
   git push origin main 2>&1 | tail -3
 else
-  echo "📤 Step 2: Skipping git push (set DEPLOY_PUSH=1 to push first)."
+  echo "📤 Step 3: Skipping git push (set DEPLOY_PUSH=1 to push first)."
 fi
 
 echo ""
 
-# Step 3: Deploy Worker
-echo "⚡ Step 3: Deploying Cloudflare Worker..."
-wrangler deploy 2>&1 | tail -8
+# Step 4: Deploy Worker
+echo "⚡ Step 4: Deploying Cloudflare Worker..."
+wrangler deploy
 
 echo ""
 
-# Step 4: Verify deployment
-echo "🔍 Step 4: Smoke testing deployment..."
+# Step 5: Verify deployment
+echo "🔍 Step 5: Smoke testing deployment..."
 sleep 2
 
 smoke_test() {

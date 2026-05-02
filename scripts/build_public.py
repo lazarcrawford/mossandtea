@@ -22,6 +22,7 @@ DIRS = [
     "css",
     "images",
     "js",
+    "telegram-console",
 ]
 
 

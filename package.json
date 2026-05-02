@@ -4,6 +4,9 @@
     "test": "python3 scripts/test.py",
     "test:admin-ui": "node scripts/admin-ui-smoke.js",
     "test:public-ui": "node scripts/public-gallery-smoke.js",
+    "test:responsive-ui": "node scripts/public-responsive-smoke.js",
+    "deploy:doctor": "python3 scripts/ops_preflight.py",
+    "ops:status": "python3 scripts/ops_preflight.py",
     "deploy": "bash scripts/deploy.sh",
     "smoke": "python3 scripts/smoke.py"
   },

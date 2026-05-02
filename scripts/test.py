@@ -46,6 +46,7 @@ required_files = [
     "index.html", "css/style.css", "css/motion.css", "js/main.js",
     "admin/index.html", "admin/css/admin.css", "admin/js/admin.js",
     "admin/js/alpine.min.js", "admin/js/supabase.min.js",
+    "telegram-console/index.html", "telegram-console/style.css", "telegram-console/app.js",
     "worker.js", "wrangler.toml"
 ]
 for f in required_files:
@@ -55,6 +56,7 @@ public_required = [
     "index.html", "css/style.css", "css/motion.css", "js/main.js",
     "admin/index.html", "admin/css/admin.css", "admin/js/admin.js",
     "admin/js/alpine.min.js", "admin/js/supabase.min.js",
+    "telegram-console/index.html", "telegram-console/style.css", "telegram-console/app.js",
 ]
 for f in public_required:
     check(f"  public/{f} exists", public_file_exists(f))
@@ -85,7 +87,7 @@ print()
 
 # === 3. JS Syntax ===
 print("🔍 JavaScript")
-for js in ["js/main.js", "admin/js/admin.js", "worker.js"]:
+for js in ["js/main.js", "admin/js/admin.js", "telegram-console/app.js", "worker.js"]:
     if file_exists(js):
         result = subprocess.run(["node", "--check", os.path.join(SITE_DIR, js)],
                                 capture_output=True, text=True)

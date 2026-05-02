@@ -114,7 +114,6 @@ function applyGalleryFilter(filter) {
     const copy = document.getElementById('portfolioChapterCopy');
     const gallery = document.getElementById('gallery');
     const chapter = galleryChapters[filter] || galleryChapters.witness;
-    const previous = gallery?.dataset.activeCategory || 'witness';
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     document.querySelectorAll('[data-gallery-filter]').forEach((button) => {
@@ -126,8 +125,6 @@ function applyGalleryFilter(filter) {
     const reveal = () => {
         if (!gallery) return;
         gallery.dataset.activeCategory = filter;
-        gallery.classList.remove(`gallery--${previous}`);
-        gallery.classList.add(`gallery--${filter}`);
 
         const visibleItems = [];
         document.querySelectorAll('#gallery [data-category]').forEach((item) => {
@@ -138,14 +135,14 @@ function applyGalleryFilter(filter) {
         });
 
         visibleItems.forEach((item, index) => {
-            item.style.setProperty('--enter-delay', `${Math.min(index * 55, 520)}ms`);
+            item.style.setProperty('--enter-delay', `${Math.min(index * 35, 280)}ms`);
             requestAnimationFrame(() => item.classList.add('gallery__item--enter'));
         });
 
         gallery.classList.remove('gallery--switching');
     };
 
-    if (gallery && !reduceMotion && previous !== filter) {
+    if (gallery && !reduceMotion && gallery.dataset.activeCategory && gallery.dataset.activeCategory !== filter) {
         gallery.classList.add('gallery--switching');
         window.setTimeout(reveal, 180);
     } else {
@@ -157,114 +154,6 @@ function applyGalleryFilter(filter) {
 
 renderArchiveGallery();
 applyGalleryFilter('witness');
-
-const chapterMotion = {
-    floating: null,
-    clustered: null,
-    transitionTimer: null,
-    settleTimer: null,
-    frame: null,
-    current: { x: 0, y: 0, rotate: 0, top: 82 },
-    velocity: { x: 0, y: 0, rotate: 0, top: 0 },
-    target: { x: 0, y: 0, rotate: 0, top: 82 }
-};
-
-function setChapterState(chapters, floating, clustered) {
-    if (chapterMotion.floating === null) {
-        chapterMotion.floating = floating;
-        chapterMotion.clustered = clustered;
-        chapters.classList.toggle('portfolio__chapters--floating', floating);
-        chapters.classList.toggle('portfolio__chapters--clustered', clustered);
-        return;
-    }
-
-    chapters.classList.toggle('portfolio__chapters--clustered', clustered);
-    chapterMotion.clustered = clustered;
-
-    if (chapterMotion.floating === floating) return;
-
-    clearTimeout(chapterMotion.transitionTimer);
-    clearTimeout(chapterMotion.settleTimer);
-    chapters.classList.remove('portfolio__chapters--phase-in');
-    chapters.classList.add('portfolio__chapters--phase-out');
-
-    chapterMotion.transitionTimer = window.setTimeout(() => {
-        chapterMotion.floating = floating;
-        chapters.classList.toggle('portfolio__chapters--floating', floating);
-        chapters.classList.toggle('portfolio__chapters--clustered', clustered);
-        chapters.classList.remove('portfolio__chapters--phase-out');
-        chapters.classList.add('portfolio__chapters--phase-in');
-
-        chapterMotion.settleTimer = window.setTimeout(() => {
-            chapters.classList.remove('portfolio__chapters--phase-in');
-        }, 560);
-    }, 240);
-}
-
-function applyChapterMotionFrame(chapters) {
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const stiffness = reduceMotion ? 1 : 0.12;
-    const damping = reduceMotion ? 0 : 0.74;
-    let moving = false;
-
-    ['x', 'y', 'rotate', 'top'].forEach((key) => {
-        const delta = chapterMotion.target[key] - chapterMotion.current[key];
-        chapterMotion.velocity[key] = (chapterMotion.velocity[key] + delta * stiffness) * damping;
-        chapterMotion.current[key] += chapterMotion.velocity[key];
-
-        if (Math.abs(delta) > 0.02 || Math.abs(chapterMotion.velocity[key]) > 0.02) {
-            moving = true;
-        }
-    });
-
-    chapters.style.setProperty('--chapter-x', `${chapterMotion.current.x.toFixed(2)}px`);
-    chapters.style.setProperty('--chapter-y', `${chapterMotion.current.y.toFixed(2)}px`);
-    chapters.style.setProperty('--chapter-rotate', `${chapterMotion.current.rotate.toFixed(2)}deg`);
-    chapters.style.setProperty('--chapter-top', `${chapterMotion.current.top.toFixed(2)}px`);
-
-    if (moving) {
-        chapterMotion.frame = window.requestAnimationFrame(() => applyChapterMotionFrame(chapters));
-    } else {
-        chapterMotion.frame = null;
-    }
-}
-
-function scheduleChapterMotion(chapters) {
-    if (!chapterMotion.frame) {
-        chapterMotion.frame = window.requestAnimationFrame(() => applyChapterMotionFrame(chapters));
-    }
-}
-
-function animatePortfolioChapters() {
-    const portfolio = document.getElementById('portfolio');
-    const chapters = document.getElementById('portfolioChapters');
-    const gallery = document.getElementById('gallery');
-    if (!portfolio || !chapters || !gallery) return;
-
-    const rect = portfolio.getBoundingClientRect();
-    const galleryRect = gallery.getBoundingClientRect();
-    const active = rect.top < window.innerHeight * 0.82 && rect.bottom > window.innerHeight * 0.12;
-    const floating = active && galleryRect.top < window.innerHeight * 0.18 && galleryRect.bottom > window.innerHeight * 0.42;
-    const floatProgress = Math.min(1, Math.max(0, (window.innerHeight * 0.18 - galleryRect.top) / Math.max(1, galleryRect.height * 0.55)));
-    const clustered = floating && floatProgress > 0.42;
-    const currentX = chapterMotion.current.x;
-    const currentY = chapterMotion.current.y;
-    const orbitalX = Math.sin(floatProgress * Math.PI * 2.8) * 20;
-    const orbitalY = Math.cos(floatProgress * Math.PI * 1.85) * 13;
-    const pullX = Math.sin(window.scrollY * 0.011) * 5;
-    const pullY = Math.cos(window.scrollY * 0.008) * 4;
-    const driftX = floating ? orbitalX + pullX - currentY * 0.045 : 0;
-    const driftY = floating ? orbitalY + pullY + currentX * 0.03 : 0;
-    const rotate = floating ? Math.sin(floatProgress * Math.PI * 1.75) * 1.15 + (currentX * 0.018) : 0;
-    const top = 82 + floatProgress * 92;
-
-    chapterMotion.target.x = driftX;
-    chapterMotion.target.y = driftY;
-    chapterMotion.target.rotate = rotate;
-    chapterMotion.target.top = top;
-    setChapterState(chapters, floating, clustered);
-    scheduleChapterMotion(chapters);
-}
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -411,8 +300,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     applyGalleryFilter('witness');
-    animatePortfolioChapters();
-    window.addEventListener('scroll', animatePortfolioChapters, { passive: true });
-    window.addEventListener('resize', animatePortfolioChapters);
 
 });
