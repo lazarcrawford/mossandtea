@@ -5,7 +5,7 @@ const path = require('node:path');
 const { chromium } = require('playwright-core');
 
 const ROOT = path.resolve(__dirname, '..');
-const TARGET = process.env.CLIENT_PORTAL_URL || `file://${path.join(ROOT, 'hermitage', 'index.html')}`;
+const TARGET = process.env.CLIENT_PORTAL_URL || `file://${path.join(ROOT, 'hermitage', 'index.html')}?demo=1`;
 const BROWSER_CANDIDATES = [
   process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE,
   chromium.executablePath(),
@@ -32,6 +32,7 @@ function staticChecks() {
   assert(js.includes('signInWithOtp'), 'Hermitage JS should use magic-link auth');
   assert(js.includes('createSignedUrl'), 'Hermitage JS should use signed Storage URLs');
   assert(js.includes('client_file_selections'), 'Hermitage JS should persist selections');
+  assert(js.includes('demoMode'), 'Hermitage JS should include local demo mode');
   assert(redirect.includes('/hermitage/'), 'Portal compatibility page should redirect to Hermitage');
 }
 
@@ -62,25 +63,24 @@ async function run() {
     ]) {
       const page = await browser.newPage({ viewport, isMobile });
       await page.goto(TARGET, { waitUntil: 'load' });
-      await page.waitForSelector('[data-login-form]', { timeout: 10000 });
+      await page.waitForSelector('[data-app]', { timeout: 10000 });
 
       const layout = await page.evaluate(() => {
         const doc = document.documentElement;
         const body = document.body;
         const hero = document.querySelector('.hero');
-        const auth = document.querySelector('.auth-panel');
         return {
           scrollWidth: Math.max(doc.scrollWidth, body.scrollWidth),
           viewportWidth: window.innerWidth,
           heroHeight: hero?.getBoundingClientRect().height || 0,
-          authHeight: auth?.getBoundingClientRect().height || 0,
         };
       });
 
       assert(layout.scrollWidth <= layout.viewportWidth + 1, `${name}: horizontal overflow (${layout.scrollWidth}px > ${layout.viewportWidth}px)`);
       assert(layout.heroHeight > 260, `${name}: hero is unexpectedly short`);
-      assert(layout.authHeight > 180, `${name}: auth panel is unexpectedly short`);
-      await page.getByLabel('Email').fill('client@example.com');
+      await page.waitForSelector('[data-workspace]:not([hidden])', { timeout: 10000 });
+      await page.getByRole('button', { name: /Gallery/i }).click();
+      await page.waitForSelector('.gallery-grid .image-card', { timeout: 10000 });
       await page.close();
     }
 

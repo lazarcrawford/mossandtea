@@ -15,6 +15,7 @@ const state = {
   signedUrls: {},
   selections: new Set(),
 };
+const demoMode = new URLSearchParams(window.location.search).has('demo');
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => Array.from(document.querySelectorAll(selector));
@@ -59,6 +60,10 @@ async function sendMagicLink(email) {
 }
 
 async function loadSession() {
+  if (demoMode) {
+    loadDemoState();
+    return;
+  }
   if (!supabase) {
     setStatus('Supabase client unavailable.', false);
     return;
@@ -73,6 +78,75 @@ async function loadSession() {
   showWorkspace(true);
   setStatus('Session active.', true);
   await loadProjects();
+}
+
+function loadDemoState() {
+  state.session = { user: { email: 'client@example.com' } };
+  state.projects = [{
+    id: 'demo-project',
+    title: 'CENIT Portrait Study',
+    description: 'A quiet review room for a private portrait session. Choose favorites, mark final picks, and keep the next step clear.',
+    status: 'editing',
+    shoot_date: '2026-04-18',
+    delivery_date: '2026-05-08',
+    customers: { first_name: 'CENIT', last_name: '' },
+  }];
+  state.selectedProject = state.projects[0];
+  state.files = [
+    {
+      id: 'demo-1',
+      project_id: 'demo-project',
+      original_name: 'cenit_12B.jpg',
+      filename: 'cenit_12B.jpg',
+      mime_type: 'image/jpeg',
+      is_client_visible: true,
+      download_allowed: false,
+    },
+    {
+      id: 'demo-2',
+      project_id: 'demo-project',
+      original_name: 'G3A5320.jpg',
+      filename: 'G3A5320.jpg',
+      mime_type: 'image/jpeg',
+      is_client_visible: true,
+      download_allowed: true,
+    },
+    {
+      id: 'demo-3',
+      project_id: 'demo-project',
+      original_name: 'Braina14.jpg',
+      filename: 'Braina14.jpg',
+      mime_type: 'image/jpeg',
+      is_client_visible: true,
+      download_allowed: false,
+    },
+  ];
+  state.signedUrls = {
+    'demo-1': '../images/irina/cenit_12B.jpg',
+    'demo-2': '../images/irina/G3A5320.jpg',
+    'demo-3': '../images/irina/Braina14.jpg',
+  };
+  state.documents = [{
+    id: 'demo-doc',
+    title: 'Sample CENIT Agreement',
+    document_type: 'agreement',
+    status: 'draft',
+    file_url: '',
+  }];
+  state.invoices = [{
+    id: 'demo-invoice',
+    title: 'Sample Invoice Draft',
+    amount_cents: 0,
+    status: 'pending',
+    payment_url: '',
+  }];
+  showWorkspace(true);
+  setStatus('Demo mode. No client data is being used.', true);
+  renderProjects();
+  renderOverview();
+  renderGallery();
+  renderDocuments();
+  renderInvoices();
 }
 
 async function loadProjects() {
@@ -90,6 +164,12 @@ async function selectProject(projectId) {
   state.selectedProject = state.projects.find((project) => project.id === projectId) || null;
   renderProjects();
   renderOverview();
+  if (demoMode) {
+    renderGallery();
+    renderDocuments();
+    renderInvoices();
+    return;
+  }
   await Promise.all([loadFiles(projectId), loadDocuments(projectId), loadInvoices(projectId)]);
 }
 
@@ -248,6 +328,10 @@ function renderInvoices() {
 async function submitSelections() {
   if (!state.selectedProject || !state.selections.size) {
     setStatus('Choose at least one image first.', false);
+    return;
+  }
+  if (demoMode) {
+    setStatus(`${state.selections.size} demo final pick${state.selections.size === 1 ? '' : 's'} marked.`, true);
     return;
   }
   const rows = Array.from(state.selections).map((fileId) => ({
