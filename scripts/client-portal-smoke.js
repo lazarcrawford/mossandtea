@@ -69,15 +69,19 @@ async function run() {
         const doc = document.documentElement;
         const body = document.body;
         const hero = document.querySelector('.hero');
+        const workspace = document.querySelector('[data-workspace]');
         return {
           scrollWidth: Math.max(doc.scrollWidth, body.scrollWidth),
           viewportWidth: window.innerWidth,
+          viewportHeight: window.innerHeight,
           heroHeight: hero?.getBoundingClientRect().height || 0,
+          workspaceTop: workspace?.getBoundingClientRect().top || 0,
         };
       });
 
       assert(layout.scrollWidth <= layout.viewportWidth + 1, `${name}: horizontal overflow (${layout.scrollWidth}px > ${layout.viewportWidth}px)`);
       assert(layout.heroHeight > 260, `${name}: hero is unexpectedly short`);
+      assert(layout.workspaceTop <= layout.viewportHeight + 20, `${name}: project room starts too far below the fold (${layout.workspaceTop}px > ${layout.viewportHeight}px)`);
       await page.waitForSelector('[data-workspace]:not([hidden])', { timeout: 10000 });
       await page.locator('[data-view-button="gallery"]').click();
       await page.waitForSelector('.gallery-grid .image-card', { timeout: 10000 });

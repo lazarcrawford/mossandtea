@@ -15,6 +15,34 @@ Everything that matters must be in git. The filesystem is a workspace, not a sec
 | Separate tools/apps | Untracked subdirectory | Own branch or own repo |
 | Build artifacts | `__pycache__/`, `.next/`, `dist/` | `.gitignore` |
 
+## Dyad Harness
+
+### Identity
+
+Moss & Tea is a photography studio and client experience system. The work blends trust, craft, gallery delivery, brand presence, and operational calm.
+
+### North Star
+
+Turn studio intent into client-facing confidence: beautiful presentation, clear workflow, reliable delivery, and a brand that feels human and premium.
+
+### Telemetry
+
+At session boot, inspect:
+
+- `AGENTS.md`
+- `CLIENT_PORTAL_ROADMAP.md`
+- `MVP_TECHNICAL_ARCHITECTURE.md`
+- `OPERATIONS.md`
+- current branch, dirty files, open docs, and portal status
+
+### Kinetic Moves
+
+Progress usually means converting a design or operating decision into committed docs, issue-routed decisions, reviewed PRs, or working portal behavior.
+
+### Serialization
+
+Keep the rule: anything that matters goes to git. Use issues for open decisions and PRs for reviewable design or implementation changes.
+
 ## File Management Rules
 
 1. **Commit early, commit often.** A document that exists only on disk is a document that can vanish. If you wrote something worth keeping, commit it. If you're not sure, commit it to a branch — you can always squash later.

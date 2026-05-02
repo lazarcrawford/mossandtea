@@ -37,6 +37,11 @@ function setStatus(message, active = false) {
   $('[data-status-dot]').classList.toggle('is-active', active);
 }
 
+function setText(selector, value) {
+  const element = $(selector);
+  if (element) element.textContent = value;
+}
+
 function formatDate(value) {
   if (!value) return 'Not set';
   return new Date(`${value}T00:00:00`).toLocaleDateString([], {
@@ -276,11 +281,14 @@ function renderOverview() {
   const heroFile = state.files.find((file) => state.signedUrls[file.id]) || null;
   $('[data-client-name]').textContent = customer?.first_name ? `${customer.first_name}'s Hermitage` : 'Your Hermitage';
   $('[data-project-title]').textContent = project?.title || 'Select a project';
+  setText('[data-hero-project-title]', project?.title || 'Project room');
   $('[data-project-description]').textContent = project?.description || 'Review project status, gallery files, documents, and billing links.';
   $('[data-project-status]').textContent = statusLabel(project?.status);
+  setText('[data-hero-project-status]', statusLabel(project?.status));
   $('[data-project-shoot]').textContent = formatDate(project?.shoot_date);
   $('[data-project-delivery]').textContent = formatDate(project?.delivery_date);
   $('[data-project-file-count]').textContent = String(state.files.length || 0);
+  setText('[data-hero-file-count]', String(state.files.length || 0));
   $('[data-studio-note]').textContent = project?.studio_note || 'The studio will leave a note here when the next pass is ready.';
   if (heroFile) $('[data-project-hero]').src = state.signedUrls[heroFile.id];
   renderTimeline(project);
@@ -356,6 +364,7 @@ function renderGallery() {
 function renderSelectionTray() {
   const selectedFiles = state.files.filter((file) => state.selections.has(file.id));
   $('[data-selection-count]').textContent = `${selectedFiles.length} selected`;
+  setText('[data-hero-selection-count]', String(selectedFiles.length));
   const strip = $('[data-selection-strip]');
   if (!selectedFiles.length) {
     strip.innerHTML = '<p class="muted">Your final set will collect here.</p>';

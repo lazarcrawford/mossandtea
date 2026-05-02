@@ -91,7 +91,7 @@ h1, h2, h3 {
 }
 
 .topbar {
-  min-height: 82px;
+  min-height: 74px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -140,9 +140,11 @@ h1, h2, h3 {
 
 .hero {
   position: relative;
-  min-height: min(760px, calc(100vh - 108px));
+  min-height: clamp(320px, 38vh, 440px);
   display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 390px);
   align-items: end;
+  gap: clamp(18px, 4vw, 46px);
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -174,15 +176,15 @@ h1, h2, h3 {
 .hero__content {
   position: relative;
   z-index: 1;
-  max-width: 840px;
-  padding: clamp(26px, 6vw, 74px);
+  max-width: 620px;
+  padding: clamp(22px, 3.4vw, 42px);
 }
 
 h1 {
-  max-width: 760px;
-  margin-bottom: 20px;
-  font-size: clamp(4rem, 9vw, 9.6rem);
-  line-height: 0.82;
+  max-width: 560px;
+  margin-bottom: 16px;
+  font-size: clamp(3rem, 5.4vw, 5.8rem);
+  line-height: 0.86;
 }
 
 h2 {
@@ -198,9 +200,9 @@ h3 {
 }
 
 .lede {
-  max-width: 620px;
+  max-width: 540px;
   color: var(--muted);
-  font-size: clamp(1rem, 1.4vw, 1.18rem);
+  font-size: clamp(0.96rem, 1.12vw, 1.06rem);
 }
 
 .hero__actions {
@@ -208,7 +210,58 @@ h3 {
   flex-wrap: wrap;
   align-items: center;
   gap: 14px;
-  margin-top: 32px;
+  margin-top: 24px;
+}
+
+.hero__room-card {
+  position: relative;
+  z-index: 1;
+  align-self: stretch;
+  display: grid;
+  align-content: end;
+  gap: 18px;
+  margin: clamp(18px, 2vw, 28px);
+  padding: clamp(18px, 2.6vw, 28px);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(245, 239, 230, 0.13), rgba(21, 18, 15, 0.36)),
+    rgba(21, 18, 15, 0.42);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.34);
+  backdrop-filter: blur(20px);
+}
+
+.hero__room-card h2 {
+  margin: 0;
+  font-size: clamp(2.4rem, 4vw, 4.2rem);
+}
+
+.hero__room-card dl {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+}
+
+.hero__room-card div {
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+
+.hero__room-card dt {
+  color: var(--muted);
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.hero__room-card dd {
+  margin: 6px 0 0;
+  font-family: var(--serif);
+  font-size: 1.65rem;
+  line-height: 1;
+  text-transform: capitalize;
 }
 
 .signal {
@@ -308,7 +361,7 @@ input {
 }
 
 .workspace {
-  margin: 72px 0 100px;
+  margin: 42px 0 100px;
 }
 
 .workspace__masthead,
@@ -777,15 +830,31 @@ input {
   }
 
   .hero {
-    min-height: 620px;
+    min-height: 0;
+    grid-template-columns: 1fr;
   }
 
   .hero__content {
-    padding: 24px;
+    padding: 20px;
+  }
+
+  .hero__room-card {
+    align-self: auto;
+    gap: 12px;
+    margin: 0 20px 20px;
+    padding: 18px;
+  }
+
+  .hero__room-card h2 {
+    font-size: 2.2rem;
+  }
+
+  .hero__room-card dd {
+    font-size: 1.2rem;
   }
 
   h1 {
-    font-size: clamp(3.5rem, 18vw, 5.4rem);
+    font-size: clamp(3.05rem, 14vw, 4.25rem);
   }
 
   h2 {
@@ -803,6 +872,14 @@ input {
   .lightbox figcaption {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .hero__actions {
+    margin-top: 18px;
+  }
+
+  .workspace {
+    margin-top: 20px;
   }
 
   .segmented,
