@@ -27,6 +27,8 @@ function staticChecks() {
   assert(html.includes('data-gallery'), 'Hermitage should include gallery surface');
   assert(html.includes('data-documents'), 'Hermitage should include documents surface');
   assert(html.includes('data-invoices'), 'Hermitage should include billing surface');
+  assert(html.includes('data-services'), 'Hermitage should include services surface');
+  assert(html.includes('data-delivery-files'), 'Hermitage should include delivery surface');
   assert(html.includes('data-proofing-ledger'), 'Hermitage should include proofing ledger');
   assert(html.includes('data-purchase-panel'), 'Hermitage should include edit purchase panel');
   assert(css.includes('@media (max-width: 720px)'), 'Hermitage CSS should include mobile breakpoint');
@@ -90,6 +92,12 @@ async function run() {
       assert(layout.heroHeight > 260, `${name}: hero is unexpectedly short`);
       assert(layout.workspaceTop <= layout.viewportHeight + 20, `${name}: project room starts too far below the fold (${layout.workspaceTop}px > ${layout.viewportHeight}px)`);
       await page.waitForSelector('[data-workspace]:not([hidden])', { timeout: 10000 });
+      await page.locator('[data-view-button="services"]').click();
+      await page.waitForSelector('[data-services] .service-card', { timeout: 10000 });
+      await page.locator('[data-toggle-service]').first().click();
+      await page.waitForFunction(() => document.querySelector('[data-service-total]')?.textContent.includes('$149.00'), null, { timeout: 10000 });
+      await page.locator('[data-approve-services]').click();
+      await page.waitForFunction(() => document.querySelector('[data-service-state]')?.textContent.includes('Approved'), null, { timeout: 10000 });
       await page.locator('[data-view-button="gallery"]').click();
       await page.waitForSelector('.gallery-grid .image-card', { timeout: 10000 });
       await page.locator('[data-select-file]').first().click();
@@ -105,6 +113,13 @@ async function run() {
       await page.waitForFunction(() => document.querySelector('[data-proof-state]')?.textContent.includes('Submitted'), null, { timeout: 10000 });
       await page.waitForSelector('[data-purchase-panel]:not([hidden])', { timeout: 10000 });
       await page.waitForSelector('.image-card.is-submitted', { timeout: 10000 });
+      await page.locator('[data-confirm-purchase]').click();
+      await page.waitForFunction(() => document.querySelector('[data-purchase-panel]')?.hidden === true, null, { timeout: 10000 });
+      await page.locator('[data-view-button="delivery"]').click();
+      await page.waitForFunction(() => document.querySelector('[data-delivery-status]')?.textContent.includes('Ready for review'), null, { timeout: 10000 });
+      await page.locator('[data-accept-delivery]').click();
+      await page.waitForFunction(() => document.querySelector('[data-delivery-status]')?.textContent.includes('Accepted'), null, { timeout: 10000 });
+      await page.locator('[data-view-button="gallery"]').click();
       await page.locator('[data-open-image]').first().click();
       await page.waitForSelector('.lightbox:not([hidden]) img[src]', { timeout: 10000 });
       await page.locator('[data-lightbox-next]').evaluate((el) => el.click());

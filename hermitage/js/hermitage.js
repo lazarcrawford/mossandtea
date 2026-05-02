@@ -12,6 +12,11 @@ const state = {
   files: [],
   documents: [],
   invoices: [],
+  services: [],
+  serviceRequests: new Set(),
+  serviceOrderApprovedAt: null,
+  deliveryFiles: [],
+  deliveryAcceptedAt: null,
   signedUrls: {},
   selections: new Set(),
   editRequests: new Map(),
@@ -83,6 +88,22 @@ function editFeeTotalCents() {
   return overageEditCount() * projectEditFeeCents();
 }
 
+function selectedServices() {
+  return state.services.filter((service) => state.serviceRequests.has(service.id));
+}
+
+function serviceOrderTotalCents() {
+  return selectedServices().reduce((sum, service) => sum + Number(service.price_cents || 0), 0);
+}
+
+function projectBalanceCents() {
+  const invoiceTotal = state.invoices.reduce((sum, invoice) => {
+    if (invoice.status === 'paid') return sum;
+    return sum + Number(invoice.amount_cents || 0);
+  }, 0);
+  return invoiceTotal;
+}
+
 function currentSelectedFiles() {
   return state.files.filter((file) => state.selections.has(file.id));
 }
@@ -99,6 +120,9 @@ function parseSelectionNote(note) {
 
 function nextAction(project) {
   if (!project) return 'Open the project';
+  if (state.deliveryAcceptedAt) return 'Delivery accepted';
+  if (state.deliveryFiles.length && state.submittedAt && (!editFeeTotalCents() || state.purchaseConfirmed)) return 'Review final delivery';
+  if (state.serviceRequests.size && !state.serviceOrderApprovedAt) return 'Approve service order';
   if (state.submittedAt && editFeeTotalCents() && !state.purchaseConfirmed) return 'Approve edit charge';
   if (state.submittedAt) return 'Selection submitted';
   if (state.selections.size) return 'Submit or refine final picks';
@@ -174,8 +198,8 @@ function loadDemoState() {
     {
       id: 'demo-doc',
       title: 'Sample CENIT Agreement',
-      document_type: 'agreement',
-      status: 'draft',
+      document_type: 'contract',
+      status: 'signed',
       file_url: '',
     },
     {
@@ -193,6 +217,36 @@ function loadDemoState() {
     status: 'pending',
     payment_url: '',
   }];
+  state.services = [
+    {
+      id: 'svc-rush',
+      title: 'Rush final gallery',
+      description: 'Move the edit pass to the front of the studio queue when timing matters.',
+      price_cents: 14900,
+      turnaround: '2 studio days',
+    },
+    {
+      id: 'svc-card',
+      title: 'Digital card design',
+      description: 'A refined announcement, holiday, or keepsake card built from the final photographs.',
+      price_cents: 12900,
+      turnaround: '3 studio days',
+    },
+    {
+      id: 'svc-print',
+      title: 'Print-ready master files',
+      description: 'Prepare selected images with crop, export, and finish guidance for archival printing.',
+      price_cents: 9900,
+      turnaround: '2 studio days',
+    },
+  ];
+  state.serviceRequests = new Set();
+  state.serviceOrderApprovedAt = null;
+  state.deliveryFiles = state.files.slice(0, 3).map((file) => ({
+    ...file,
+    deliveryLabel: 'Final retouched file',
+  }));
+  state.deliveryAcceptedAt = null;
   showWorkspace(true);
   setStatus('Demo portal. No client data is being used.', true);
   renderAll();
@@ -232,6 +286,10 @@ async function selectProject(projectId) {
   state.editRequests = new Map();
   state.submittedAt = null;
   state.purchaseConfirmed = false;
+  state.serviceRequests = new Set();
+  state.serviceOrderApprovedAt = null;
+  state.deliveryFiles = [];
+  state.deliveryAcceptedAt = null;
   renderProjects();
   renderOverview();
   if (demoMode) {
@@ -334,6 +392,8 @@ function renderAll() {
   renderGallery();
   renderDocuments();
   renderInvoices();
+  renderServices();
+  renderDelivery();
   renderSelectionTray();
   renderProofingLedger();
 }
@@ -371,6 +431,8 @@ function renderOverview() {
   $('[data-project-shoot]').textContent = formatDate(project?.shoot_date);
   $('[data-project-delivery]').textContent = formatDate(project?.delivery_date);
   $('[data-project-file-count]').textContent = String(state.files.length || 0);
+  setText('[data-project-contract]', contractStatus());
+  setText('[data-project-balance]', projectBalanceCents() ? money(projectBalanceCents()) : 'Clear');
   setText('[data-hero-file-count]', String(state.files.length || 0));
   $('[data-studio-note]').textContent = project?.studio_note || 'The studio will leave a note here when the next pass is ready.';
   if (heroFile) $('[data-project-hero]').src = state.signedUrls[heroFile.id];
@@ -378,13 +440,21 @@ function renderOverview() {
   renderProofingLedger();
 }
 
+function contractStatus() {
+  const contract = state.documents.find((doc) => /contract|agreement/i.test(`${doc.document_type} ${doc.title}`));
+  if (!contract) return 'Not posted';
+  return statusLabel(contract.status || 'ready');
+}
+
 function renderTimeline(project) {
   const status = statusLabel(project?.status);
   const steps = [
-    ['Session held', formatDate(project?.shoot_date)],
-    ['First edit', status === 'editing' ? 'In progress now' : 'Prepared'],
-    ['Client proofing', `${state.files.length || 0} visible images`],
-    ['Final delivery', formatDate(project?.delivery_date)],
+    ['Invite', 'Private room opened'],
+    ['Contract', contractStatus()],
+    ['Session', formatDate(project?.shoot_date)],
+    ['Proofing', state.submittedAt ? 'Submitted' : `${state.files.length || 0} visible images`],
+    ['Studio edit', status === 'editing' ? 'In progress now' : 'Queued'],
+    ['Delivery', state.deliveryAcceptedAt ? 'Accepted' : formatDate(project?.delivery_date)],
   ];
   $('[data-timeline]').innerHTML = steps.map(([title, detail]) => `
     <li><div></div><p><strong>${escapeHtml(title)}</strong><span>${escapeHtml(detail)}</span></p></li>
@@ -553,6 +623,110 @@ function renderInvoices() {
   `).join('');
 }
 
+function renderServices() {
+  const target = $('[data-services]');
+  if (!target) return;
+  if (!state.services.length) {
+    target.innerHTML = '<article class="empty"><p>No additional services are available for this project yet.</p></article>';
+    return;
+  }
+  target.innerHTML = state.services.map((service) => {
+    const selected = state.serviceRequests.has(service.id);
+    return `
+      <article class="service-card ${selected ? 'is-selected' : ''}">
+        <div>
+          <span>${escapeHtml(service.turnaround || 'Studio timing')}</span>
+          <strong>${escapeHtml(service.title)}</strong>
+          <p>${escapeHtml(service.description)}</p>
+        </div>
+        <div class="service-card__action">
+          <b>${escapeHtml(money(service.price_cents))}</b>
+          <button type="button" class="pick-toggle ${selected ? 'is-selected' : ''}" data-toggle-service="${escapeHtml(service.id)}">
+            ${selected ? 'Added' : 'Add'}
+          </button>
+        </div>
+      </article>
+    `;
+  }).join('');
+  $$('[data-toggle-service]').forEach((button) => {
+    button.addEventListener('click', () => toggleService(button.dataset.toggleService));
+  });
+  renderServiceSummary();
+}
+
+function renderServiceSummary() {
+  setText('[data-service-count]', String(state.serviceRequests.size));
+  setText('[data-service-total]', serviceOrderTotalCents() ? money(serviceOrderTotalCents()) : 'No balance due');
+  setText('[data-service-state]', state.serviceOrderApprovedAt ? 'Approved' : 'Open');
+  setText('[data-hero-next-action]', nextAction(state.selectedProject));
+  setText('[data-room-phase]', `${statusLabel(state.selectedProject?.status)} - ${nextAction(state.selectedProject)}`);
+}
+
+function renderDelivery() {
+  const target = $('[data-delivery-files]');
+  if (!target) return;
+  setText('[data-delivery-status]', state.deliveryAcceptedAt ? 'Accepted' : (state.submittedAt ? 'Ready for review' : 'Preparing'));
+  setText('[data-delivery-accepted]', state.deliveryAcceptedAt ? formatDate(state.deliveryAcceptedAt.slice(0, 10)) : 'Not yet');
+  if (!state.deliveryFiles.length) {
+    target.innerHTML = '<article class="empty"><p>Final files will appear after proofing and the studio edit pass.</p></article>';
+    return;
+  }
+  target.innerHTML = state.deliveryFiles.map((file) => `
+    <article class="delivery-file ${state.deliveryAcceptedAt ? 'is-accepted' : ''}">
+      <img src="${escapeHtml(state.signedUrls[file.id] || '')}" alt="${escapeHtml(file.caption || file.original_name || file.filename)}">
+      <div>
+        <strong>${escapeHtml(file.caption || file.original_name || file.filename)}</strong>
+        <span>${escapeHtml(file.deliveryLabel || 'Final file')}</span>
+      </div>
+    </article>
+  `).join('');
+}
+
+function toggleService(serviceId) {
+  if (state.serviceRequests.has(serviceId)) state.serviceRequests.delete(serviceId);
+  else state.serviceRequests.add(serviceId);
+  state.serviceOrderApprovedAt = null;
+  renderServices();
+}
+
+function approveServiceOrder() {
+  if (!state.serviceRequests.size) {
+    setStatus('Choose a service first.', false);
+    return;
+  }
+  state.serviceOrderApprovedAt = new Date().toISOString();
+  if (demoMode && serviceOrderTotalCents()) {
+    state.invoices = [{
+      id: 'demo-service-order',
+      title: 'Additional service order',
+      amount_cents: serviceOrderTotalCents(),
+      status: 'pending',
+      payment_url: '',
+    }, ...state.invoices.filter((invoice) => invoice.id !== 'demo-service-order')];
+  }
+  setStatus('Service order approved for the studio queue.', true);
+  renderServices();
+  renderInvoices();
+  renderOverview();
+}
+
+function acceptDelivery() {
+  if (!state.submittedAt) {
+    setStatus('Submit final picks before accepting delivery.', false);
+    return;
+  }
+  if (editFeeTotalCents() && !state.purchaseConfirmed) {
+    setStatus('Approve the edit charge before accepting delivery.', false);
+    return;
+  }
+  state.deliveryAcceptedAt = new Date().toISOString();
+  if (state.selectedProject) state.selectedProject.status = 'delivered';
+  setStatus('Delivery accepted. The project is ready to close.', true);
+  renderOverview();
+  renderDelivery();
+  renderProjects();
+}
+
 function toggleSelection(fileId) {
   if (state.selections.has(fileId)) state.selections.delete(fileId);
   else state.selections.add(fileId);
@@ -600,6 +774,7 @@ async function submitSelections() {
     renderGallery();
     renderSelectionTray();
     renderProofingLedger();
+    renderDelivery();
     return;
   }
   const rows = Array.from(state.selections).map((fileId) => ({
@@ -625,6 +800,7 @@ async function submitSelections() {
   renderGallery();
   renderSelectionTray();
   renderProofingLedger();
+  renderDelivery();
 }
 
 function openLightbox(fileId) {
@@ -737,6 +913,8 @@ function bindEvents() {
     });
   });
   $('[data-submit-selections]').addEventListener('click', () => submitSelections().catch(reportError));
+  $('[data-approve-services]').addEventListener('click', approveServiceOrder);
+  $('[data-accept-delivery]').addEventListener('click', acceptDelivery);
   $('[data-close-lightbox]').addEventListener('click', closeLightbox);
   $('[data-lightbox-prev]').addEventListener('click', () => moveLightbox(-1));
   $('[data-lightbox-next]').addEventListener('click', () => moveLightbox(1));

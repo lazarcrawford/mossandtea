@@ -44,6 +44,9 @@
           <a class="sidebar__link" :class="nav.active === 'dashboard' && 'sidebar__link--active'" @click="nav.active = 'dashboard'">
             <span class="icon">OV</span> <span>Dashboard</span>
           </a>
+          <a class="sidebar__link" :class="nav.active === 'operations' && 'sidebar__link--active'" @click="nav.active = 'operations'">
+            <span class="icon">OP</span> <span>Operations</span>
+          </a>
           <a class="sidebar__link" :class="nav.active === 'customers' && 'sidebar__link--active'" @click="nav.active = 'customers'; customers.load()">
             <span class="icon">CL</span> <span>Customers</span>
           </a>
@@ -120,6 +123,69 @@
                   <tr x-show="!stats.recentProjects.length">
                     <td colspan="5" class="empty-state">No projects yet</td>
                   </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Operations -->
+        <section x-show="nav.active === 'operations'" class="section">
+          <div class="topbar"><h1>Client Operations</h1></div>
+          <div class="stats-grid">
+            <template x-for="card in operations.summary" :key="card.label">
+              <div class="card card--stat">
+                <div class="stat__number" x-text="card.value"></div>
+                <div class="stat__label" x-text="card.label"></div>
+              </div>
+            </template>
+          </div>
+          <div class="card" style="margin-bottom:1rem">
+            <h3 style="font-family:var(--font-display);font-weight:400;margin-bottom:1rem">Studio Fulfillment Queue</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Client Action</th>
+                    <th>Project</th>
+                    <th>Studio Owner</th>
+                    <th>State</th>
+                    <th>Next Move</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template x-for="item in operations.queue" :key="item.id">
+                    <tr>
+                      <td><strong x-text="item.action"></strong></td>
+                      <td x-text="item.project"></td>
+                      <td x-text="item.owner"></td>
+                      <td><span class="badge" :class="'badge--' + item.statusClass" x-text="item.state"></span></td>
+                      <td x-text="item.next"></td>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card">
+            <h3 style="font-family:var(--font-display);font-weight:400;margin-bottom:1rem">Agentic Editing Harness</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Step</th>
+                    <th>Human Decision</th>
+                    <th>Agent Support</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template x-for="step in operations.harness" :key="step.step">
+                    <tr>
+                      <td><strong x-text="step.step"></strong></td>
+                      <td x-text="step.human"></td>
+                      <td x-text="step.agent"></td>
+                    </tr>
+                  </template>
                 </tbody>
               </table>
             </div>

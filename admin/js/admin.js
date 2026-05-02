@@ -95,6 +95,69 @@ window.createAdminApp = () => {
     sampleMode: {
       visible: false
     },
+    operations: {
+      summary: [
+        { label: 'Pending Contract', value: '1' },
+        { label: 'Proof Submissions', value: '1' },
+        { label: 'Edit Requests', value: '4' },
+        { label: 'Delivery Packages', value: '1' },
+      ],
+      queue: [
+        {
+          id: 'contract-cenit',
+          action: 'Contract signed by client',
+          project: 'CENIT Portrait Study',
+          owner: 'Irina',
+          state: 'Admin countersign',
+          statusClass: 'booked',
+          next: 'Review agreement and mark project booked',
+        },
+        {
+          id: 'proofs-cenit',
+          action: 'Final picks submitted',
+          project: 'CENIT Portrait Study',
+          owner: 'Irina',
+          state: 'Edit queue',
+          statusClass: 'editing',
+          next: 'Open selections, apply edit notes, package finals',
+        },
+        {
+          id: 'service-cenit',
+          action: 'Additional service order',
+          project: 'CENIT Portrait Study',
+          owner: 'Lazar / Irina',
+          state: 'Payment pending',
+          statusClass: 'shoot_complete',
+          next: 'Confirm charge, then create card/print-ready deliverable',
+        },
+        {
+          id: 'delivery-cenit',
+          action: 'Final delivery acceptance',
+          project: 'CENIT Portrait Study',
+          owner: 'Irina',
+          state: 'Ready',
+          statusClass: 'delivered',
+          next: 'Send final package and wait for client acceptance',
+        },
+      ],
+      harness: [
+        {
+          step: 'Receive brief',
+          human: 'Irina confirms taste, crop intent, and what must stay natural.',
+          agent: 'Summarize proof selections, edit notes, and service requests into a work order.',
+        },
+        {
+          step: 'Prepare edit pass',
+          human: 'Irina performs or approves the actual image edit.',
+          agent: 'Generate checklist, filename map, export naming, and delivery manifest.',
+        },
+        {
+          step: 'Package delivery',
+          human: 'Irina approves final files before release.',
+          agent: 'Build client-facing delivery note, verify file visibility, and route acceptance state.',
+        },
+      ],
+    },
 
     async loadDashboard() {
       try {

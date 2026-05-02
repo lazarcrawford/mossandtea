@@ -23,6 +23,8 @@
       <nav aria-label="Project navigation">
         <a href="#/room" data-nav-view="overview">Overview</a>
         <a href="#/proofs" data-nav-view="gallery">Proofs</a>
+        <a href="#/services" data-nav-view="services">Services</a>
+        <a href="#/delivery" data-nav-view="delivery">Delivery</a>
         <a href="#/documents" data-nav-view="documents">Documents</a>
       </nav>
       <button class="text-button" type="button" data-sign-out hidden>Sign out</button>
@@ -89,6 +91,8 @@
           <div class="segmented" role="tablist" aria-label="Workspace sections">
             <button type="button" class="is-active" data-view-button="overview">Overview</button>
             <button type="button" data-view-button="gallery">Proofs</button>
+            <button type="button" data-view-button="services">Services</button>
+            <button type="button" data-view-button="delivery">Delivery</button>
             <button type="button" data-view-button="documents">Documents</button>
             <button type="button" data-view-button="billing">Billing</button>
           </div>
@@ -123,6 +127,8 @@
                   <div><dt>Shoot</dt><dd data-project-shoot>--</dd></div>
                   <div><dt>Delivery</dt><dd data-project-delivery>--</dd></div>
                   <div><dt>Visible proofs</dt><dd data-project-file-count>--</dd></div>
+                  <div><dt>Contract</dt><dd data-project-contract>--</dd></div>
+                  <div><dt>Order balance</dt><dd data-project-balance>--</dd></div>
                 </dl>
               </div>
               <div class="timeline-card">
@@ -193,6 +199,62 @@
                 </div>
                 <div class="gallery-grid" data-gallery></div>
               </details>
+            </div>
+
+            <div class="panel services-panel" data-view="services" hidden>
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Additional services</p>
+                  <h3>Choose what the final set should become.</h3>
+                  <p class="muted">Add practical studio work to this project. Paid requests collect into one simple approval before fulfillment begins.</p>
+                </div>
+                <button class="button" type="button" data-approve-services>Approve service order</button>
+              </div>
+              <div class="service-summary">
+                <div>
+                  <span>Requested services</span>
+                  <strong data-service-count>0</strong>
+                </div>
+                <div>
+                  <span>Order total</span>
+                  <strong data-service-total>No balance due</strong>
+                </div>
+                <div>
+                  <span>State</span>
+                  <strong data-service-state>Open</strong>
+                </div>
+              </div>
+              <div class="service-grid" data-services></div>
+            </div>
+
+            <div class="panel delivery-panel" data-view="delivery" hidden>
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Final delivery</p>
+                  <h3>The finished photographs return here.</h3>
+                  <p class="muted">Final files, edit status, and acceptance stay in one place so the project has a clean close.</p>
+                </div>
+                <button class="button" type="button" data-accept-delivery>Accept delivery</button>
+              </div>
+              <div class="delivery-state" data-delivery-state>
+                <div>
+                  <span>Package</span>
+                  <strong data-delivery-package>CENIT final edit set</strong>
+                </div>
+                <div>
+                  <span>State</span>
+                  <strong data-delivery-status>Preparing</strong>
+                </div>
+                <div>
+                  <span>Accepted</span>
+                  <strong data-delivery-accepted>Not yet</strong>
+                </div>
+              </div>
+              <div class="delivery-grid" data-delivery-files></div>
+              <label class="submission-note">
+                Acceptance note
+                <textarea data-acceptance-note rows="3" placeholder="Optional note for the studio before closing this delivery."></textarea>
+              </label>
             </div>
 
             <div class="panel" data-view="documents" hidden>
