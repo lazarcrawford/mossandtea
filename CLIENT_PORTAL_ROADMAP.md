@@ -1,8 +1,8 @@
-# Mazinte Customer Portal Product Roadmap
+# Moss & Tea Customer Portal Product Roadmap
 
 ## Product Thesis
 
-The Mazinte customer portal should become a private, image-led home for each client relationship. In the near term, it lets a client view their projects, review images, make selections, and understand what happens next. Over time, it should turn each client photo library into a living archive that keeps creating emotional value and commercial value.
+The Moss & Tea customer portal should become a private, image-led home for each client relationship. In the near term, it lets a client view their projects, review images, make selections, and understand what happens next. Over time, it should turn each client photo library into a living archive that keeps creating emotional value and commercial value.
 
 The core opportunity is that every client gallery is not only a delivery artifact. It is a reservoir of memory, identity, family history, brand material, and future gifting potential. The portal should keep applying useful energy to that archive: resurfacing the right images at the right time, making beautiful options visible, and letting clients buy or request value without friction.
 
@@ -685,15 +685,13 @@ Verification:
 
 ## Open Decisions
 
-- Should client auth use password login, magic links, or invite-only one-time links?
-- Should `customers.id` map directly to `auth.uid()`, or should there be a `customer_users` mapping table?
-- Which image services should be available first?
-- Should service orders always require payment up front, or should some require admin quote?
-- Should full-resolution downloads require balance paid?
-- Which payment provider should own early payment links?
-- Which product category is the first Shopify candidate?
-- Which fulfillment path matches the quality bar: fine-art lab, hybrid manual workflow, Printful, Printify, Gelato, or another partner?
-- What client permission language is needed before using archive images for generated previews?
+- [#3](https://github.com/lazarcrawford/mossandtea/issues/3): Should client auth use password login, magic links, or invite-only one-time links?
+- [#4](https://github.com/lazarcrawford/mossandtea/issues/4): Should `customers.id` map directly to `auth.uid()`, or should there be a `customer_users` mapping table?
+- [#7](https://github.com/lazarcrawford/mossandtea/issues/7): Which image services should be available first, and should service orders require payment up front or admin quote?
+- [#5](https://github.com/lazarcrawford/mossandtea/issues/5): Should full-resolution downloads require balance paid, admin release, or both?
+- [#6](https://github.com/lazarcrawford/mossandtea/issues/6): Which payment provider should own early payment links?
+- [#8](https://github.com/lazarcrawford/mossandtea/issues/8): Which product category and fulfillment path should be the first Shopify or manual-commerce candidate?
+- [#9](https://github.com/lazarcrawford/mossandtea/issues/9): What client permission language is needed before using archive images for generated previews?
 
 ## Immediate Next Build Recommendation
 

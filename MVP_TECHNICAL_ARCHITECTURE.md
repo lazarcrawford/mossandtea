@@ -1,4 +1,4 @@
-# Mazinte Client Portal MVP Technical Architecture
+# Moss & Tea Client Portal MVP Technical Architecture
 
 ## Purpose
 
@@ -661,12 +661,16 @@ Mitigation: use external payment links in MVP. Add provider webhooks only after 
 
 ## Open Technical Decisions
 
-1. Auth method for first clients: email/password, magic link, or Supabase invite link.
+1. [#3](https://github.com/lazarcrawford/mossandtea/issues/3): Auth method for first clients: email/password, magic link, or Supabase invite link.
 2. Whether Sprint 1 includes `project_documents` and `invoices`, or whether they wait until Sprint 3.
 3. How image derivatives should be handled for thumbnails versus full-size review files.
-4. Whether downloads require `balance_paid`, `download_allowed`, or both.
+4. [#5](https://github.com/lazarcrawford/mossandtea/issues/5): Whether downloads require `balance_paid`, `download_allowed`, or both.
 5. Whether project notes should remain in `messages` or become a richer support thread later.
-6. Which payment provider owns MVP payment links.
+6. [#6](https://github.com/lazarcrawford/mossandtea/issues/6): Which payment provider owns MVP payment links.
+
+## TDD Gap Register
+
+Pre-sprint coverage gaps are tracked in [docs/tdd-gap-register.md](docs/tdd-gap-register.md) and [GitHub issue #10](https://github.com/lazarcrawford/mossandtea/issues/10). The security-critical items are portal auth, `customer_users` mapping, cross-client RLS denial, and private Storage signed URL behavior.
 
 ## Recommended Next Action
 

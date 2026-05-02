@@ -7,4 +7,5 @@ node_modules/
 public/
 __pycache__/
 *.pyc
+*.patch
 .DS_Store
