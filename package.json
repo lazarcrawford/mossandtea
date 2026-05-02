@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "build": "python3 scripts/build_public.py",
+    "build": "node scripts/build_public.js",
+    "postinstall": "node scripts/build_public.js",
     "test": "python3 scripts/test.py",
     "test:admin-ui": "node scripts/admin-ui-smoke.js",
     "test:admin-ui:setup": "ADMIN_SMOKE_SETUP_USER=1 node scripts/admin-ui-smoke.js",

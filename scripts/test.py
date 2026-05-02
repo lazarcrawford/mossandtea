@@ -33,9 +33,9 @@ print("════════════════════════�
 
 # === 0. Build deployable public assets ===
 print("🏗️  Public Build")
-build = subprocess.run(["python3", os.path.join(SITE_DIR, "scripts", "build_public.py")],
-                       capture_output=True, text=True)
-check("scripts/build_public.py", build.returncode == 0)
+build = subprocess.run(["npm", "run", "build"],
+                       cwd=SITE_DIR, capture_output=True, text=True)
+check("npm run build", build.returncode == 0)
 if build.returncode != 0:
     print(build.stderr or build.stdout)
 print()
