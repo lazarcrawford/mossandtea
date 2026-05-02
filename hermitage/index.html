@@ -35,8 +35,8 @@
         </div>
         <div class="hero__content">
           <p class="eyebrow">Private client room</p>
-          <h1>A quiet room for the work to gather.</h1>
-          <p class="lede">Review the current edit, choose final images, return to documents, and see what the studio needs next. Hermitage is built to feel private, calm, and close to Irina's eye.</p>
+          <h1>A prepared table for the current edit.</h1>
+          <p class="lede">A private room for proofing, documents, and the next studio step. The work stays close, quiet, and clear.</p>
           <div class="hero__actions">
             <a class="button" href="#gallery" data-jump-gallery>Enter the proofs</a>
             <span class="signal" aria-live="polite"><i data-status-dot></i><span data-status>Checking session...</span></span>
@@ -45,12 +45,16 @@
         <aside class="hero__room-card" aria-label="Current room summary">
           <p class="eyebrow">Now open</p>
           <h2 data-hero-project-title>CENIT Portrait Study</h2>
+          <p class="room-card__next"><span>Next</span><strong data-hero-next-action>Choose final picks</strong></p>
           <dl>
             <div><dt>Status</dt><dd data-hero-project-status>Editing</dd></div>
             <div><dt>Proofs</dt><dd data-hero-file-count>6</dd></div>
             <div><dt>Final picks</dt><dd data-hero-selection-count>0</dd></div>
           </dl>
-          <button class="button button--secondary" type="button" data-enter-gallery>Review proofs</button>
+          <div class="room-card__actions">
+            <button class="button button--secondary" type="button" data-enter-gallery>Review proofs</button>
+            <button class="text-button" type="button" data-enter-view="documents">Documents</button>
+          </div>
         </aside>
       </section>
 
@@ -75,6 +79,7 @@
           <div>
             <p class="eyebrow">Client atelier</p>
             <h2 data-client-name>Your Hermitage</h2>
+            <p class="workspace__prompt" data-room-phase>Project room prepared for review.</p>
           </div>
           <div class="segmented" role="tablist" aria-label="Workspace sections">
             <button type="button" class="is-active" data-view-button="overview">Overview</button>

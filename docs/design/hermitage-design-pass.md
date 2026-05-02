@@ -2,13 +2,14 @@
 
 ## Source Studied
 
-The requested VoltAgent reference is `VoltAgent/awesome-design-md`, specifically its published `DESIGN.md` example for VoltAgent. Shell cloning was blocked by local DNS restrictions, so this pass uses the GitHub/raw web reference as design input instead of a local vendored copy.
+The requested VoltAgent reference is `VoltAgent/awesome-design-md`. For this pass, the repository was cloned locally to `/tmp/awesome-design-md` and reviewed as a pattern library for agent-readable design systems.
 
 Applied lessons:
 
-- Strong product systems can feel premium when surfaces are dark, precise, and high-contrast.
+- Strong `DESIGN.md` files are explicit about tokens, component anatomy, responsive behavior, and anti-patterns.
+- Photography-first systems such as Apple and Airbnb keep chrome quiet so the image carries the emotional signal.
+- Workspace systems such as Notion make status, next action, and navigation visible without making the experience feel like a dashboard dump.
 - Accent colors should behave like signals, not decoration.
-- Copy should be concise and confident.
 - Motion and layout should clarify state rather than advertise the interface.
 
 This pass does not copy VoltAgent's brand. It translates those product-system instincts into Moss & Tea's photographic, editorial language.

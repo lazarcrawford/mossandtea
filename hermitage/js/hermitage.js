@@ -60,6 +60,14 @@ function money(cents) {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(cents / 100);
 }
 
+function nextAction(project) {
+  if (!project) return 'Open the project room';
+  if (state.selections.size) return 'Submit or refine final picks';
+  if (state.files.length) return 'Choose the first final set';
+  if (state.documents.length) return 'Review studio documents';
+  return 'Wait for the studio to prepare files';
+}
+
 function showWorkspace(show) {
   $('[data-auth-panel]').hidden = show;
   $('[data-workspace]').hidden = !show;
@@ -282,6 +290,8 @@ function renderOverview() {
   $('[data-client-name]').textContent = customer?.first_name ? `${customer.first_name}'s Hermitage` : 'Your Hermitage';
   $('[data-project-title]').textContent = project?.title || 'Select a project';
   setText('[data-hero-project-title]', project?.title || 'Project room');
+  setText('[data-hero-next-action]', nextAction(project));
+  setText('[data-room-phase]', `${statusLabel(project?.status)} - ${nextAction(project)}`);
   $('[data-project-description]').textContent = project?.description || 'Review project status, gallery files, documents, and billing links.';
   $('[data-project-status]').textContent = statusLabel(project?.status);
   setText('[data-hero-project-status]', statusLabel(project?.status));
@@ -365,6 +375,8 @@ function renderSelectionTray() {
   const selectedFiles = state.files.filter((file) => state.selections.has(file.id));
   $('[data-selection-count]').textContent = `${selectedFiles.length} selected`;
   setText('[data-hero-selection-count]', String(selectedFiles.length));
+  setText('[data-hero-next-action]', nextAction(state.selectedProject));
+  setText('[data-room-phase]', `${statusLabel(state.selectedProject?.status)} - ${nextAction(state.selectedProject)}`);
   const strip = $('[data-selection-strip]');
   if (!selectedFiles.length) {
     strip.innerHTML = '<p class="muted">Your final set will collect here.</p>';
@@ -536,6 +548,13 @@ function bindEvents() {
       event.preventDefault();
       if ($('[data-workspace]').hidden) return;
       setView(link.dataset.navView);
+      $('[data-workspace]').scrollIntoView({ block: 'start' });
+    });
+  });
+  $$('[data-enter-view]').forEach((button) => {
+    button.addEventListener('click', () => {
+      if ($('[data-workspace]').hidden) return;
+      setView(button.dataset.enterView);
       $('[data-workspace]').scrollIntoView({ block: 'start' });
     });
   });

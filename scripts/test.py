@@ -144,6 +144,15 @@ if file_exists("supabase/migrations/00006_client_portal.sql"):
     check("00006 gates storage through project_files", grep_file("supabase/migrations/00006_client_portal.sql", r"customer_storage_read_visible_project_files"))
 print()
 
+# === 7. Portal access matrix ===
+print("🧭 Portal Access Matrix")
+access_test = subprocess.run(["python3", "scripts/portal_access_rls_test.py"],
+                             cwd=SITE_DIR, capture_output=True, text=True)
+check("customer_users RLS/access contract", access_test.returncode == 0)
+if access_test.returncode != 0:
+    print(access_test.stderr or access_test.stdout)
+print()
+
 # === Summary ===
 print("═══════════════════════════════════════")
 print(f"  \033[0;32m{PASS} passed\033[0m, \033[0;31m{FAIL} failed\033[0m, \033[1;33m{WARN} warnings\033[0m")
