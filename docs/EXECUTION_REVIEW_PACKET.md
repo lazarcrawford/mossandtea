@@ -21,6 +21,7 @@ The review should answer:
 - `MVP_TECHNICAL_ARCHITECTURE.md` - technical plan for portal auth, RLS, storage, signed URLs, portal UI, admin integration, rollout, and risks.
 - `OPERATIONS.md` - deploy readiness, environment expectations, and operational checks.
 - `docs/tdd-gap-register.md` - pre-sprint coverage gaps and test build order.
+- `docs/SPRINT_1_DECISIONS.md` - binding decisions required to begin Sprint 1.
 - `docs/reviews/2026-05-02-cloudcode-skillful-discussion.md` - Codex's structured response to CloudCode's architecture/process feedback.
 - `docs/reviews/2026-05-02-cloudcode-pr11-review.md` - CloudCode's follow-up review of this execution packet and the resulting blocker issues.
 - `docs/CLOUDCODE_REVIEW_PROMPT.md` - reproducible prompt for running the next CloudCode review through the local Ollama-backed Claude path.
@@ -41,7 +42,7 @@ The review should answer:
 
 ## Proposed Sprint 1 Gate
 
-Sprint 1 should not start until these are resolved or explicitly accepted:
+Sprint 1 should not start until these are resolved or explicitly accepted in `docs/SPRINT_1_DECISIONS.md`:
 
 1. Auth method selected or bounded for MVP.
 2. `customer_users` mapping accepted as the access model.
@@ -50,6 +51,8 @@ Sprint 1 should not start until these are resolved or explicitly accepted:
 5. RLS test plan accepted for anonymous, owner, other-client, and admin personas.
 6. Private Storage signed URL behavior accepted and testable.
 7. Admin portal controls scoped to the minimum needed for MVP.
+
+Current status: accepted in `docs/SPRINT_1_DECISIONS.md`.
 
 ## Requested Reviewer Output
 

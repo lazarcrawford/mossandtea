@@ -38,3 +38,14 @@ These are not optional hardening tasks. They must be resolved before any real cl
 3. Add portal browser smoke for TDD-01 and TDD-05 once the auth decision is resolved.
 4. Extend admin smoke for TDD-07 during Sprint 1.
 5. Add Telegram console UI smoke here and move bridge daemon tests to the bridge runtime repository.
+
+## Accepted Sprint 1 Persona Plan
+
+Sprint 1 tests must cover four personas:
+
+- anonymous
+- owner
+- other-client
+- admin
+
+This plan is accepted in [docs/SPRINT_1_DECISIONS.md](SPRINT_1_DECISIONS.md).

@@ -39,10 +39,12 @@ The repo already has enough foundation for the first portal:
 
 Recommended near-term shape:
 
-- Add a static `/portal/` Alpine + Supabase app parallel to `/admin/`.
+- Add a static `/hermitage/` Alpine + Supabase app parallel to `/admin/`, with `/portal/` retained as a redirect or compatibility alias.
 - Add a dedicated client portal migration for selections, visibility flags, invoices, service catalog, service requests, and order items.
 - Keep privileged operations in the Worker or future server-side routes.
 - Extend the admin app only where the portal creates new operational needs.
+
+Binding Sprint 1 decisions are recorded in [docs/SPRINT_1_DECISIONS.md](docs/SPRINT_1_DECISIONS.md).
 
 ## Version Roadmap
 
@@ -586,9 +588,9 @@ The key design constraint: the service offer should sit close to the image, but 
 
 Build:
 
-- `/portal/index.html`
-- `/portal/css/portal.css`
-- `/portal/js/portal.js`
+- `/hermitage/index.html`
+- `/hermitage/css/hermitage.css`
+- `/hermitage/js/hermitage.js`
 - `supabase/migrations/00006_client_portal.sql`
 - `scripts/client-portal-smoke.js`
 
@@ -701,7 +703,7 @@ Verification:
 Start with the MVP and make it real:
 
 1. Add `00006_client_portal.sql` with client-visible files, selections, and invoice metadata.
-2. Create `/portal/` with auth, project dashboard, project detail, and signed gallery.
+2. Create `/hermitage/` with auth, project dashboard, project detail, and signed gallery.
 3. Add final-pick submission.
 4. Extend admin with file visibility and selection review.
 5. Add a mobile smoke test.

@@ -43,13 +43,15 @@ This is enough to support a first client portal if the access model is tightened
 
 ## MVP Architecture Summary
 
-Build the portal as a static app parallel to admin:
+Build the client room as a static app parallel to admin:
 
 ```text
-/portal/index.html
-/portal/css/portal.css
-/portal/js/portal.js
+/hermitage/index.html
+/hermitage/css/hermitage.css
+/hermitage/js/hermitage.js
 ```
+
+`/hermitage/` is the primary route. `/portal/` should remain a redirect or alias for compatibility.
 
 The browser authenticates with Supabase Auth and reads portal data directly through Supabase RLS. It requests signed Storage URLs only for project files the authenticated user is allowed to read.
 
@@ -261,12 +263,12 @@ The implementation should also ensure the inserted `customer_id` matches the pro
 Keep the first version small:
 
 ```text
-portal/index.html
-portal/css/portal.css
-portal/js/portal.js
+hermitage/index.html
+hermitage/css/hermitage.css
+hermitage/js/hermitage.js
 ```
 
-`portal.js` can expose one Alpine root store with submodules:
+`hermitage.js` can expose one Alpine root store with submodules:
 
 - `auth`: session, login, logout.
 - `projects`: list and selected project.
@@ -279,11 +281,11 @@ portal/js/portal.js
 If the file grows beyond a maintainable size, split into static ES modules:
 
 ```text
-portal/js/api.js
-portal/js/auth.js
-portal/js/gallery.js
-portal/js/selections.js
-portal/js/portal.js
+hermitage/js/api.js
+hermitage/js/auth.js
+hermitage/js/gallery.js
+hermitage/js/selections.js
+hermitage/js/hermitage.js
 ```
 
 No bundler is required for MVP if browser-native modules are used.
@@ -292,14 +294,14 @@ No bundler is required for MVP if browser-native modules are used.
 
 Use static hash or query-state routing to avoid adding an app router:
 
-- `/portal/`
-- `/portal/#projects`
-- `/portal/#project/:id/overview`
-- `/portal/#project/:id/gallery`
-- `/portal/#project/:id/selections`
-- `/portal/#project/:id/documents`
-- `/portal/#project/:id/billing`
-- `/portal/#project/:id/notes`
+- `/hermitage/`
+- `/hermitage/#projects`
+- `/hermitage/#project/:id/overview`
+- `/hermitage/#project/:id/gallery`
+- `/hermitage/#project/:id/selections`
+- `/hermitage/#project/:id/documents`
+- `/hermitage/#project/:id/billing`
+- `/hermitage/#project/:id/notes`
 
 For a client with one active project, the app should load directly into that project overview after login.
 
@@ -517,11 +519,11 @@ Agents should later write recommendations and prepared outputs to review tables 
 Files:
 
 - `supabase/migrations/00006_client_portal.sql`
-- `portal/index.html`
-- `portal/css/portal.css`
-- `portal/js/portal.js`
+- `hermitage/index.html`
+- `hermitage/css/hermitage.css`
+- `hermitage/js/hermitage.js`
 - `scripts/client-portal-smoke.js`
-- update `scripts/build_public.py` to copy `portal/`
+- update `scripts/build_public.py` to copy `hermitage/`
 - update `scripts/test.py` to validate portal assets
 
 Build:
@@ -542,13 +544,13 @@ Verification:
 - Test client can read only mapped projects.
 - Test client cannot read another client's project files.
 - Signed URLs are generated only for visible files.
-- Static build includes `/portal/`.
+- Static build includes `/hermitage/`.
 
 ### Sprint 2: Selections And Admin Review
 
 Files:
 
-- Extend `portal/js/portal.js`.
+- Extend `hermitage/js/hermitage.js`.
 - Extend `admin/js/admin.js`.
 - Extend `admin/index.html`.
 - Extend `admin/css/admin.css`.
@@ -674,6 +676,8 @@ Mitigation: use external payment links in MVP. Add provider webhooks only after 
 ## TDD Gap Register
 
 Pre-sprint coverage gaps are tracked in [docs/tdd-gap-register.md](docs/tdd-gap-register.md) and [GitHub issue #10](https://github.com/lazarcrawford/mossandtea/issues/10). The security-critical items are portal auth, `customer_users` mapping, cross-client RLS denial, and private Storage signed URL behavior. CloudCode follow-up review added blockers for broad Storage reads ([#15](https://github.com/lazarcrawford/mossandtea/issues/15)) and unauthenticated Worker private file routes ([#16](https://github.com/lazarcrawford/mossandtea/issues/16)).
+
+Binding decisions for Sprint 1 are recorded in [docs/SPRINT_1_DECISIONS.md](docs/SPRINT_1_DECISIONS.md).
 
 ## Recommended Next Action
 
