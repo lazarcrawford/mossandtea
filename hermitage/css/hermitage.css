@@ -57,6 +57,19 @@ body::before {
   opacity: 0.58;
 }
 
+body::after {
+  content: "";
+  position: fixed;
+  inset: auto 0 0;
+  z-index: -2;
+  height: 40vh;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent, rgba(242, 191, 108, 0.08), transparent),
+    repeating-linear-gradient(90deg, rgba(111, 61, 33, 0.18) 0 1px, transparent 1px 74px);
+  opacity: 0.44;
+}
+
 .grain {
   position: fixed;
   inset: 0;
@@ -204,24 +217,9 @@ h3 {
   pointer-events: none;
   background:
     linear-gradient(180deg, rgba(109, 23, 18, 0.88) 0 14px, transparent 15px),
+    linear-gradient(90deg, transparent 0 5%, rgba(242, 191, 108, 0.07) 5.3% 5.5%, transparent 5.8% 94%, rgba(242, 191, 108, 0.07) 94.3% 94.5%, transparent 94.8%),
     radial-gradient(circle at 82% 20%, rgba(155, 199, 189, 0.2), transparent 22rem),
     radial-gradient(circle at 38% 100%, rgba(242, 191, 108, 0.26), transparent 18rem);
-}
-
-.hero::after {
-  content: "";
-  position: absolute;
-  right: clamp(250px, 32vw, 470px);
-  top: clamp(34px, 7vw, 92px);
-  z-index: 1;
-  width: clamp(170px, 18vw, 260px);
-  aspect-ratio: 1;
-  border: 1px solid rgba(242, 191, 108, 0.18);
-  border-radius: 999px;
-  background:
-    radial-gradient(circle, rgba(155, 199, 189, 0.14), transparent 64%),
-    linear-gradient(140deg, transparent 48%, rgba(242, 191, 108, 0.18) 49%, transparent 51%);
-  opacity: 0.76;
 }
 
 .hero__image {
@@ -234,15 +232,16 @@ h3 {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(9, 8, 7, 0.9), rgba(9, 8, 7, 0.46) 54%, rgba(9, 8, 7, 0.84)),
-    linear-gradient(0deg, rgba(9, 8, 7, 0.86), transparent 58%);
+    linear-gradient(90deg, rgba(9, 8, 7, 0.8), rgba(9, 8, 7, 0.3) 48%, rgba(9, 8, 7, 0.7)),
+    linear-gradient(0deg, rgba(9, 8, 7, 0.78), transparent 52%);
 }
 
 .hero__image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: grayscale(0.15) saturate(0.78) contrast(1.12) brightness(0.58);
+  object-position: center;
+  filter: saturate(0.88) contrast(1.08) brightness(0.72);
 }
 
 .hero__content {
@@ -949,10 +948,8 @@ input {
     grid-template-columns: 1fr;
   }
 
-  .hero::after {
-    right: -44px;
-    top: 92px;
-    width: 176px;
+  .hero__image img {
+    object-position: 56% center;
   }
 
   .hero__content {
