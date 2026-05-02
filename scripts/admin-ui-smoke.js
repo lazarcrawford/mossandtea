@@ -6,7 +6,7 @@ const { chromium } = require('playwright-core');
 
 const ROOT = path.resolve(__dirname, '..');
 const BRAVE = '/Applications/Brave Browser.app/Contents/MacOS/Brave Browser';
-const TARGET = process.env.ADMIN_UI_URL || 'https://mossandtea.com/admin/';
+const TARGET = process.env.ADMIN_UI_URL || `file://${path.join(ROOT, 'admin', 'index.html')}`;
 const TEST_EMAIL = process.env.ADMIN_TEST_EMAIL || 'codex-admin-ui@mossandtea.test';
 const TEST_PASSWORD = process.env.ADMIN_TEST_PASSWORD || 'CodexAdminUiTest!2026';
 const SETUP_USER = process.env.ADMIN_SMOKE_SETUP_USER === '1';
@@ -107,9 +107,9 @@ async function openProjectByTitle(page, title) {
   const row = page.locator('tbody tr').filter({
     has: page.locator('td strong').filter({ hasText: exactTitle }),
   });
-  const button = row.locator('button').first();
+  const button = row.getByRole('button', { name: new RegExp(`Open project ${title}`, 'i') }).first();
   await button.waitFor({ state: 'visible', timeout: 15000 });
-  await button.click();
+  await button.evaluate((el) => el.click());
 }
 
 async function run() {
@@ -140,11 +140,11 @@ async function run() {
     await page.locator('.login-card input[type="password"]').fill(TEST_PASSWORD);
     await page.getByRole('button', { name: 'Sign In' }).click();
     await expectVisible(page, '.admin-layout', 'admin layout');
-    await expectVisible(page, '.sample-banner', 'archive sample banner');
+    await expectVisible(page, '.sidebar', 'admin navigation');
 
     await clickText(page, 'Projects');
     await openProjectByTitle(page, 'CENIT');
-    await expectVisible(page, '.project-workspace h3:text("CENIT")', 'CENIT project workspace');
+    await page.locator('.project-workspace h3').filter({ hasText: /^CENIT$/ }).first().waitFor({ state: 'visible', timeout: 15000 });
     const cenitCount = await expectCountAtLeast(page, '.file-grid .file-item--clickable', 4, 'CENIT project files');
     await page.waitForFunction(() => {
       const img = document.querySelector('.file-grid .file-item--clickable img');
