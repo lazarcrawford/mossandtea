@@ -28,7 +28,10 @@ function staticChecks() {
   assert(html.includes('data-documents'), 'Hermitage should include documents surface');
   assert(html.includes('data-invoices'), 'Hermitage should include billing surface');
   assert(css.includes('@media (max-width: 720px)'), 'Hermitage CSS should include mobile breakpoint');
-  assert(css.includes('--bronze') && css.includes('--wine') && css.includes('--moss'), 'Hermitage CSS should include full palette');
+  assert(
+    css.includes('--lantern') && css.includes('--brass') && css.includes('--sea-glass') && css.includes('--canopy'),
+    'Hermitage CSS should include Lantern House palette'
+  );
   assert(js.includes('signInWithOtp'), 'Hermitage JS should use magic-link auth');
   assert(js.includes('createSignedUrl'), 'Hermitage JS should use signed Storage URLs');
   assert(js.includes('client_file_selections'), 'Hermitage JS should persist selections');

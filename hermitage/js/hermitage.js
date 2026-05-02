@@ -110,20 +110,20 @@ function loadDemoState() {
   state.projects = [{
     id: 'demo-project',
     title: 'CENIT Portrait Study',
-    description: 'A private proofing room for a portrait session that moves between icon, body, nature, and myth. The goal is simple: identify the frames that still feel alive after the first look.',
+    description: 'A Lantern House proofing room for a portrait session that moves between icon, body, nature, and myth. The goal is simple: set aside the frames that keep glowing after the first look.',
     status: 'editing',
     shoot_date: '2026-04-18',
     delivery_date: '2026-05-08',
-    studio_note: 'Start with the suggested frames, then make a second pass from instinct. Choose the images that feel like presence, not performance.',
+    studio_note: 'Start with the suggested frames, then make a second pass from instinct. Choose the images that feel like presence, not performance; the final set will gather here like prints on the table.',
     customers: { first_name: 'CENIT', last_name: '' },
   }];
   state.selectedProject = state.projects[0];
   state.files = [
-    demoFile('demo-1', 'cenit_12B.jpg', 'Figure among oranges', 'Suggested', true, false, '50% 36%'),
-    demoFile('demo-2', 'cenit_21B.jpg', 'Black form, held still', 'Body landscape', true, true, '48% 42%'),
+    demoFile('demo-1', 'cenit_12B.jpg', 'Figure among oranges', 'First lantern', true, false, '50% 36%'),
+    demoFile('demo-2', 'cenit_21B.jpg', 'Black form, held still', 'Table mark', true, true, '48% 42%'),
     demoFile('demo-3', 'cenit_28.jpg', 'Threshold portrait', 'Quiet power', false, false, '50% 28%'),
     demoFile('demo-4', 'cenit_river01.jpg', 'River study', 'Water / afterimage', false, true, '50% 38%'),
-    demoFile('demo-5', 'G3A5320.jpg', 'Soft field', 'Atmosphere', true, false, '50% 58%'),
+    demoFile('demo-5', 'G3A5320.jpg', 'Soft field', 'Sea air', true, false, '50% 58%'),
     demoFile('demo-6', 'G3A5407B.jpg', 'Line and breath', 'Gesture', false, false, '50% 34%'),
   ];
   state.signedUrls = Object.fromEntries(
