@@ -3,8 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Irina Crawford — Photography</title>
-    <meta name="description" content="Irina Crawford — Cinematic photography rooted in earth and light. Portrait, lifestyle, and editorial photography.">
+    <title>Moss &amp; Tea Photography — Rooted in Earth, Drawn to Light</title>
+    <meta name="description" content="Cinematic portrait, lifestyle, and editorial photography by Irina Crawford. Moss &amp; Tea gathers women, nature, ritual, and light into intimate visual stories.">
+    <link rel="canonical" href="https://mossandtea.com/">
+    <meta name="theme-color" content="#F5F0EB">
+    <meta property="og:site_name" content="Moss &amp; Tea Photography">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mossandtea.com/">
+    <meta property="og:title" content="Moss &amp; Tea Photography — Rooted in Earth, Drawn to Light">
+    <meta property="og:description" content="Cinematic portrait, lifestyle, and editorial photography by Irina Crawford. Women, nature, ritual, and light gathered into intimate visual stories.">
+    <meta property="og:image" content="https://mossandtea.com/images/social-preview.jpg">
+    <meta property="og:image:secure_url" content="https://mossandtea.com/images/social-preview.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Black-and-white Moss &amp; Tea portrait of a woman holding a leaf over one eye.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Moss &amp; Tea Photography — Rooted in Earth, Drawn to Light">
+    <meta name="twitter:description" content="Cinematic portrait, lifestyle, and editorial photography by Irina Crawford. Women, nature, ritual, and light gathered into intimate visual stories.">
+    <meta name="twitter:image" content="https://mossandtea.com/images/social-preview.jpg">
+    <meta name="twitter:image:alt" content="Black-and-white Moss &amp; Tea portrait of a woman holding a leaf over one eye.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -39,13 +57,18 @@
         </div>
         <div class="hero__content container">
             <p class="hero__label">Cinematic Photography</p>
-            <h1 class="hero__title">Rooted in Earth.<br>Drawn to Light.</h1>
-            <p class="hero__subtitle">Portraits · Lifestyle · Editorial · Stories</p>
-            <a href="#portfolio" class="btn btn--outline">View Portfolio</a>
-        </div>
-        <div class="hero__scroll">
-            <span>Scroll</span>
-            <div class="hero__scroll-line"></div>
+            <h1 class="hero__title">
+                <span class="hero__title-line hero__title-line--earth">Rooted in Earth.</span>
+                <span class="hero__title-line hero__title-line--light">Drawn to Light.</span>
+            </h1>
+            <div class="hero__flow">
+                <p class="hero__subtitle">Portraits · Lifestyle · Editorial · Stories</p>
+                <a href="#portfolio" class="btn btn--outline">View Portfolio</a>
+                <div class="hero__scroll" aria-hidden="true">
+                    <span>Scroll</span>
+                    <div class="hero__scroll-line"></div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -54,48 +77,28 @@
         <div class="container">
             <div class="section__header reveal">
                 <p class="section__label">Portfolio</p>
-                <h2 class="section__title">Moments Between Frames</h2>
-                <p class="section__desc">Every photograph is a conversation between light and subject — a pause in time that tells a story without words.</p>
+                <h2 class="section__title">Portraits Rooted in Feeling, Light, and Place</h2>
+                <p class="section__desc">Irina makes photographs that feel intimate, cinematic, and alive: images with breath, texture, and a quiet sense of wonder.</p>
             </div>
+            <div class="portfolio__essay reveal">
+                <p>
+                    Her eye is drawn to living texture: leaves at the edge of a face, saltwater on skin, a child moving through sun, cloth catching wind, a room holding the trace of someone loved. She does not rush people into poses. She gives the moment enough space to become honest.
+                </p>
+                <p>
+                    Whether she is photographing a family, an artist, a maker, or an editorial story, the feeling is the same: grounded, luminous, and deeply personal. Moss &amp; Tea is for people who want photographs with soul, not polish alone.
+                </p>
+            </div>
+            <div class="portfolio__chapters" id="portfolioChapters" role="tablist" aria-label="Portfolio chapters">
+                <button class="portfolio__chapter portfolio__chapter--active" type="button" data-gallery-filter="witness" role="tab" aria-selected="true">Woman as Sacred</button>
+                <button class="portfolio__chapter" type="button" data-gallery-filter="body" role="tab" aria-selected="false">Body Landscapes</button>
+                <button class="portfolio__chapter" type="button" data-gallery-filter="performance" role="tab" aria-selected="false">Mythology</button>
+                <button class="portfolio__chapter" type="button" data-gallery-filter="editorial" role="tab" aria-selected="false">Editorial as Ritual</button>
+                <button class="portfolio__chapter" type="button" data-gallery-filter="earth" role="tab" aria-selected="false">Faces of Nature</button>
+                <button class="portfolio__chapter" type="button" data-gallery-filter="trace" role="tab" aria-selected="false">Afterimages</button>
+            </div>
+            <div class="portfolio__chapter-copy" id="portfolioChapterCopy" aria-live="polite"></div>
         </div>
-        <div class="gallery">
-            <div class="gallery__item gallery__item--wide" data-lightbox="1" data-src="https://images.squarespace-cdn.com/content/v1/5408e52ce4b0bf6cd12edcbb/1437611862367-46OX37E09DGPY7TYGM64/_G3A5499.jpg?format=2500w" data-caption="Editorial — Natural Light">
-                <img src="images/irina/G3A5499.jpg" alt="Editorial portrait" loading="lazy">
-                <div class="gallery__overlay">
-                    <span>Editorial — Natural Light</span>
-                </div>
-            </div>
-            <div class="gallery__item gallery__item--tall" data-lightbox="2" data-src="https://images.squarespace-cdn.com/content/v1/5408e52ce4b0bf6cd12edcbb/1437611954536-FH3ZXITCD81B7GUMAOLW/Braina10.jpg?format=2500w" data-caption="Portrait — Braina">
-                <img src="images/irina/Braina10.jpg" alt="Portrait study" loading="lazy">
-                <div class="gallery__overlay">
-                    <span>Portrait — Braina</span>
-                </div>
-            </div>
-            <div class="gallery__item" data-lightbox="3" data-src="https://images.squarespace-cdn.com/content/v1/5408e52ce4b0bf6cd12edcbb/1437613842421-TT2IVFYVICR6GL15W7M2/nhmla02.jpg?format=2500w" data-caption="Architecture — NHMLA">
-                <img src="images/irina/nhmla02.jpg" alt="Museum architecture" loading="lazy">
-                <div class="gallery__overlay">
-                    <span>Architecture — NHMLA</span>
-                </div>
-            </div>
-            <div class="gallery__item" data-lightbox="4" data-src="https://images.squarespace-cdn.com/content/v1/5408e52ce4b0bf6cd12edcbb/1437785029235-YYG96353VOE0QNVPAN60/cenit_river01.jpg?format=2500w" data-caption="Landscape — Cenit River">
-                <img src="images/irina/cenit_river01.jpg" alt="River landscape" loading="lazy">
-                <div class="gallery__overlay">
-                    <span>Landscape — Cenit River</span>
-                </div>
-            </div>
-            <div class="gallery__item gallery__item--wide" data-lightbox="5" data-src="https://images.squarespace-cdn.com/content/v1/5408e52ce4b0bf6cd12edcbb/1437611646641-TKISEALT65BR88DTB6CP/Makenna09S.jpg?format=2500w" data-caption="Portrait — Makenna">
-                <img src="images/irina/Makenna09S.jpg" alt="Portrait in soft light" loading="lazy">
-                <div class="gallery__overlay">
-                    <span>Portrait — Makenna</span>
-                </div>
-            </div>
-            <div class="gallery__item gallery__item--tall" data-lightbox="6" data-src="https://images.squarespace-cdn.com/content/v1/5408e52ce4b0bf6cd12edcbb/1437613722051-0UT6H0IH7YDXCXPXD7SW/Ganna08.jpg?format=2500w" data-caption="Editorial — Ganna">
-                <img src="images/irina/Ganna08.jpg" alt="Editorial fashion portrait" loading="lazy">
-                <div class="gallery__overlay">
-                    <span>Editorial — Ganna</span>
-                </div>
-            </div>
-        </div>
+        <div class="gallery" id="gallery" aria-live="polite"></div>
     </section>
 
     <!-- About -->
@@ -107,21 +110,22 @@
                 </div>
                 <div class="about__content reveal reveal--right">
                     <p class="section__label">About</p>
-                    <h2 class="section__title">I see the world through a lens of light and story.</h2>
+                    <h2 class="section__title">I make images that feel like memory before they become photographs.</h2>
                     <p class="about__text">
-                        I am Irina Crawford — a visual storyteller, cinematographer, and photographer. 
-                        My work lives at the intersection of the natural world and the intimate moments 
-                        that define us. With roots in filmmaking and an eye for the cinematic, 
-                        every frame I capture is a meditation on light, texture, and emotion.
+                        I am Irina Crawford, the photographer behind Moss &amp; Tea. I work quietly,
+                        with patience and attention to what is already alive: the way someone softens
+                        when they feel safe, the gesture between words, the light that finds a face
+                        for only a second.
                     </p>
                     <p class="about__text">
-                        From the olive groves of the Mediterranean to the misty forests of the Pacific 
-                        Northwest, I seek the poetry in the ordinary — the way morning light falls across 
-                        a table, the quiet strength in a portrait, the wild grace of an untamed landscape.
+                        I come from a filmmaking eye, so I think in atmosphere, movement, and emotional
+                        rhythm. A session with me is not about performing a perfect version of yourself.
+                        It is about entering a small world together and letting the real image rise.
                     </p>
                     <p class="about__text">
-                        Based between California and the world, I work with families, creators, and 
-                        brands who value authenticity over perfection.
+                        Based in California and available for travel, I work with families, artists,
+                        makers, and brands who want photographs with tenderness, strangeness, beauty,
+                        and a living pulse.
                     </p>
                     <a href="#contact" class="btn btn--primary">Let's Create Together</a>
                 </div>
@@ -144,7 +148,7 @@
                         </svg>
                     </div>
                     <h3 class="service-card__title">Portrait & Family</h3>
-                    <p class="service-card__text">Authentic portraits that capture the essence of who you are — individually, as a couple, or as a family. Natural light, real moments.</p>
+                    <p class="service-card__text">Tender, unforced portraits for individuals, couples, children, and families. Quiet direction, natural movement, and room for real feeling.</p>
                 </div>
                 <div class="service-card reveal reveal--d2">
                     <div class="service-card__icon">
@@ -154,7 +158,7 @@
                         </svg>
                     </div>
                     <h3 class="service-card__title">Lifestyle & Editorial</h3>
-                    <p class="service-card__text">Styled storytelling for brands, publications, and creative projects. Cinematic imagery that elevates your narrative.</p>
+                    <p class="service-card__text">Cinematic stories for artists, publications, and creative projects. Images shaped by mood, gesture, material, and place.</p>
                 </div>
                 <div class="service-card reveal reveal--d3">
                     <div class="service-card__icon">
@@ -164,8 +168,8 @@
                             <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
                         </svg>
                     </div>
-                    <h3 class="service-card__title">Travel & Landscape</h3>
-                    <p class="service-card__text">The earth as subject. From remote wilderness to intimate natural scenes — documenting the beauty of the world around us.</p>
+                    <h3 class="service-card__title">Nature & Place</h3>
+                    <p class="service-card__text">Photographs of landscape, water, earth, and atmosphere for projects that need the natural world to feel present and alive.</p>
                 </div>
                 <div class="service-card reveal reveal--d4">
                     <div class="service-card__icon">
@@ -174,8 +178,8 @@
                             <circle cx="12" cy="13" r="4"/>
                         </svg>
                     </div>
-                    <h3 class="service-card__title">Commercial & Brand</h3>
-                    <p class="service-card__text">Visual content for businesses that want to tell their story with depth and authenticity. Product, space, and brand storytelling.</p>
+                    <h3 class="service-card__title">Brand Stories</h3>
+                    <p class="service-card__text">Visual storytelling for makers and small brands who want their work to feel human, textured, and emotionally specific.</p>
                 </div>
             </div>
         </div>
@@ -187,8 +191,8 @@
             <div class="contact__grid">
                 <div class="contact__info reveal reveal--left">
                     <p class="section__label">Connect</p>
-                    <h2 class="section__title">Let's make something beautiful.</h2>
-                    <p class="contact__text">Whether you're planning a family session, a brand shoot, or a creative collaboration — I'd love to hear from you.</p>
+                    <h2 class="section__title">Let's make something that feels true.</h2>
+                    <p class="contact__text">Tell me what you are hoping to remember, reveal, or bring into the light. I would love to hear what you are imagining.</p>
                     <div class="contact__details">
                         <div class="contact__detail">
                             <span class="contact__label">Email</span>
@@ -201,10 +205,11 @@
                     </div>
                 </div>
                 <form class="contact__form reveal reveal--right" id="contactForm">
-                    <input type="text" class="form__input" placeholder="Name" required>
-                    <input type="email" class="form__input" placeholder="Email" required>
-                    <input type="text" class="form__input" placeholder="Subject">
-                    <textarea class="form__textarea" placeholder="Tell me about your project..." rows="5" required></textarea>
+                    <input type="text" class="form__input" name="name" placeholder="Name" autocomplete="name" required>
+                    <input type="email" class="form__input" name="email" placeholder="Email" autocomplete="email" required>
+                    <input type="text" class="form__input" name="subject" placeholder="Subject">
+                    <textarea class="form__textarea" name="message" placeholder="Tell me about your project..." rows="5" required></textarea>
+                    <p class="form__status" id="contactStatus" role="status" aria-live="polite"></p>
                     <button type="submit" class="btn btn--primary btn--full">Send Message</button>
                 </form>
             </div>
@@ -217,7 +222,7 @@
             <div class="footer__inner">
                 <div class="footer__brand">
                     <span class="footer__logo">Irina Crawford</span>
-                    <p class="footer__tagline">Cinematic photography rooted in earth and light.</p>
+                    <p class="footer__tagline">Intimate cinematic photography rooted in earth, memory, and light.</p>
                 </div>
                 <div class="footer__links">
                     <a href="#portfolio" class="footer__link">Portfolio</a>
@@ -269,6 +274,7 @@
             <img class="lightbox__image" id="lightboxImage" src="" alt="">
             <div class="lightbox__caption" id="lightboxCaption"></div>
             <div class="lightbox__counter" id="lightboxCounter"></div>
+            <div class="lightbox__chapter" id="lightboxChapter"></div>
         </div>
     </div>
 

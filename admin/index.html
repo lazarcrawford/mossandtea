@@ -5,15 +5,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Moss & Tea — Admin</title>
-  <link rel="stylesheet" href="css/admin.css?v=20260430-3">
+  <link rel="stylesheet" href="css/admin.css?v=20260430-ui-smoke">
 </head>
 <body>
   <!-- Login Screen -->
-  <div x-data="adminApp" x-init="init()" x-cloak>
+  <div x-data="adminApp" x-init="init()" @keydown.escape.window="lightbox.close()" @keydown.arrow-right.window="lightbox.open && lightbox.next()" @keydown.arrow-left.window="lightbox.open && lightbox.prev()" x-cloak>
     <div x-show="!auth.loggedIn" class="login-page">
       <div class="login-card">
         <h1>Moss & Tea</h1>
-        <p>Admin Panel</p>
+        <p>Studio Operations</p>
         <form @submit.prevent="auth.login()">
           <div class="form-group">
             <label>Email</label>
@@ -38,36 +38,43 @@
       <nav class="sidebar">
         <div class="sidebar__brand">
           <h2>Moss & Tea</h2>
-          <span>Admin</span>
+          <span>Studio Operations</span>
         </div>
         <div class="sidebar__nav">
           <a class="sidebar__link" :class="nav.active === 'dashboard' && 'sidebar__link--active'" @click="nav.active = 'dashboard'">
-            <span class="icon">📊</span> <span>Dashboard</span>
+            <span class="icon">OV</span> <span>Dashboard</span>
+          </a>
+          <a class="sidebar__link" :class="nav.active === 'operations' && 'sidebar__link--active'" @click="nav.active = 'operations'">
+            <span class="icon">OP</span> <span>Operations</span>
           </a>
           <a class="sidebar__link" :class="nav.active === 'customers' && 'sidebar__link--active'" @click="nav.active = 'customers'; customers.load()">
-            <span class="icon">👥</span> <span>Customers</span>
+            <span class="icon">CL</span> <span>Customers</span>
           </a>
           <a class="sidebar__link" :class="nav.active === 'projects' && 'sidebar__link--active'" @click="nav.active = 'projects'; projects.load()">
-            <span class="icon">📁</span> <span>Projects</span>
+            <span class="icon">PR</span> <span>Projects</span>
           </a>
-          <a class="sidebar__link" :class="nav.active === 'files' && 'sidebar__link--active'" @click="nav.active = 'files'; files.load()">
-            <span class="icon">🖼️</span> <span>File Gallery</span>
+          <a class="sidebar__link" :class="nav.active === 'files' && 'sidebar__link--active'" @click="nav.active = 'files'; files.clearProject(); files.load()">
+            <span class="icon">IM</span> <span>File Gallery</span>
           </a>
           <a class="sidebar__link" :class="nav.active === 'contracts' && 'sidebar__link--active'" @click="nav.active = 'contracts'; contracts.load()">
-            <span class="icon">📄</span> <span>Contracts</span>
+            <span class="icon">CN</span> <span>Contracts</span>
           </a>
           <a class="sidebar__link" :class="nav.active === 'payments' && 'sidebar__link--active'" @click="nav.active = 'payments'; payments.load()">
-            <span class="icon">💰</span> <span>Payments</span>
+            <span class="icon">PY</span> <span>Payments</span>
           </a>
         </div>
         <div class="sidebar__footer">
           <span x-text="auth.user?.email"></span>
-          <button class="btn--icon" @click="auth.logout()" title="Sign out">🚪</button>
+          <button class="btn--icon" @click="auth.logout()" title="Sign out">Out</button>
         </div>
       </nav>
 
       <!-- Main Content -->
       <main class="main-content">
+        <div x-show="sampleMode.visible" class="sample-banner">
+          <strong>Archive sample</strong>
+          <span>CENIT is preview data built from Irina's archived portfolio images, with Irina's History Book used to exercise each admin page.</span>
+        </div>
 
         <!-- Dashboard -->
         <section x-show="nav.active === 'dashboard'" class="section section--active">
@@ -110,12 +117,75 @@
                       <td x-text="p.customer_name"></td>
                       <td><span class="badge" :class="'badge--' + p.status" x-text="p.status.replace('_',' ')"></span></td>
                       <td x-text="p.shoot_date || '—'"></td>
-                      <td x-text="p.price_cents ? '$' + (p.price_cents/100).toFixed(0) : '—'"></td>
+                      <td x-text="displayMoney(p.price_cents)"></td>
                     </tr>
                   </template>
                   <tr x-show="!stats.recentProjects.length">
                     <td colspan="5" class="empty-state">No projects yet</td>
                   </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Operations -->
+        <section x-show="nav.active === 'operations'" class="section">
+          <div class="topbar"><h1>Client Operations</h1></div>
+          <div class="stats-grid">
+            <template x-for="card in operations.summary" :key="card.label">
+              <div class="card card--stat">
+                <div class="stat__number" x-text="card.value"></div>
+                <div class="stat__label" x-text="card.label"></div>
+              </div>
+            </template>
+          </div>
+          <div class="card" style="margin-bottom:1rem">
+            <h3 style="font-family:var(--font-display);font-weight:400;margin-bottom:1rem">Studio Fulfillment Queue</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Client Action</th>
+                    <th>Project</th>
+                    <th>Studio Owner</th>
+                    <th>State</th>
+                    <th>Next Move</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template x-for="item in operations.queue" :key="item.id">
+                    <tr>
+                      <td><strong x-text="item.action"></strong></td>
+                      <td x-text="item.project"></td>
+                      <td x-text="item.owner"></td>
+                      <td><span class="badge" :class="'badge--' + item.statusClass" x-text="item.state"></span></td>
+                      <td x-text="item.next"></td>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card">
+            <h3 style="font-family:var(--font-display);font-weight:400;margin-bottom:1rem">Agentic Editing Harness</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Step</th>
+                    <th>Human Decision</th>
+                    <th>Agent Support</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template x-for="step in operations.harness" :key="step.step">
+                    <tr>
+                      <td><strong x-text="step.step"></strong></td>
+                      <td x-text="step.human"></td>
+                      <td x-text="step.agent"></td>
+                    </tr>
+                  </template>
                 </tbody>
               </table>
             </div>
@@ -200,12 +270,12 @@
                 </thead>
                 <tbody>
                   <template x-for="p in projects.list" :key="p.id">
-                    <tr @dblclick="projects.openDetail(p)">
+                    <tr :data-project-title="p.title" @dblclick="projects.openDetail(p)">
                       <td><strong x-text="p.title"></strong></td>
                       <td x-text="p.customer_name"></td>
                       <td><span class="badge" :class="'badge--' + p.status" x-text="p.status.replace('_',' ')"></span></td>
                       <td x-text="p.shoot_date || '—'"></td>
-                      <td x-text="p.price_cents ? '$' + (p.price_cents/100).toFixed(0) : '—'"></td>
+                      <td x-text="displayMoney(p.price_cents)"></td>
                       <td>
                         <span x-show="p.deposit_paid" style="color:var(--success)">✓ deposit</span>
                         <span x-show="p.balance_paid" style="color:var(--success)">✓ balance</span>
@@ -213,7 +283,7 @@
                       </td>
                       <td x-text="p.file_count || 0"></td>
                       <td>
-                        <button class="btn btn--sm btn--outline" @click="projects.openDetail(p)">Open</button>
+                        <button class="btn btn--sm btn--outline" :aria-label="'Open project ' + p.title" @click="projects.openDetail(p)">Open</button>
                       </td>
                     </tr>
                   </template>
@@ -236,6 +306,21 @@
                 </template>
               </select>
               <button class="btn btn--primary" @click="files.openUpload()">+ Upload</button>
+            </div>
+          </div>
+          <div x-show="files.selectedProject" class="card project-workspace">
+            <div>
+              <span>Project Workspace</span>
+              <h3 x-text="files.selectedProject?.title"></h3>
+              <p>
+                <span x-text="files.selectedProject?.customer_name"></span>
+                <span> / </span>
+                <span x-text="files.selectedProject?.status?.replace('_',' ')"></span>
+              </p>
+            </div>
+            <div class="project-workspace__stats">
+              <span><strong x-text="files.list.length"></strong> files</span>
+              <span><strong x-text="displayMoney(files.selectedProject?.price_cents)"></strong></span>
             </div>
           </div>
           <!-- Upload Zone -->
@@ -267,10 +352,25 @@
             </div>
             <div class="file-grid">
               <template x-for="f in files.list" :key="f.id">
-                <div class="file-item">
-                  <img :src="files.getUrl(f.r2_key)" :alt="f.original_name" loading="lazy">
-                  <button class="delete-btn" @click="files.delete(f)">×</button>
+                <div class="file-item" :class="files.isImage(f) && 'file-item--clickable'" @click="files.openLightbox(f)">
+                  <img x-show="files.isImage(f)" :src="files.getUrl(f.r2_key)" :alt="f.original_name" loading="lazy">
+                  <div x-show="!files.isImage(f)" class="file-placeholder">File</div>
+                  <button class="delete-btn" @click.stop="files.delete(f)">×</button>
                   <div class="file-overlay" x-text="f.original_name"></div>
+                  <div class="file-controls" @click.stop>
+                    <label>
+                      <input type="checkbox" :checked="f.is_client_visible" @change="files.updatePortalField(f, 'is_client_visible', $event.target.checked)">
+                      Client visible
+                    </label>
+                    <label>
+                      <input type="checkbox" :checked="f.download_allowed" @change="files.updatePortalField(f, 'download_allowed', $event.target.checked)">
+                      Download
+                    </label>
+                    <label>
+                      Order
+                      <input type="number" :value="f.sort_order || 0" @change="files.updatePortalField(f, 'sort_order', Number($event.target.value || 0))">
+                    </label>
+                  </div>
                 </div>
               </template>
             </div>
@@ -314,9 +414,13 @@
                       </td>
                     </tr>
                   </template>
+                  <tr x-show="!contracts.loading && !contracts.list.length">
+                    <td colspan="6" class="empty-state">No contracts yet</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
+            <div x-show="contracts.loading" class="loading">Loading contracts...</div>
           </div>
         </section>
 
@@ -360,15 +464,31 @@
                       <td x-text="p.notes || ''"></td>
                     </tr>
                   </template>
+                  <tr x-show="!payments.loading && !payments.list.length">
+                    <td colspan="6" class="empty-state">No payment or invoice activity yet</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
+            <div x-show="payments.loading" class="loading">Loading payments...</div>
           </div>
         </section>
       </main>
     </div>
 
     <!-- Modals -->
+    <div class="lightbox" :class="lightbox.open && 'lightbox--open'" @click.self="lightbox.close()">
+      <button class="lightbox__close" @click="lightbox.close()" title="Close">Close</button>
+      <button class="lightbox__nav lightbox__nav--prev" @click.stop="lightbox.prev()" title="Previous">Prev</button>
+      <figure class="lightbox__figure" x-show="lightbox.current()">
+        <img :src="files.getUrl(lightbox.current()?.r2_key)" :alt="lightbox.current()?.original_name">
+        <figcaption>
+          <span x-text="lightbox.current()?.original_name"></span>
+          <small x-text="(lightbox.index + 1) + ' / ' + lightbox.items.length"></small>
+        </figcaption>
+      </figure>
+      <button class="lightbox__nav lightbox__nav--next" @click.stop="lightbox.next()" title="Next">Next</button>
+    </div>
 
     <!-- Customer Modal -->
     <div class="modal-overlay" :class="customers.modalOpen && 'modal-overlay--open'" @click.self="customers.modalOpen = false">
@@ -564,7 +684,7 @@
   <!-- Step 1: Supabase SDK -->
   <script src="js/supabase.min.js?v=20260430-2"></script>
   <!-- Step 2: App engine — defines window.createAdminApp -->
-  <script src="js/admin.js?v=20260430-3"></script>
+  <script src="js/admin.js?v=20260430-ui-smoke"></script>
   <!-- Step 3: Register component BEFORE Alpine loads.
        alpine:init fires synchronously during Alpine's script execution,
        so the listener must exist before alpine.min.js starts. -->

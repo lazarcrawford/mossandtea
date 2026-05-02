@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moss & Tea Design Guide</title>
+  <meta name="description" content="Visual reference for the Moss & Tea DesignMD system.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --clay: #8b6f5e;
+      --clay-light: #a88978;
+      --sage: #8a9a7a;
+      --sage-dark: #6b7d5c;
+      --cream: #f5f0eb;
+      --cream-dark: #e8e0d8;
+      --charcoal: #2c2c2c;
+      --text: #3a3a3a;
+      --text-light: #7a7a7a;
+      --white: #ffffff;
+      --border: #d4cbc4;
+      --max-width: 1180px;
+      --serif: "Cormorant Garamond", Georgia, serif;
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+      --shadow-soft: 0 2px 20px rgba(0, 0, 0, 0.06);
+      --motion: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      margin: 0;
+      background: var(--cream);
+      color: var(--text);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .guide-shell {
+      min-height: 100vh;
+    }
+
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(245, 240, 235, 0.92);
+      border-bottom: 1px solid rgba(212, 203, 196, 0.8);
+      backdrop-filter: blur(16px);
+    }
+
+    .top-nav__inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 18px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .wordmark {
+      font-family: var(--serif);
+      font-size: 24px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: var(--charcoal);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      color: var(--text-light);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .nav-links a:hover {
+      color: var(--clay);
+    }
+
+    .hero {
+      position: relative;
+      min-height: 78vh;
+      display: grid;
+      align-items: end;
+      overflow: hidden;
+      color: var(--white);
+    }
+
+    .hero__image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 32%;
+      transform: scale(1.02);
+    }
+
+    .hero__overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(0, 0, 0, 0.06) 0%, rgba(0, 0, 0, 0.52) 100%),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.42) 0%, rgba(0, 0, 0, 0.08) 70%);
+    }
+
+    .hero__content {
+      position: relative;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      width: 100%;
+      padding: 0 28px 88px;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--clay-light);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      max-width: 760px;
+      margin: 0;
+      color: var(--white);
+      font-family: var(--serif);
+      font-size: clamp(54px, 8vw, 96px);
+      font-weight: 300;
+      line-height: 0.98;
+      letter-spacing: -0.03em;
+    }
+
+    .hero__copy {
+      max-width: 560px;
+      margin: 24px 0 34px;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 17px;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 30px;
+      border: 1px solid transparent;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      transition: background var(--motion), color var(--motion), border-color var(--motion);
+    }
+
+    .btn--primary {
+      background: var(--charcoal);
+      color: var(--white);
+    }
+
+    .btn--primary:hover {
+      background: var(--clay);
+    }
+
+    .btn--outline {
+      background: transparent;
+      color: var(--white);
+      border-color: rgba(255, 255, 255, 0.46);
+    }
+
+    .btn--outline:hover {
+      background: var(--white);
+      color: var(--charcoal);
+    }
+
+    .section {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 104px 28px;
+    }
+
+    .section--tight {
+      padding-top: 72px;
+      padding-bottom: 72px;
+    }
+
+    .section-header {
+      max-width: 660px;
+      margin-bottom: 44px;
+    }
+
+    .section-header--center {
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+
+    .section-title {
+      margin: 0;
+      color: var(--charcoal);
+      font-family: var(--serif);
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .section-desc {
+      margin: 18px 0 0;
+      color: var(--text-light);
+      font-size: 16px;
+      line-height: 1.85;
+    }
+
+    .token-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .swatch {
+      min-height: 156px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      border: 1px solid rgba(44, 44, 44, 0.08);
+      color: var(--charcoal);
+    }
+
+    .swatch--dark {
+      color: var(--cream);
+    }
+
+    .swatch__name {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .swatch__value {
+      margin-top: 4px;
+      font-size: 13px;
+      opacity: 0.72;
+    }
+
+    .type-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+      gap: 42px;
+      align-items: start;
+    }
+
+    .type-sample {
+      padding: 36px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .type-sample + .type-sample {
+      margin-top: 18px;
+    }
+
+    .display-sample {
+      margin: 0;
+      color: var(--charcoal);
+      font-family: var(--serif);
+      font-size: clamp(48px, 6vw, 76px);
+      font-weight: 300;
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+
+    .body-sample {
+      margin: 0;
+      color: var(--text-light);
+      font-size: 16px;
+      line-height: 1.9;
+    }
+
+    .label-sample {
+      margin: 0 0 16px;
+      color: var(--clay);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    .scale-list {
+      background: var(--charcoal);
+      color: var(--cream);
+      padding: 28px;
+    }
+
+    .scale-item {
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 24px;
+      align-items: baseline;
+    }
+
+    .scale-item:last-child {
+      border-bottom: 0;
+    }
+
+    .scale-item span {
+      color: rgba(245, 240, 235, 0.48);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr 1fr;
+      grid-auto-rows: 260px;
+      gap: 0;
+      overflow: hidden;
+      background: var(--charcoal);
+    }
+
+    .gallery-tile {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gallery-tile--tall {
+      grid-row: span 2;
+    }
+
+    .gallery-tile--wide {
+      grid-column: span 2;
+    }
+
+    .gallery-tile img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .gallery-tile:hover img {
+      transform: scale(1.05);
+    }
+
+    .gallery-caption {
+      position: absolute;
+      inset: auto 0 0;
+      padding: 26px;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.64));
+      color: var(--white);
+      font-family: var(--serif);
+      font-size: 19px;
+      font-style: italic;
+    }
+
+    .component-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .component-card {
+      min-height: 250px;
+      padding: 28px;
+      background: var(--white);
+      border: 1px solid var(--border);
+    }
+
+    .component-card--cream {
+      background: var(--cream-dark);
+    }
+
+    .component-card--dark {
+      background: var(--charcoal);
+      color: var(--cream);
+      border-color: var(--charcoal);
+    }
+
+    .component-card h3 {
+      margin: 0 0 12px;
+      color: inherit;
+      font-family: var(--serif);
+      font-size: 28px;
+      font-weight: 400;
+      line-height: 1.2;
+    }
+
+    .component-card p {
+      margin: 0 0 24px;
+      color: inherit;
+      opacity: 0.72;
+      font-size: 14px;
+    }
+
+    .field-stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .field {
+      width: 100%;
+      min-height: 46px;
+      padding: 0 14px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--cream);
+      font-family: var(--sans);
+      font-size: 14px;
+    }
+
+    .field::placeholder {
+      color: rgba(245, 240, 235, 0.36);
+    }
+
+    .admin-preview {
+      background: #f7f4f0;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .admin-preview__bar {
+      min-height: 64px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--charcoal);
+      color: var(--cream);
+    }
+
+    .admin-preview__title {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .admin-preview__body {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      min-height: 360px;
+    }
+
+    .admin-preview__side {
+      padding: 20px;
+      background: #252525;
+      color: rgba(245, 240, 235, 0.7);
+    }
+
+    .side-item {
+      padding: 11px 12px;
+      margin-bottom: 6px;
+      border-left: 3px solid transparent;
+      font-size: 13px;
+    }
+
+    .side-item--active {
+      background: rgba(255, 255, 255, 0.06);
+      border-left-color: var(--sage);
+      color: var(--cream);
+    }
+
+    .admin-preview__main {
+      padding: 24px;
+    }
+
+    .admin-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .admin-stat {
+      padding: 18px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    .admin-stat strong {
+      display: block;
+      color: var(--charcoal);
+      font-family: var(--serif);
+      font-size: 32px;
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .admin-stat span {
+      display: block;
+      margin-top: 10px;
+      color: var(--text-light);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--white);
+      border: 1px solid var(--border);
+      font-size: 13px;
+    }
+
+    .admin-table th,
+    .admin-table td {
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--cream-dark);
+      text-align: left;
+    }
+
+    .admin-table th {
+      color: var(--text-light);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: rgba(138, 154, 122, 0.16);
+      color: var(--sage-dark);
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .dark-band {
+      background: var(--charcoal);
+      color: var(--cream);
+    }
+
+    .dark-band .section-title {
+      color: var(--white);
+    }
+
+    .principle-list {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 1px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .principle {
+      padding: 26px;
+      background: var(--charcoal);
+    }
+
+    .principle strong {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--clay-light);
+      font-family: var(--serif);
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 1.1;
+    }
+
+    .principle span {
+      color: rgba(245, 240, 235, 0.68);
+      font-size: 13px;
+    }
+
+    @media (max-width: 900px) {
+      .nav-links {
+        display: none;
+      }
+
+      .token-grid,
+      .component-grid,
+      .principle-list,
+      .admin-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .type-panel,
+      .admin-preview__body {
+        grid-template-columns: 1fr;
+      }
+
+      .gallery-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .top-nav__inner,
+      .section,
+      .hero__content {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .hero {
+        min-height: 680px;
+      }
+
+      .token-grid,
+      .component-grid,
+      .principle-list,
+      .admin-stats,
+      .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .gallery-tile,
+      .gallery-tile--tall,
+      .gallery-tile--wide {
+        grid-column: span 1;
+        grid-row: span 1;
+      }
+
+      .scale-item {
+        grid-template-columns: 1fr;
+        gap: 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="top-nav">
+      <div class="top-nav__inner">
+        <a class="wordmark" href="#top">Moss & Tea</a>
+        <nav class="nav-links" aria-label="Guide sections">
+          <a href="#tokens">Tokens</a>
+          <a href="#type">Typography</a>
+          <a href="#imagery">Imagery</a>
+          <a href="#components">Components</a>
+          <a href="#admin">Admin</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="guide-title">
+        <img class="hero__image" src="images/irina/Makenna13.jpg" alt="Warm editorial portrait used as the design guide hero">
+        <div class="hero__overlay"></div>
+        <div class="hero__content">
+          <p class="eyebrow">DesignMD Visual Reference</p>
+          <h1 id="guide-title">Cinematic, earthy, editorial.</h1>
+          <p class="hero__copy">
+            A human-facing guide to the Moss & Tea design language: warm neutrals, restrained typography,
+            quiet utility, and photography that carries the emotional weight.
+          </p>
+          <div class="button-row">
+            <a class="btn btn--primary" href="design.md">Open design.md</a>
+            <a class="btn btn--outline" href="#tokens">View Tokens</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="tokens">
+        <div class="section-header section-header--center">
+          <p class="eyebrow">Color Tokens</p>
+          <h2 class="section-title">Warm surfaces, clay accents, sage restraint.</h2>
+          <p class="section-desc">
+            The palette should read as photographic and organic, not themed. Cream and charcoal do most of
+            the work; clay and sage are accents.
+          </p>
+        </div>
+        <div class="token-grid">
+          <div class="swatch" style="background: var(--cream);">
+            <span class="swatch__name">Cream</span>
+            <span class="swatch__value">#f5f0eb</span>
+          </div>
+          <div class="swatch" style="background: var(--cream-dark);">
+            <span class="swatch__name">Cream Dark</span>
+            <span class="swatch__value">#e8e0d8</span>
+          </div>
+          <div class="swatch swatch--dark" style="background: var(--charcoal);">
+            <span class="swatch__name">Charcoal</span>
+            <span class="swatch__value">#2c2c2c</span>
+          </div>
+          <div class="swatch swatch--dark" style="background: var(--clay);">
+            <span class="swatch__name">Clay</span>
+            <span class="swatch__value">#8b6f5e</span>
+          </div>
+          <div class="swatch swatch--dark" style="background: var(--sage-dark);">
+            <span class="swatch__name">Sage Dark</span>
+            <span class="swatch__value">#6b7d5c</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--tight" id="type">
+        <div class="type-panel">
+          <div>
+            <div class="section-header">
+              <p class="eyebrow">Typography</p>
+              <h2 class="section-title">Elegant display type, quiet utility type.</h2>
+              <p class="section-desc">
+                Cormorant Garamond brings the editorial mood. Inter keeps forms, labels, navigation,
+                and admin work clear.
+              </p>
+            </div>
+            <div class="type-sample">
+              <p class="label-sample">Display XL</p>
+              <p class="display-sample">Rooted in Earth. Drawn to Light.</p>
+            </div>
+            <div class="type-sample">
+              <p class="label-sample">Body MD</p>
+              <p class="body-sample">
+                Portraits and stories should feel intimate rather than promotional. Body copy stays light,
+                long-lined, and breathable so the photography remains the center of attention.
+              </p>
+            </div>
+          </div>
+          <aside class="scale-list" aria-label="Type scale reference">
+            <div class="scale-item">
+              <span>Display</span>
+              <strong style="font-family: var(--serif); font-size: 44px; font-weight: 300;">Cormorant</strong>
+            </div>
+            <div class="scale-item">
+              <span>Title</span>
+              <strong style="font-family: var(--serif); font-size: 28px; font-weight: 400;">Editorial heading</strong>
+            </div>
+            <div class="scale-item">
+              <span>Body</span>
+              <strong style="font-size: 16px; font-weight: 300;">Inter regular text</strong>
+            </div>
+            <div class="scale-item">
+              <span>Label</span>
+              <strong style="font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;">Section Marker</strong>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section" id="imagery">
+        <div class="section-header">
+          <p class="eyebrow">Imagery</p>
+          <h2 class="section-title">Images are the interface.</h2>
+          <p class="section-desc">
+            Use real photography as the primary signal. Captions and overlays support context without
+            interrupting the image.
+          </p>
+        </div>
+        <div class="gallery-grid">
+          <figure class="gallery-tile gallery-tile--tall">
+            <img src="images/irina/Braina10.jpg" alt="Portrait study">
+            <figcaption class="gallery-caption">Portrait study</figcaption>
+          </figure>
+          <figure class="gallery-tile gallery-tile--wide">
+            <img src="images/irina/G3A5499.jpg" alt="Editorial portrait">
+            <figcaption class="gallery-caption">Editorial natural light</figcaption>
+          </figure>
+          <figure class="gallery-tile">
+            <img src="images/irina/nhmla02.jpg" alt="Architecture image">
+            <figcaption class="gallery-caption">Place and structure</figcaption>
+          </figure>
+          <figure class="gallery-tile">
+            <img src="images/irina/Ganna08.jpg" alt="Editorial fashion image">
+            <figcaption class="gallery-caption">Editorial story</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section" id="components">
+        <div class="section-header section-header--center">
+          <p class="eyebrow">Components</p>
+          <h2 class="section-title">Simple shapes, restrained states.</h2>
+          <p class="section-desc">
+            Components should frame the work, not announce themselves. Corners are mostly square on the
+            public site; admin can use modest 8px radii for utility.
+          </p>
+        </div>
+        <div class="component-grid">
+          <article class="component-card">
+            <h3>Primary action</h3>
+            <p>Charcoal fill, uppercase Inter, generous spacing. Clay appears on hover.</p>
+            <a class="btn btn--primary" href="#admin">Book Session</a>
+          </article>
+          <article class="component-card component-card--cream">
+            <h3>Editorial card</h3>
+            <p>Use cards sparingly on the public site. Let sections and images create the structure.</p>
+            <span class="badge">Soft Accent</span>
+          </article>
+          <article class="component-card component-card--dark">
+            <h3>Contact surface</h3>
+            <p>Dark sections create focus for conversion and closing content.</p>
+            <div class="field-stack">
+              <input class="field" type="text" placeholder="Name">
+              <input class="field" type="email" placeholder="Email">
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="dark-band">
+        <div class="section section--tight">
+          <div class="section-header">
+            <p class="eyebrow">Principles</p>
+            <h2 class="section-title">The aesthetic in five decisions.</h2>
+          </div>
+          <div class="principle-list">
+            <div class="principle">
+              <strong>Photography leads</strong>
+              <span>Images carry the emotional weight.</span>
+            </div>
+            <div class="principle">
+              <strong>Editorial restraint</strong>
+              <span>Whitespace, thin borders, quiet hierarchy.</span>
+            </div>
+            <div class="principle">
+              <strong>Earth and light</strong>
+              <span>Warm neutrals, clay, sage, charcoal.</span>
+            </div>
+            <div class="principle">
+              <strong>Cinematic pacing</strong>
+              <span>Large first impressions and slow reveals.</span>
+            </div>
+            <div class="principle">
+              <strong>Operational calm</strong>
+              <span>Admin is denser and more practical.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="admin">
+        <div class="section-header">
+          <p class="eyebrow">Admin Interpretation</p>
+          <h2 class="section-title">A quiet studio command center.</h2>
+          <p class="section-desc">
+            Admin screens should inherit the brand without becoming precious. They need Inter, tighter spacing,
+            clear status, and fewer decorative choices.
+          </p>
+        </div>
+        <div class="admin-preview">
+          <div class="admin-preview__bar">
+            <span class="admin-preview__title">Moss & Tea Admin</span>
+            <span class="badge">Editing</span>
+          </div>
+          <div class="admin-preview__body">
+            <aside class="admin-preview__side">
+              <div class="side-item side-item--active">Dashboard</div>
+              <div class="side-item">Projects</div>
+              <div class="side-item">Clients</div>
+              <div class="side-item">Files</div>
+              <div class="side-item">Contracts</div>
+              <div class="side-item">Payments</div>
+            </aside>
+            <div class="admin-preview__main">
+              <div class="admin-stats">
+                <div class="admin-stat">
+                  <strong>12</strong>
+                  <span>Active Projects</span>
+                </div>
+                <div class="admin-stat">
+                  <strong>3</strong>
+                  <span>Unsigned Contracts</span>
+                </div>
+                <div class="admin-stat">
+                  <strong>$4.8k</strong>
+                  <span>Outstanding</span>
+                </div>
+              </div>
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Project</th>
+                    <th>Client</th>
+                    <th>Status</th>
+                    <th>Next Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Golden Hour Portraits</td>
+                    <td>Makenna Stone</td>
+                    <td><span class="badge">Booked</span></td>
+                    <td>Send prep note</td>
+                  </tr>
+                  <tr>
+                    <td>Editorial Portrait Study</td>
+                    <td>Briana Okafor</td>
+                    <td><span class="badge">Editing</span></td>
+                    <td>Upload selects</td>
+                  </tr>
+                  <tr>
+                    <td>NHMLA Architecture</td>
+                    <td>Sandra Chen</td>
+                    <td><span class="badge">Contract</span></td>
+                    <td>Await signature</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

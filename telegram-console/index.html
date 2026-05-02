@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark light">
+  <title>Codex Console</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body data-theme="harness">
+  <canvas id="field" aria-hidden="true"></canvas>
+
+  <main class="app-shell">
+    <nav class="theme-switcher" aria-label="Theme switcher">
+      <button type="button" data-set-theme="harness" aria-pressed="true">Harness</button>
+      <button type="button" data-set-theme="terminal" aria-pressed="false">Terminal</button>
+      <button type="button" data-set-theme="win95" aria-pressed="false">Win95</button>
+    </nav>
+
+    <form id="prompt-form" class="console-form">
+      <section class="theme-scene scene-harness" aria-label="Harness console">
+        <div class="rig-frame">
+          <header class="rig-header">
+            <div>
+              <p class="kicker">Codex Bridge v3</p>
+              <h1>Agent Harness</h1>
+            </div>
+            <span class="pulse-chip">linked</span>
+          </header>
+
+          <div class="rig-core">
+            <div class="halo" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="visor">
+              <div class="hud-strip">
+                <span id="hud-workspace">Web Engineering</span>
+                <span id="hud-mode">fresh</span>
+                <span id="hud-launch">checking launch</span>
+              </div>
+              <label for="prompt">Signal</label>
+              <textarea id="prompt" name="prompt" rows="8" autocomplete="off" spellcheck="true" placeholder="Transmit the work. Ask Codex to inspect, build, deploy, test, compare, or synthesize."></textarea>
+            </div>
+          </div>
+
+          <div class="rig-controls">
+            <label>
+              Workspace
+              <select id="workspace" name="workspace">
+                <option value="Web Engineering">Web Engineering - Moss & Tea</option>
+                <option value="Node 1">CSG - Node 1</option>
+                <option value="LucidBridge">CSG - LucidBridge</option>
+                <option value="Mission Control">Crawford Mission Control</option>
+                <option value="Bridge Ops">Telegram Bridge Ops</option>
+                <option value="CSG">CSG Workspace</option>
+              </select>
+            </label>
+            <label>
+              Mode
+              <select id="mode" name="mode">
+                <option value="fresh">Fresh turn</option>
+                <option value="resume">Resume latest Codex session</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="rig-footer">
+            <button class="send-button" type="submit">Transmit</button>
+            <p id="status" class="status-line" role="status">Harness idle. Awaiting signal.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="theme-scene scene-terminal" aria-label="Terminal console">
+        <div class="terminal-window">
+          <div class="terminal-bar">
+            <span>codex@telegram-bridge:~</span>
+            <span>fresh tty</span>
+          </div>
+          <div class="terminal-body">
+            <p class="terminal-line">Last login: bridge console v3</p>
+            <p class="terminal-line">type /help for commands, tab for workspace cycle, cmd+enter to send</p>
+            <label class="terminal-prompt" for="prompt">
+              <span>$ codex signal --workspace</span>
+            </label>
+            <div class="terminal-controls" aria-hidden="true">
+              <span id="terminal-workspace">Web Engineering - Moss & Tea</span>
+              <span id="terminal-mode">fresh</span>
+            </div>
+            <div class="terminal-editor" data-before="$ ">
+              <textarea class="terminal-mirror" rows="12" autocomplete="off" spellcheck="true" placeholder="type the request here"></textarea>
+            </div>
+            <div class="terminal-feed" id="terminal-feed">status: idle</div>
+            <button class="terminal-submit" type="submit">return</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="theme-scene scene-win95" aria-label="Windows 95 Codex desktop">
+        <div class="desktop">
+          <button class="desktop-icon" type="button" data-open-window>
+            <span class="icon-screen"></span>
+            <strong>Codex</strong>
+          </button>
+
+          <div class="win-window" id="codex-window">
+            <div class="win-titlebar">
+              <span>Codex Interaction Window</span>
+              <div>
+                <button type="button" aria-label="Minimize" data-window-minimize>_</button>
+                <button type="button" aria-label="Maximize" data-window-maximize>□</button>
+                <button type="button" aria-label="Close" data-window-close>×</button>
+              </div>
+            </div>
+            <div class="win-content">
+              <p>C:\CODEX&gt; connected to Telegram Bridge v3</p>
+              <p id="win-line">C:\CODEX&gt; workspace: Web Engineering - Moss & Tea | mode: fresh</p>
+              <div class="win-feed" id="win-feed">idle</div>
+              <textarea class="win-mirror" rows="8" autocomplete="off" spellcheck="true" placeholder="Ask Codex something..."></textarea>
+              <button class="win-submit" type="submit">Send to Codex</button>
+            </div>
+          </div>
+
+          <div class="start-panel" id="start-panel" hidden>
+            <strong>Codex Start</strong>
+            <button type="button" data-theme-choice="harness">Harness Console</button>
+            <button type="button" data-theme-choice="terminal">Terminal</button>
+            <hr>
+            <button type="button" data-mode-choice="fresh">Mode: Fresh turn</button>
+            <button type="button" data-mode-choice="resume">Mode: Resume latest</button>
+            <hr>
+            <button type="button" data-workspace-choice="Web Engineering">Web Engineering</button>
+            <button type="button" data-workspace-choice="Node 1">Node 1</button>
+            <button type="button" data-workspace-choice="LucidBridge">LucidBridge</button>
+            <button type="button" data-workspace-choice="Mission Control">Mission Control</button>
+            <button type="button" data-workspace-choice="Bridge Ops">Bridge Ops</button>
+            <button type="button" data-workspace-choice="CSG">CSG</button>
+          </div>
+
+          <div class="taskbar">
+            <button class="start-button" type="button" id="start-button">Start</button>
+            <button class="task-pill" type="button" id="task-pill">Codex Interaction Window</button>
+            <time id="clock">--:--</time>
+          </div>
+        </div>
+      </section>
+    </form>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

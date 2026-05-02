@@ -16,12 +16,17 @@ const supabase = window.supabase?.createClient
 function centsToDollars(c) { return c ? (c / 100).toFixed(2) : '0.00'; }
 function dollarsToCents(d) { return Math.round(parseFloat(d || 0) * 100); }
 function today() { return new Date().toISOString().split('T')[0]; }
+function displayMoney(cents, fallback = 'Quote pending') {
+  return cents ? `$${(cents / 100).toFixed(0)}` : fallback;
+}
 
 // --- Alpine App ---
 // Exported as window.createAdminApp so the inline bootstrap in index.html
 // can register it at the exact right moment during alpine:init.
 // This eliminates CDN-cache timing bugs where admin.js and HTML drift apart.
 window.createAdminApp = () => {
+  const appState = () => window.Alpine?.$data(document.querySelector('[x-data="adminApp"]')) || root;
+
   const root = {
     // === NAVIGATION ===
     nav: {
@@ -49,7 +54,7 @@ window.createAdminApp = () => {
           this.loggedIn = true;
           this.user = data.user;
           // Load dashboard data via root reference (nested this can't see parent)
-          root.loadDashboard();
+          appState().loadDashboard();
         } catch (e) {
           this.error = e.message || 'Login failed';
         } finally {
@@ -87,6 +92,72 @@ window.createAdminApp = () => {
       revenue: 0,
       recentProjects: []
     },
+    sampleMode: {
+      visible: false
+    },
+    operations: {
+      summary: [
+        { label: 'Pending Contract', value: '1' },
+        { label: 'Proof Submissions', value: '1' },
+        { label: 'Edit Requests', value: '4' },
+        { label: 'Delivery Packages', value: '1' },
+      ],
+      queue: [
+        {
+          id: 'contract-cenit',
+          action: 'Contract signed by client',
+          project: 'CENIT Portrait Study',
+          owner: 'Irina',
+          state: 'Admin countersign',
+          statusClass: 'booked',
+          next: 'Review agreement and mark project booked',
+        },
+        {
+          id: 'proofs-cenit',
+          action: 'Final picks submitted',
+          project: 'CENIT Portrait Study',
+          owner: 'Irina',
+          state: 'Edit queue',
+          statusClass: 'editing',
+          next: 'Open selections, apply edit notes, package finals',
+        },
+        {
+          id: 'service-cenit',
+          action: 'Additional service order',
+          project: 'CENIT Portrait Study',
+          owner: 'Lazar / Irina',
+          state: 'Payment pending',
+          statusClass: 'shoot_complete',
+          next: 'Confirm charge, then create card/print-ready deliverable',
+        },
+        {
+          id: 'delivery-cenit',
+          action: 'Final delivery acceptance',
+          project: 'CENIT Portrait Study',
+          owner: 'Irina',
+          state: 'Ready',
+          statusClass: 'delivered',
+          next: 'Send final package and wait for client acceptance',
+        },
+      ],
+      harness: [
+        {
+          step: 'Receive brief',
+          human: 'Irina confirms taste, crop intent, and what must stay natural.',
+          agent: 'Summarize proof selections, edit notes, and service requests into a work order.',
+        },
+        {
+          step: 'Prepare edit pass',
+          human: 'Irina performs or approves the actual image edit.',
+          agent: 'Generate checklist, filename map, export naming, and delivery manifest.',
+        },
+        {
+          step: 'Package delivery',
+          human: 'Irina approves final files before release.',
+          agent: 'Build client-facing delivery note, verify file visibility, and route acceptance state.',
+        },
+      ],
+    },
 
     async loadDashboard() {
       try {
@@ -115,8 +186,50 @@ window.createAdminApp = () => {
         this.stats.deliveredThisMonth = delivered;
         this.stats.revenue = revenue;
         this.stats.recentProjects = projectList.slice(0, 5);
+        this.sampleMode.visible = projectList.some((p) => {
+          const customer = String(p.customer_name || '').toLowerCase();
+          const title = String(p.title || '').toLowerCase();
+          return customer.includes('cenit archive') ||
+            title === 'cenit' ||
+            title.includes('history book') ||
+            title.includes('sample');
+        });
       } catch (e) {
         console.error('Dashboard load error:', e.message);
+      }
+    },
+
+    displayMoney,
+
+    // === IMAGE LIGHTBOX ===
+    lightbox: {
+      open: false,
+      items: [],
+      index: 0,
+
+      show(items, item) {
+        const app = appState();
+        this.items = items.filter((f) => app.files.isImage(f) && app.files.getUrl(f.r2_key));
+        this.index = Math.max(0, this.items.findIndex((f) => f.id === item.id));
+        this.open = Boolean(this.items.length);
+      },
+
+      close() {
+        this.open = false;
+      },
+
+      current() {
+        return this.items[this.index] || null;
+      },
+
+      next() {
+        if (!this.items.length) return;
+        this.index = (this.index + 1) % this.items.length;
+      },
+
+      prev() {
+        if (!this.items.length) return;
+        this.index = (this.index - 1 + this.items.length) % this.items.length;
       }
     },
 
@@ -183,9 +296,10 @@ window.createAdminApp = () => {
       },
 
       viewProjects(c) {
-        root.projects.customerFilter = c.id;
-        root.nav.active = 'projects';
-        root.projects.load();
+        const app = appState();
+        app.projects.customerFilter = c.id;
+        app.nav.active = 'projects';
+        app.projects.load();
       }
     },
 
@@ -288,9 +402,9 @@ window.createAdminApp = () => {
       },
 
       openDetail(p) {
-        root.nav.active = 'files';
-        root.files.projectFilter = p.id;
-        root.files.load();
+        const app = appState();
+        app.nav.active = 'files';
+        app.files.openProject(p);
       }
     },
 
@@ -299,26 +413,62 @@ window.createAdminApp = () => {
       list: [],
       projectList: [],
       projectFilter: '',
+      selectedProject: null,
       loading: false,
       showUpload: false,
       uploadProject: '',
       uploading: false,
       uploadProgress: '',
       uploadSuccess: false,
+      signedUrls: {},
 
       async load() {
         this.loading = true;
         try {
           // Load projects for filter
-          const { data: projs } = await supabase.from('project_details').select('id, title');
+          const { data: projs } = await supabase
+            .from('project_details')
+            .select('id, title, customer_name, status, shoot_date, file_count, price_cents, total_paid_cents')
+            .order('title');
           this.projectList = projs || [];
+          this.selectedProject = this.projectFilter
+            ? this.projectList.find((p) => p.id === this.projectFilter) || this.selectedProject
+            : null;
 
           let query = supabase.from('project_files').select('*');
           if (this.projectFilter) query = query.eq('project_id', this.projectFilter);
           const { data } = await query.order('created_at', { ascending: false });
           this.list = data || [];
+          await this.signUrls();
         } catch (e) { console.error(e); }
         finally { this.loading = false; }
+      },
+
+      openProject(project) {
+        this.selectedProject = project;
+        this.projectFilter = project.id;
+        this.uploadProject = project.id;
+        this.showUpload = false;
+        this.load();
+      },
+
+      clearProject() {
+        this.selectedProject = null;
+        this.projectFilter = '';
+      },
+
+      async signUrls() {
+        const urls = {};
+        for (const file of this.list) {
+          if (!file.r2_key) continue;
+          const { data, error } = await supabase.storage
+            .from('project-files')
+            .createSignedUrl(file.r2_key, 60 * 60);
+          if (!error && data?.signedUrl) {
+            urls[file.r2_key] = data.signedUrl;
+          }
+        }
+        this.signedUrls = urls;
       },
 
       openUpload() {
@@ -333,8 +483,16 @@ window.createAdminApp = () => {
       },
 
       getUrl(r2Key) {
-        // Direct Supabase Storage URL
-        return `https://ixfmstlnwnfjkocpordu.supabase.co/storage/v1/object/public/project-files/${r2Key}`;
+        return this.signedUrls[r2Key] || '';
+      },
+
+      isImage(file) {
+        return String(file?.mime_type || '').startsWith('image/');
+      },
+
+      openLightbox(file) {
+        if (!this.isImage(file)) return;
+        appState().lightbox.show(this.list, file);
       },
 
       async upload() {
@@ -378,7 +536,10 @@ window.createAdminApp = () => {
                 mime_type: file.type,
                 file_size: file.size,
                 r2_key: key,
-                uploaded_by: 'admin'
+                uploaded_by: 'admin',
+                is_client_visible: false,
+                download_allowed: false,
+                sort_order: 0
               });
 
             if (dbError) {
@@ -397,6 +558,23 @@ window.createAdminApp = () => {
           alert('Upload failed: ' + e.message);
         } finally {
           this.uploading = false;
+        }
+      },
+
+      async updatePortalField(file, field, value) {
+        const allowed = ['is_client_visible', 'download_allowed', 'sort_order'];
+        if (!allowed.includes(field)) return;
+        const previous = file[field];
+        file[field] = value;
+        try {
+          const { error } = await supabase
+            .from('project_files')
+            .update({ [field]: value })
+            .eq('id', file.id);
+          if (error) throw error;
+        } catch (e) {
+          file[field] = previous;
+          alert('Portal setting update failed: ' + e.message);
         }
       },
 
@@ -437,17 +615,15 @@ window.createAdminApp = () => {
         try {
           const { data } = await supabase
             .from('contracts')
-            .select(`
-              *,
-              project:project_id ( title ),
-              customer:project_id ( customer_id ( first_name, last_name ) )
-            `)
+            .select('*, project:project_id ( title, customer:customer_id ( first_name, last_name ) )')
             .order('created_at', { ascending: false });
 
           this.list = (data || []).map(c => ({
             ...c,
             project_title: c.project?.title || '—',
-            customer_name: c.customer?.first_name + ' ' + c.customer?.last_name || '—'
+            customer_name: c.project?.customer
+              ? `${c.project.customer.first_name} ${c.project.customer.last_name}`
+              : '—'
           }));
         } catch (e) { console.error(e); }
         finally { this.loading = false; }
@@ -487,8 +663,15 @@ window.createAdminApp = () => {
         } catch (e) { alert('Error: ' + e.message); }
       },
 
-      download(c) {
-        window.open(`https://ixfmstlnwnfjkocpordu.supabase.co/storage/v1/object/public/project-files/${c.r2_key}`, '_blank');
+      async download(c) {
+        const { data, error } = await supabase.storage
+          .from('project-files')
+          .createSignedUrl(c.r2_key, 60 * 60);
+        if (error || !data?.signedUrl) {
+          alert('Could not create a secure contract link');
+          return;
+        }
+        window.open(data.signedUrl, '_blank');
       }
     },
 

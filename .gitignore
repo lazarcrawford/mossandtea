@@ -1,5 +1,11 @@
 .env
 .env.*
 node_modules/
+.wrangler/
 .wrangler/__pycache__/
 .codex-artifacts/
+public/
+__pycache__/
+*.pyc
+*.patch
+.DS_Store

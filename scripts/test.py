@@ -3,6 +3,7 @@
 import os, sys, re, subprocess, json
 
 SITE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PUBLIC_DIR = os.path.join(SITE_DIR, "public")
 DEPLOY_URL = "https://mossandtea.lazar-99d.workers.dev"
 PASS, FAIL, WARN = 0, 0, 0
 
@@ -18,6 +19,9 @@ def check(name, passed, warn=False):
 def file_exists(path):
     return os.path.isfile(os.path.join(SITE_DIR, path))
 
+def public_file_exists(path):
+    return os.path.isfile(os.path.join(PUBLIC_DIR, path))
+
 def grep_file(path, pattern):
     f = os.path.join(SITE_DIR, path)
     if not os.path.isfile(f): return False
@@ -27,21 +31,46 @@ print("\n═══════════════════════�
 print("  Moss & Tea — Pre-Deploy Validation")
 print("═══════════════════════════════════════\n")
 
+# === 0. Build deployable public assets ===
+print("🏗️  Public Build")
+build = subprocess.run(["npm", "run", "build"],
+                       cwd=SITE_DIR, capture_output=True, text=True)
+check("npm run build", build.returncode == 0)
+if build.returncode != 0:
+    print(build.stderr or build.stdout)
+print()
+
 # === 1. Static Files ===
 print("📁 Static Files")
 required_files = [
     "index.html", "css/style.css", "css/motion.css", "js/main.js",
     "admin/index.html", "admin/css/admin.css", "admin/js/admin.js",
     "admin/js/alpine.min.js", "admin/js/supabase.min.js",
-    "functions/api/[[catchall]].js", "wrangler.toml"
+    "hermitage/index.html", "hermitage/css/hermitage.css", "hermitage/js/hermitage.js",
+    "portal/index.html",
+    "telegram-console/index.html", "telegram-console/style.css", "telegram-console/app.js",
+    "worker.js", "wrangler.toml"
 ]
 for f in required_files:
     check(f"  {f} exists", file_exists(f))
+
+public_required = [
+    "index.html", "css/style.css", "css/motion.css", "js/main.js",
+    "admin/index.html", "admin/css/admin.css", "admin/js/admin.js",
+    "admin/js/alpine.min.js", "admin/js/supabase.min.js",
+    "hermitage/index.html", "hermitage/css/hermitage.css", "hermitage/js/hermitage.js",
+    "portal/index.html",
+    "telegram-console/index.html", "telegram-console/style.css", "telegram-console/app.js",
+]
+for f in public_required:
+    check(f"  public/{f} exists", public_file_exists(f))
+for blocked in ["supabase/config.toml", "scripts/deploy.sh", "worker.js", "wrangler.toml", ".env"]:
+    check(f"  public/{blocked} absent", not public_file_exists(blocked))
 print()
 
 # === 2. HTML Structure ===
 print("📝 HTML Structure")
-for html in ["index.html", "admin/index.html"]:
+for html in ["public/index.html", "public/admin/index.html", "public/hermitage/index.html", "public/portal/index.html"]:
     if file_exists(html):
         p = os.path.join(SITE_DIR, html)
         with open(p) as f:
@@ -62,7 +91,7 @@ print()
 
 # === 3. JS Syntax ===
 print("🔍 JavaScript")
-for js in ["js/main.js", "admin/js/admin.js", "functions/api/[[catchall]].js"]:
+for js in ["js/main.js", "admin/js/admin.js", "hermitage/js/hermitage.js", "telegram-console/app.js", "worker.js"]:
     if file_exists(js):
         result = subprocess.run(["node", "--check", os.path.join(SITE_DIR, js)],
                                 capture_output=True, text=True)
@@ -82,22 +111,46 @@ if os.path.isfile(js_path):
 # Worker config
 if file_exists("wrangler.toml"):
     check("wrangler.toml has name field", grep_file("wrangler.toml", r'^\s*name\s*='))
+    check("wrangler.toml assets directory is public", grep_file("wrangler.toml", r'directory\s*=\s*"public"'))
 
-# Check .wranglerignore doesn't exclude the functions directory
+# Check .wranglerignore keeps local/private artifacts out if assets ever change
 if file_exists(".wranglerignore"):
     with open(os.path.join(SITE_DIR, ".wranglerignore")) as f:
         ignored = f.read()
-    check("functions/ NOT in .wranglerignore", "functions" not in ignored.split("\n"))
+    check(".env in .wranglerignore", ".env" in ignored.split("\n"))
 print()
 
 # === 5. CSS sanity ===
 print("🎨 CSS")
-for css in ["css/style.css", "admin/css/admin.css"]:
+for css in ["css/style.css", "css/motion.css", "admin/css/admin.css", "hermitage/css/hermitage.css"]:
     if file_exists(css):
         with open(os.path.join(SITE_DIR, css)) as f:
             c = f.read()
-        check(f"{css}: has body selector", "body" in c or "body{" in c.replace(" ", ""))
+        if css != "css/motion.css":
+            check(f"{css}: has body selector", "body" in c or "body{" in c.replace(" ", ""))
         check(f"{css}: has CSS variables", ":root" in c or "--" in c)
+        check(f"{css}: no shell heredoc artifacts", "LIGHTboxEOF" not in c and "echo " not in c)
+print()
+
+# === 6. Portal security assertions ===
+print("🔐 Portal Security")
+for migration in ["supabase/migrations/00006_client_portal.sql"]:
+    check(f"{migration} exists", file_exists(migration))
+check("worker disables legacy file proxy", grep_file("worker.js", r"File proxy is disabled") and not grep_file("worker.js", r"ENABLE_PUBLIC_FILE_PROXY"))
+check("worker redirects /portal to /hermitage", grep_file("worker.js", r"/portal") and grep_file("worker.js", r"/hermitage/"))
+if file_exists("supabase/migrations/00006_client_portal.sql"):
+    check("00006 drops authenticated_read storage policy", grep_file("supabase/migrations/00006_client_portal.sql", r'DROP POLICY IF EXISTS "authenticated_read"'))
+    check("00006 uses customer_users access model", grep_file("supabase/migrations/00006_client_portal.sql", r"customer_users") and grep_file("supabase/migrations/00006_client_portal.sql", r"can_access_project"))
+    check("00006 gates storage through project_files", grep_file("supabase/migrations/00006_client_portal.sql", r"customer_storage_read_visible_project_files"))
+print()
+
+# === 7. Portal access matrix ===
+print("🧭 Portal Access Matrix")
+access_test = subprocess.run(["python3", "scripts/portal_access_rls_test.py"],
+                             cwd=SITE_DIR, capture_output=True, text=True)
+check("customer_users RLS/access contract", access_test.returncode == 0)
+if access_test.returncode != 0:
+    print(access_test.stderr or access_test.stdout)
 print()
 
 # === Summary ===

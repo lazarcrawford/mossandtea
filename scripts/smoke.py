@@ -14,6 +14,8 @@ TESTS = [
     ("Admin CSS",       BASE_URL + "/admin/css/admin.css",     200),
     ("Admin JS",        BASE_URL + "/admin/js/admin.js",       200),
     ("Admin HTML",      BASE_URL + "/admin/index.html",        200),
+    ("Supabase config blocked", BASE_URL + "/supabase/config.toml", 404),
+    ("Deploy script blocked",   BASE_URL + "/scripts/deploy.sh",   404),
 ]
 
 passed = 0
