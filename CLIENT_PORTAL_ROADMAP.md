@@ -692,6 +692,9 @@ Verification:
 - [#6](https://github.com/lazarcrawford/mossandtea/issues/6): Which payment provider should own early payment links?
 - [#8](https://github.com/lazarcrawford/mossandtea/issues/8): Which product category and fulfillment path should be the first Shopify or manual-commerce candidate?
 - [#9](https://github.com/lazarcrawford/mossandtea/issues/9): What client permission language is needed before using archive images for generated previews?
+- [#12](https://github.com/lazarcrawford/mossandtea/issues/12): Should `project_documents` be included in the Sprint 1 migration even if UI waits until Sprint 3?
+- [#13](https://github.com/lazarcrawford/mossandtea/issues/13): Should private file delivery routes be removed, gated, or replaced with signed-URL-only delivery?
+- [#14](https://github.com/lazarcrawford/mossandtea/issues/14): What identity model should portal messages use for RLS?
 
 ## Immediate Next Build Recommendation
 

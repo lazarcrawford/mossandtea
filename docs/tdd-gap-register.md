@@ -22,6 +22,15 @@ This register converts the architecture and CloudCode review concerns into execu
 | TDD-07 | Admin portal controls are not covered end-to-end. | Admin may mark files visible, see selections, or update project state incorrectly. | Admin smoke covering portal visibility, selection review, and document/payment link fields. | Ready |
 | TDD-08 | Telegram console/bridge behavior is not covered as deployed source. | Mini App UI can look functional while Telegram handoff, workspace, or mode state fails. | Browser smoke for `/telegram-console/`, plus bridge integration tests in the bridge runtime repo. | Ready |
 
+## CloudCode Blockers
+
+CloudCode's PR #11 review added two pre-sprint blockers:
+
+- [#15](https://github.com/lazarcrawford/mossandtea/issues/15): Replace broad `project-files` authenticated read storage policy.
+- [#16](https://github.com/lazarcrawford/mossandtea/issues/16): Gate or remove unauthenticated Worker private file routes.
+
+These are not optional hardening tasks. They must be resolved before any real client portal data is exposed.
+
 ## Next Test Build Order
 
 1. Add SQL/RLS tests for TDD-02 and TDD-03 with a seeded two-client scenario.

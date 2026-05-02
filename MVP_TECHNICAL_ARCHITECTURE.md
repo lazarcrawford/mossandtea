@@ -667,10 +667,13 @@ Mitigation: use external payment links in MVP. Add provider webhooks only after 
 4. [#5](https://github.com/lazarcrawford/mossandtea/issues/5): Whether downloads require `balance_paid`, `download_allowed`, or both.
 5. Whether project notes should remain in `messages` or become a richer support thread later.
 6. [#6](https://github.com/lazarcrawford/mossandtea/issues/6): Which payment provider owns MVP payment links.
+7. [#12](https://github.com/lazarcrawford/mossandtea/issues/12): Whether `project_documents` belongs in the Sprint 1 migration.
+8. [#13](https://github.com/lazarcrawford/mossandtea/issues/13): Whether private file delivery routes are removed, gated, or signed-URL-only.
+9. [#14](https://github.com/lazarcrawford/mossandtea/issues/14): Which identity model portal messages use for RLS.
 
 ## TDD Gap Register
 
-Pre-sprint coverage gaps are tracked in [docs/tdd-gap-register.md](docs/tdd-gap-register.md) and [GitHub issue #10](https://github.com/lazarcrawford/mossandtea/issues/10). The security-critical items are portal auth, `customer_users` mapping, cross-client RLS denial, and private Storage signed URL behavior.
+Pre-sprint coverage gaps are tracked in [docs/tdd-gap-register.md](docs/tdd-gap-register.md) and [GitHub issue #10](https://github.com/lazarcrawford/mossandtea/issues/10). The security-critical items are portal auth, `customer_users` mapping, cross-client RLS denial, and private Storage signed URL behavior. CloudCode follow-up review added blockers for broad Storage reads ([#15](https://github.com/lazarcrawford/mossandtea/issues/15)) and unauthenticated Worker private file routes ([#16](https://github.com/lazarcrawford/mossandtea/issues/16)).
 
 ## Recommended Next Action
 

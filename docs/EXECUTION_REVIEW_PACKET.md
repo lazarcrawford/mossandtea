@@ -22,6 +22,8 @@ The review should answer:
 - `OPERATIONS.md` - deploy readiness, environment expectations, and operational checks.
 - `docs/tdd-gap-register.md` - pre-sprint coverage gaps and test build order.
 - `docs/reviews/2026-05-02-cloudcode-skillful-discussion.md` - Codex's structured response to CloudCode's architecture/process feedback.
+- `docs/reviews/2026-05-02-cloudcode-pr11-review.md` - CloudCode's follow-up review of this execution packet and the resulting blocker issues.
+- `docs/CLOUDCODE_REVIEW_PROMPT.md` - reproducible prompt for running the next CloudCode review through the local Ollama-backed Claude path.
 - `docs/session-logs/` - retroactive durable session memory reconstructed from Git history and PR state.
 
 ## Current GitHub Trail
