@@ -9,3 +9,11 @@ __pycache__/
 *.pyc
 *.patch
 .DS_Store
+assets/
+scratch/
+images/irina/*.jpg
+images/irina/*.JPG
+images/irina/*.jpeg
+images/irina/*.JPEG
+!images/irina/archive/
+!images/irina/archive/*.webp

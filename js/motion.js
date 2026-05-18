@@ -82,14 +82,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         currentIndex = index;
         const item = items[currentIndex];
-        const category = item.dataset.category || 'witness';
+        const category = item.dataset.category || 'held-gaze';
         const src = item.dataset.src;
 
         lbImage.classList.remove('lightbox__image--loaded');
         lbImage.src = '';
         lbImage.alt = '';
 
-        lightbox.classList.remove('lightbox--witness', 'lightbox--body', 'lightbox--performance', 'lightbox--editorial', 'lightbox--earth', 'lightbox--trace');
+        Array.from(lightbox.classList)
+            .filter((className) => className.startsWith('lightbox--') && className !== 'lightbox--open')
+            .forEach((className) => lightbox.classList.remove(className));
         lightbox.classList.add(`lightbox--${category}`, 'lightbox--open');
         document.body.style.overflow = 'hidden';
 

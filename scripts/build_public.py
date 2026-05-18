@@ -12,6 +12,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 PUBLIC = ROOT / "public"
+SELECTED_ARCHIVE_SOURCE = ROOT / "assets" / "Moss and Tea Website"
+SELECTED_ARCHIVE_FILES = (
+    {path.name for path in SELECTED_ARCHIVE_SOURCE.iterdir()}
+    if SELECTED_ARCHIVE_SOURCE.exists()
+    else set()
+)
 
 FILES = [
     "index.html",
@@ -20,6 +26,7 @@ FILES = [
 DIRS = [
     "admin",
     "css",
+    "data",
     "hermitage",
     "images",
     "js",
@@ -36,10 +43,19 @@ def copy_file(src: Path, dst: Path) -> None:
 def copy_dir(src: Path, dst: Path) -> None:
     if dst.exists():
         shutil.rmtree(dst)
+
+    def ignore(directory: str, names: list[str]) -> set[str]:
+        ignored = {"__pycache__", ".DS_Store"}.intersection(names)
+        directory_path = Path(directory)
+        rel = directory_path.relative_to(ROOT).as_posix()
+        if rel == "images/irina":
+            ignored.update(name for name in names if name in SELECTED_ARCHIVE_FILES)
+        return ignored
+
     shutil.copytree(
         src,
         dst,
-        ignore=shutil.ignore_patterns("__pycache__", ".DS_Store"),
+        ignore=ignore,
     )
 
 

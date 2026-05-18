@@ -506,27 +506,27 @@ h1, h2, h3, h4 {
     transform: translateX(-50%) scale(1);
 }
 
-.portfolio__chapter[data-gallery-filter="body"].portfolio__chapter--active {
+.portfolio__chapter[data-gallery-filter="body-element"].portfolio__chapter--active {
     background: rgba(239, 215, 205, 0.05);
     border-color: rgba(181, 132, 113, 0.44);
 }
 
-.portfolio__chapter[data-gallery-filter="earth"].portfolio__chapter--active {
+.portfolio__chapter[data-gallery-filter="earth-dream"].portfolio__chapter--active {
     background: rgba(222, 232, 210, 0.05);
     border-color: rgba(138, 154, 122, 0.44);
 }
 
-.portfolio__chapter[data-gallery-filter="performance"].portfolio__chapter--active {
+.portfolio__chapter[data-gallery-filter="accord"].portfolio__chapter--active {
     background: rgba(242, 222, 237, 0.05);
     border-color: rgba(174, 126, 166, 0.44);
 }
 
-.portfolio__chapter[data-gallery-filter="editorial"].portfolio__chapter--active {
+.portfolio__chapter[data-gallery-filter="held-gaze"].portfolio__chapter--active {
     background: rgba(246, 225, 204, 0.05);
     border-color: rgba(195, 145, 101, 0.42);
 }
 
-.portfolio__chapter[data-gallery-filter="trace"].portfolio__chapter--active {
+.portfolio__chapter[data-gallery-filter="afterimage"].portfolio__chapter--active {
     background: rgba(239, 226, 219, 0.05);
     border-color: rgba(174, 150, 140, 0.42);
 }
@@ -550,6 +550,18 @@ h1, h2, h3, h4 {
     gap: 0;
     padding: 0;
     transition: opacity 0.22s ease, filter 0.22s ease, transform 0.22s ease;
+}
+
+.gallery__status {
+    grid-column: 1 / -1;
+    min-height: 16rem;
+    display: grid;
+    place-items: center;
+    margin: 0;
+    color: var(--text-light);
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    font-style: italic;
 }
 
 .gallery__item {

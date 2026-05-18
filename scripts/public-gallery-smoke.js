@@ -9,12 +9,11 @@ const BRAVE = '/Applications/Brave Browser.app/Contents/MacOS/Brave Browser';
 const TARGET = process.env.PUBLIC_UI_URL || 'https://mossandtea.com/';
 
 const chapters = [
-  ['Woman as Sacred', 'witness', 13],
-  ['Body Landscapes', 'body', 8],
-  ['Mythology', 'performance', 17],
-  ['Editorial as Ritual', 'editorial', 7],
-  ['Faces of Nature', 'earth', 6],
-  ['Afterimages', 'trace', 8],
+  ['The Held Gaze', 'held-gaze', 55],
+  ['Body as Element', 'body-element', 19],
+  ['Earth & Dream', 'earth-dream', 22],
+  ['The Accord', 'accord', 9],
+  ['Afterimage', 'afterimage', 19],
 ];
 
 async function visibleGalleryCount(page) {
@@ -37,7 +36,7 @@ async function run() {
     await page.waitForSelector('#gallery [data-lightbox]', { state: 'attached', timeout: 15000 });
 
     const total = await page.locator('#gallery [data-lightbox]').count();
-    if (total !== 59) throw new Error(`Expected 59 archive images in homepage gallery, found ${total}`);
+    if (total !== 124) throw new Error(`Expected 124 archive images in homepage gallery, found ${total}`);
 
     for (const [label, category, expected] of chapters) {
       await page.getByRole('tab', { name: label }).click();
@@ -70,7 +69,7 @@ async function run() {
     fs.mkdirSync(path.join(ROOT, '.codex-artifacts'), { recursive: true });
     await page.screenshot({ path: path.join(ROOT, '.codex-artifacts/public-gallery-smoke.png'), fullPage: true });
     await browser.close();
-    console.log('Public gallery smoke passed: 59 images across 6 chapters');
+    console.log('Public gallery smoke passed: 124 images across 5 chapters');
   } catch (err) {
     fs.mkdirSync(path.join(ROOT, '.codex-artifacts'), { recursive: true });
     await page.screenshot({ path: path.join(ROOT, '.codex-artifacts/public-gallery-smoke-failure.png'), fullPage: true }).catch(() => {});

@@ -11,6 +11,10 @@ const path = require('node:path');
 
 const ROOT = path.resolve(__dirname, '..');
 const PUBLIC = path.join(ROOT, 'public');
+const SELECTED_ARCHIVE_SOURCE = path.join(ROOT, 'assets', 'Moss and Tea Website');
+const selectedArchiveFiles = fs.existsSync(SELECTED_ARCHIVE_SOURCE)
+  ? new Set(fs.readdirSync(SELECTED_ARCHIVE_SOURCE))
+  : new Set();
 
 const FILES = [
   'index.html',
@@ -19,6 +23,7 @@ const FILES = [
 const DIRS = [
   'admin',
   'css',
+  'data',
   'hermitage',
   'images',
   'js',
@@ -37,7 +42,11 @@ function copyDir(src, dst) {
     recursive: true,
     filter: (candidate) => {
       const name = path.basename(candidate);
-      return name !== '__pycache__' && name !== '.DS_Store';
+      const rel = path.relative(ROOT, candidate).split(path.sep).join('/');
+      const selectedRawIrinaFile = rel.startsWith('images/irina/')
+        && !rel.startsWith('images/irina/archive/')
+        && selectedArchiveFiles.has(name);
+      return name !== '__pycache__' && name !== '.DS_Store' && !selectedRawIrinaFile;
     },
   });
 }
