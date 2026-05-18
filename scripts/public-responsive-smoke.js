@@ -9,11 +9,10 @@ const BRAVE = '/Applications/Brave Browser.app/Contents/MacOS/Brave Browser';
 const TARGET = process.env.PUBLIC_UI_URL || 'https://mossandtea.com/';
 
 const chapters = [
-  ['The Held Gaze', 'held-gaze', 55],
-  ['Body as Element', 'body-element', 19],
-  ['Earth & Dream', 'earth-dream', 22],
-  ['The Accord', 'accord', 9],
-  ['Afterimage', 'afterimage', 19],
+  ['The Held Gaze', 'held-gaze', 56],
+  ['Body as Element', 'body-element', 31],
+  ['Earth & Dream', 'earth-dream', 26],
+  ['The Spiral Dance', 'spiral-dance', 11],
 ];
 
 const viewports = [

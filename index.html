@@ -28,6 +28,26 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/motion.css">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Photograph",
+        "name": "Moss & Tea Photography — Irina Crawford",
+        "url": "https://mossandtea.com/",
+        "creator": {
+            "@type": "Person",
+            "name": "Irina Crawford",
+            "jobTitle": "Photographer",
+            "url": "https://mossandtea.com/",
+            "email": "hello@mossandtea.com",
+            "image": "https://mossandtea.com/images/social-preview.jpg",
+            "knowsLanguage": ["en", "ro"],
+            "areaServed": ["California", "Worldwide"],
+            "description": "Cinematic portrait, lifestyle, and editorial photographer working with women, nature, ritual, and light."
+        },
+        "about": ["Portrait Photography", "Editorial Photography", "Lifestyle Photography", "Cinematic Photography"]
+    }
+    </script>
 </head>
 <body>
     <!-- Scroll Progress -->
@@ -36,7 +56,7 @@
     <!-- Navigation -->
     <nav class="nav" id="nav">
         <div class="nav__inner container">
-            <a href="#" class="nav__logo">Irina Crawford</a>
+            <a href="/" class="nav__logo" data-scroll-top>Irina Crawford</a>
             <div class="nav__links">
                 <a href="#portfolio" class="nav__link">Portfolio</a>
                 <a href="#about" class="nav__link">About</a>
@@ -92,8 +112,7 @@
                 <button class="portfolio__chapter portfolio__chapter--active" type="button" data-gallery-filter="held-gaze" role="tab" aria-selected="true">The Held Gaze</button>
                 <button class="portfolio__chapter" type="button" data-gallery-filter="body-element" role="tab" aria-selected="false">Body as Element</button>
                 <button class="portfolio__chapter" type="button" data-gallery-filter="earth-dream" role="tab" aria-selected="false">Earth &amp; Dream</button>
-                <button class="portfolio__chapter" type="button" data-gallery-filter="accord" role="tab" aria-selected="false">The Accord</button>
-                <button class="portfolio__chapter" type="button" data-gallery-filter="afterimage" role="tab" aria-selected="false">Afterimage</button>
+                <button class="portfolio__chapter" type="button" data-gallery-filter="spiral-dance" role="tab" aria-selected="false">The Spiral Dance</button>
             </div>
             <div class="portfolio__chapter-copy" id="portfolioChapterCopy" aria-live="polite"></div>
         </div>
@@ -204,10 +223,16 @@
                     </div>
                 </div>
                 <form class="contact__form reveal reveal--right" id="contactForm">
-                    <input type="text" class="form__input" name="name" placeholder="Name" autocomplete="name" required>
-                    <input type="email" class="form__input" name="email" placeholder="Email" autocomplete="email" required>
-                    <input type="text" class="form__input" name="subject" placeholder="Subject">
-                    <textarea class="form__textarea" name="message" placeholder="Tell me about your project..." rows="5" required></textarea>
+                    <label class="sr-only" for="contactName">Name</label>
+                    <input id="contactName" type="text" class="form__input" name="name" placeholder="Name" autocomplete="name" required>
+                    <label class="sr-only" for="contactEmail">Email</label>
+                    <input id="contactEmail" type="email" class="form__input" name="email" placeholder="Email" autocomplete="email" required>
+                    <label class="sr-only" for="contactSubject">Subject</label>
+                    <input id="contactSubject" type="text" class="form__input" name="subject" placeholder="Subject">
+                    <label class="sr-only" for="contactMessage">Message</label>
+                    <textarea id="contactMessage" class="form__textarea" name="message" placeholder="Tell me about your project..." rows="5" required></textarea>
+                    <!-- Honeypot field — bots fill, humans don't -->
+                    <input type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" class="form__honeypot">
                     <p class="form__status" id="contactStatus" role="status" aria-live="polite"></p>
                     <button type="submit" class="btn btn--primary btn--full">Send Message</button>
                 </form>

@@ -72,12 +72,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function getItems() {
         return Array.from(document.querySelectorAll('[data-lightbox]'))
-            .filter((item) => !item.hidden)
-            .sort((a, b) => parseInt(a.dataset.lightbox, 10) - parseInt(b.dataset.lightbox, 10));
+            .filter((item) => !item.hidden);
     }
 
-    function openLightbox(index) {
-        const items = getItems();
+    function openLightbox(index, items = getItems()) {
         if (index < 0 || index >= items.length) return;
 
         currentIndex = index;
@@ -103,6 +101,19 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         tempImg.src = src;
 
+        // Preload neighbors so prev/next feel instant
+        const preload = (offset) => {
+            const target = items[currentIndex + offset];
+            if (!target) return;
+            const url = target.dataset.src;
+            if (!url) return;
+            const img = new Image();
+            img.decoding = 'async';
+            img.src = url;
+        };
+        preload(1);
+        preload(-1);
+
         const chapterLabel = document.querySelector(`[data-gallery-filter="${category}"]`)?.textContent?.trim() || '';
         lbCaption.textContent = item.dataset.caption || '';
         lbCounter.textContent = `${currentIndex + 1} / ${items.length}`;
@@ -115,16 +126,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function navigate(direction) {
-        const nextIndex = currentIndex + direction;
         const items = getItems();
-        if (nextIndex >= 0 && nextIndex < items.length) openLightbox(nextIndex);
+        const nextIndex = currentIndex + direction;
+        if (nextIndex >= 0 && nextIndex < items.length) openLightbox(nextIndex, items);
     }
 
     document.addEventListener('click', (event) => {
         const item = event.target.closest('[data-lightbox]');
         if (!item || item.hidden) return;
-        const index = getItems().indexOf(item);
-        if (index >= 0) openLightbox(index);
+        const items = getItems();
+        const index = items.indexOf(item);
+        if (index >= 0) openLightbox(index, items);
     });
 
     lbClose.addEventListener('click', closeLightbox);

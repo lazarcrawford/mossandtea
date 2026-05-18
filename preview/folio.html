@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moss &amp; Tea — A Folio of Light</title>
+    <meta name="description" content="A folio of photographs by Irina Crawford. Cinematic portrait, lifestyle, and editorial work where women, nature, ritual, and light gather into icons.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================
+           WILD-FOLIO — Sacred folio
+           Brâncuși rhythm × Romanian icon framing
+           × Apple deference × Irina's mythic stillness
+           ============================================ */
+
+        :root {
+            --ink: #18130E;
+            --ink-soft: #3D342B;
+            --ink-faint: #6B5F52;
+            --bone: #F1ECE2;
+            --bone-deep: #E5DDCD;
+            --gold: #B89248;
+            --gold-soft: rgba(184, 146, 72, 0.22);
+            --rom-red: #8C2F2E;
+            --lapis: #1E3A5F;
+            --serif: 'Cormorant Garamond', Georgia, serif;
+            --sans: 'Inter', -apple-system, sans-serif;
+            --line-w: 0.5px;
+            --max: 1180px;
+            --gutter: clamp(1.25rem, 4vw, 4.5rem);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+        body {
+            font-family: var(--serif);
+            font-weight: 300;
+            color: var(--ink-soft);
+            background: var(--bone);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Paper-grain texture */
+        body::before {
+            content: "";
+            position: fixed; inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.18;
+            mix-blend-mode: multiply;
+            background:
+                radial-gradient(circle at 22% 18%, rgba(76, 58, 42, 0.06), transparent 1px),
+                radial-gradient(circle at 68% 42%, rgba(45, 33, 24, 0.04), transparent 0.8px),
+                radial-gradient(circle at 38% 78%, rgba(150, 120, 90, 0.05), transparent 1.1px);
+            background-size: 23px 27px, 37px 31px, 43px 49px;
+        }
+
+        img { max-width: 100%; height: auto; display: block; }
+        button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+
+        /* ========== PILASTERS — vertical hairlines framing the page ========== */
+        .pilaster {
+            position: fixed;
+            top: 0; bottom: 0;
+            width: 1px;
+            background: linear-gradient(180deg,
+                transparent 0%,
+                var(--gold-soft) 10%,
+                var(--gold-soft) 90%,
+                transparent 100%);
+            z-index: 2;
+            pointer-events: none;
+        }
+        .pilaster--left { left: calc(50% - var(--max) / 2 + var(--gutter) / 2); }
+        .pilaster--right { right: calc(50% - var(--max) / 2 + var(--gutter) / 2); }
+        @media (max-width: 900px) { .pilaster { display: none; } }
+
+        /* ========== FOLIO LAYOUT ========== */
+        .folio {
+            position: relative;
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 0 var(--gutter);
+            z-index: 3;
+        }
+
+        /* ========== CARTOUCHE — top of folio ========== */
+        .cartouche {
+            text-align: center;
+            padding: 5rem 0 3.5rem;
+        }
+        .cartouche__motto {
+            font-family: var(--sans);
+            font-size: 0.62rem;
+            letter-spacing: 0.42em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+            margin-bottom: 1.5rem;
+        }
+        .cartouche__title {
+            font-size: clamp(2.1rem, 4vw, 3.4rem);
+            font-weight: 400;
+            letter-spacing: 0.04em;
+            color: var(--ink);
+            line-height: 1.05;
+            font-feature-settings: "liga", "dlig";
+        }
+        .cartouche__title em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--rom-red);
+            opacity: 0.9;
+        }
+        .cartouche__sub {
+            font-size: 0.96rem;
+            font-style: italic;
+            color: var(--ink-faint);
+            margin-top: 1.1rem;
+            letter-spacing: 0.02em;
+        }
+        .cartouche__rule {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            margin-top: 2.2rem;
+        }
+        .cartouche__rule::before,
+        .cartouche__rule::after {
+            content: "";
+            display: block;
+            width: 80px;
+            height: 1px;
+            background: var(--gold);
+            opacity: 0.5;
+        }
+        .cartouche__dot {
+            width: 4px; height: 4px;
+            background: var(--gold);
+            transform: rotate(45deg);
+            opacity: 0.85;
+        }
+
+        /* ========== HERO IMAGE ========== */
+        .hero {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 21 / 9;
+            overflow: hidden;
+            background: var(--ink);
+            margin-bottom: 4rem;
+        }
+        .hero__img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            object-position: center 30%;
+            opacity: 0.94;
+        }
+        .hero__caption {
+            position: absolute;
+            bottom: 1.2rem; right: 1.4rem;
+            font-family: var(--sans);
+            font-size: 0.6rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(241, 236, 226, 0.6);
+        }
+
+        /* ========== INTRO LEAF ========== */
+        .intro {
+            max-width: 720px;
+            margin: 0 auto 6rem;
+            text-align: center;
+            font-size: 1.18rem;
+            line-height: 1.85;
+            color: var(--ink-soft);
+            font-style: italic;
+        }
+        .intro p + p { margin-top: 1rem; }
+        .intro__signature {
+            display: inline-block;
+            font-family: var(--sans);
+            font-size: 0.62rem;
+            letter-spacing: 0.32em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+            margin-top: 2rem;
+            font-style: normal;
+        }
+        .intro__signature::before {
+            content: "—  ";
+            color: var(--gold);
+        }
+
+        /* ========== CHAPTER NAV ========== */
+        .chapters {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 4.5rem;
+            position: sticky;
+            top: 0;
+            background: var(--bone);
+            padding: 1.6rem 0;
+            z-index: 8;
+            border-bottom: 1px solid var(--gold-soft);
+        }
+        .chapters__list {
+            display: flex;
+            justify-content: center;
+            gap: clamp(0.8rem, 3vw, 3rem);
+            flex-wrap: wrap;
+        }
+        .chapter-tab {
+            font-family: var(--sans);
+            font-size: 0.72rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+            padding: 0.4rem 0;
+            position: relative;
+            transition: color 0.32s ease;
+            white-space: nowrap;
+        }
+        .chapter-tab::after {
+            content: "";
+            position: absolute;
+            left: 0; right: 0; bottom: -2px;
+            height: 1px;
+            background: var(--gold);
+            transform: scaleX(0);
+            transition: transform 0.42s ease;
+        }
+        .chapter-tab:hover, .chapter-tab.is-active {
+            color: var(--rom-red);
+        }
+        .chapter-tab.is-active::after { transform: scaleX(1); }
+
+        /* ========== CHAPTER HEADER (arched icon-titulus) ========== */
+        .chapter-header {
+            text-align: center;
+            margin: 5rem auto 3.2rem;
+            max-width: 720px;
+        }
+        .chapter-header__arch {
+            display: block;
+            margin: 0 auto 1.4rem;
+            width: 84px;
+            height: 32px;
+        }
+        .chapter-header__title {
+            font-size: clamp(1.65rem, 2.6vw, 2.25rem);
+            font-weight: 400;
+            color: var(--ink);
+            margin-bottom: 0.9rem;
+            letter-spacing: 0.02em;
+        }
+        .chapter-header__essay {
+            font-size: 1.04rem;
+            font-style: italic;
+            color: var(--ink-faint);
+            line-height: 1.75;
+        }
+
+        /* ========== FOLIO GALLERY — paired-column rhythm ========== */
+        .folio-gallery {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(1.6rem, 3vw, 3.2rem);
+            margin-bottom: 4rem;
+        }
+        @media (max-width: 720px) {
+            .folio-gallery { grid-template-columns: 1fr; gap: 2.2rem; }
+        }
+
+        /* Stagger columns so it reads as a folio not a grid */
+        .folio-gallery__col {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(1.6rem, 3vw, 3.2rem);
+        }
+        .folio-gallery__col--right { padding-top: clamp(2rem, 5vw, 5rem); }
+        @media (max-width: 720px) {
+            .folio-gallery__col--right { padding-top: 0; }
+        }
+
+        /* ========== PLATE — single image with arched titulus ========== */
+        .plate {
+            position: relative;
+            text-align: center;
+            cursor: pointer;
+        }
+        .plate__titulus {
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 0.82rem;
+            color: var(--ink-faint);
+            margin-bottom: 0.7rem;
+            opacity: 0;
+            transform: translateY(6px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .plate.is-revealed .plate__titulus {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .plate__frame {
+            position: relative;
+            overflow: hidden;
+            background: var(--ink);
+            box-shadow:
+                0 1px 0 var(--gold-soft),
+                0 24px 60px -30px rgba(20, 14, 9, 0.55);
+        }
+        .plate__frame::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            box-shadow: inset 0 0 0 1px var(--gold-soft);
+            pointer-events: none;
+            z-index: 2;
+        }
+        .plate__img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 1.2s ease, filter 0.6s ease;
+        }
+        .plate:hover .plate__img {
+            transform: scale(1.022);
+            filter: saturate(1.04);
+        }
+        .plate__rule {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            margin-top: 0.6rem;
+            opacity: 0;
+            transition: opacity 0.5s ease 0.1s;
+        }
+        .plate.is-revealed .plate__rule { opacity: 0.6; }
+        .plate__rule::before,
+        .plate__rule::after {
+            content: "";
+            width: 18px;
+            height: 1px;
+            background: var(--gold);
+        }
+        .plate__rule-dot {
+            width: 3px; height: 3px;
+            background: var(--gold);
+            transform: rotate(45deg);
+        }
+
+        /* ========== ABOUT — facing folio leaves ========== */
+        .about {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin: 7rem 0 6rem;
+            padding-top: 4rem;
+            border-top: 1px solid var(--gold-soft);
+        }
+        @media (max-width: 720px) {
+            .about { grid-template-columns: 1fr; gap: 2.2rem; }
+        }
+        .about__plate {
+            position: relative;
+            background: var(--ink);
+            box-shadow: 0 24px 60px -30px rgba(20, 14, 9, 0.55);
+        }
+        .about__plate::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            box-shadow: inset 0 0 0 1px var(--gold-soft);
+            pointer-events: none;
+        }
+        .about__plate img {
+            width: 100%;
+            height: auto;
+            opacity: 0.94;
+        }
+        .about__col-label {
+            font-family: var(--sans);
+            font-size: 0.62rem;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+            margin-bottom: 1.2rem;
+        }
+        .about__title {
+            font-size: clamp(1.6rem, 2.6vw, 2.3rem);
+            color: var(--ink);
+            margin-bottom: 1.5rem;
+            line-height: 1.18;
+            font-weight: 400;
+        }
+        .about__text {
+            font-size: 1.02rem;
+            line-height: 1.85;
+            color: var(--ink-soft);
+            margin-bottom: 1rem;
+        }
+        .about__text em { font-style: italic; color: var(--rom-red); }
+
+        /* ========== SERVICES — iconostasis row ========== */
+        .services {
+            margin: 6rem 0;
+            padding: 4rem 0;
+            border-top: 1px solid var(--gold-soft);
+            border-bottom: 1px solid var(--gold-soft);
+            text-align: center;
+        }
+        .services__title {
+            font-size: clamp(1.5rem, 2.2vw, 1.95rem);
+            color: var(--ink);
+            margin-bottom: 3.5rem;
+            font-weight: 400;
+        }
+        .services__row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            border-top: 1px solid var(--gold-soft);
+            border-bottom: 1px solid var(--gold-soft);
+        }
+        @media (max-width: 720px) { .services__row { grid-template-columns: 1fr 1fr; } }
+        .service {
+            padding: 2.2rem 1.6rem;
+            position: relative;
+            border-right: 1px solid var(--gold-soft);
+        }
+        .service:last-child { border-right: none; }
+        @media (max-width: 720px) {
+            .service { border-right: 1px solid var(--gold-soft); border-bottom: 1px solid var(--gold-soft); }
+            .service:nth-child(even) { border-right: none; }
+            .service:nth-child(3), .service:nth-child(4) { border-bottom: none; }
+        }
+        .service__rom {
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 0.7rem;
+            color: var(--gold);
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            margin-bottom: 0.6rem;
+        }
+        .service__title {
+            font-size: 1.18rem;
+            color: var(--ink);
+            margin-bottom: 0.8rem;
+            font-weight: 400;
+        }
+        .service__text {
+            font-size: 0.88rem;
+            color: var(--ink-faint);
+            line-height: 1.7;
+        }
+
+        /* ========== CONTACT — facing leaves with epistolary feel ========== */
+        .contact {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: flex-start;
+            margin: 5rem 0 7rem;
+        }
+        @media (max-width: 720px) { .contact { grid-template-columns: 1fr; gap: 3rem; } }
+
+        .contact__title {
+            font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+            color: var(--ink);
+            margin-bottom: 1.4rem;
+            font-weight: 400;
+            line-height: 1.18;
+        }
+        .contact__intro {
+            font-style: italic;
+            color: var(--ink-faint);
+            line-height: 1.85;
+            margin-bottom: 2.2rem;
+        }
+        .contact__detail {
+            margin-bottom: 1.4rem;
+            font-size: 0.95rem;
+        }
+        .contact__detail-label {
+            display: block;
+            font-family: var(--sans);
+            font-size: 0.6rem;
+            letter-spacing: 0.32em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 0.32rem;
+        }
+        .contact__detail a, .contact__detail span {
+            color: var(--ink);
+            font-size: 1.04rem;
+            border-bottom: 1px solid var(--gold-soft);
+            padding-bottom: 2px;
+            transition: border-color 0.32s;
+        }
+        .contact__detail a:hover { border-color: var(--rom-red); color: var(--rom-red); }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .contact-form__field {
+            position: relative;
+        }
+        .contact-form__field label {
+            font-family: var(--sans);
+            font-size: 0.6rem;
+            letter-spacing: 0.32em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+            display: block;
+            margin-bottom: 0.32rem;
+        }
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--gold-soft);
+            padding: 0.6rem 0;
+            font-family: var(--serif);
+            font-size: 1.05rem;
+            color: var(--ink);
+            transition: border-color 0.32s;
+            outline: none;
+        }
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            border-color: var(--rom-red);
+        }
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 110px;
+        }
+        .contact-form__honeypot {
+            position: absolute !important;
+            left: -10000px !important;
+            opacity: 0 !important;
+            width: 1px; height: 1px;
+        }
+        .contact-form__btn {
+            margin-top: 1rem;
+            padding: 0.8rem 1.6rem;
+            font-family: var(--sans);
+            font-size: 0.72rem;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: var(--ink);
+            background: transparent;
+            border: 1px solid var(--gold);
+            cursor: pointer;
+            transition: all 0.42s ease;
+        }
+        .contact-form__btn:hover {
+            background: var(--ink);
+            color: var(--bone);
+            border-color: var(--ink);
+        }
+
+        /* ========== FOOTER — colophon ========== */
+        .colophon {
+            text-align: center;
+            padding: 4rem 0 3rem;
+            border-top: 1px solid var(--gold-soft);
+            font-family: var(--sans);
+            font-size: 0.7rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+        }
+        .colophon__mark {
+            font-family: var(--serif);
+            font-size: 1.1rem;
+            font-style: italic;
+            letter-spacing: 0.04em;
+            text-transform: none;
+            color: var(--ink);
+            display: block;
+            margin-bottom: 0.6rem;
+        }
+
+        /* ========== LIGHTBOX ========== */
+        .lightbox {
+            position: fixed; inset: 0;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.42s ease, visibility 0.42s ease;
+            background: rgba(18, 13, 8, 0.96);
+        }
+        .lightbox.is-open { opacity: 1; visibility: visible; }
+        .lightbox__inner {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+        }
+        .lightbox__img {
+            max-width: 88vw;
+            max-height: 82vh;
+            object-fit: contain;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            box-shadow: 0 32px 80px rgba(0, 0, 0, 0.6);
+        }
+        .lightbox__img.is-loaded { opacity: 1; }
+        .lightbox__caption {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 0.92rem;
+            color: rgba(241, 236, 226, 0.7);
+            letter-spacing: 0.02em;
+            text-align: center;
+            max-width: 80vw;
+        }
+        .lightbox__close,
+        .lightbox__nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 44px; height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(241, 236, 226, 0.6);
+            transition: color 0.32s;
+        }
+        .lightbox__close { top: 1.6rem; right: 1.6rem; transform: none; }
+        .lightbox__nav--prev { left: 1.4rem; }
+        .lightbox__nav--next { right: 1.4rem; }
+        .lightbox__close:hover, .lightbox__nav:hover { color: var(--gold); }
+
+        /* ========== REDUCED MOTION ========== */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Photograph",
+        "name": "Moss & Tea — A Folio of Light",
+        "url": "https://mossandtea.com/",
+        "creator": {
+            "@type": "Person",
+            "name": "Irina Crawford",
+            "jobTitle": "Photographer",
+            "email": "hello@mossandtea.com",
+            "knowsLanguage": ["en", "ro"],
+            "areaServed": ["California", "Worldwide"]
+        }
+    }
+    </script>
+</head>
+<body>
+    <div class="pilaster pilaster--left" aria-hidden="true"></div>
+    <div class="pilaster pilaster--right" aria-hidden="true"></div>
+
+    <main class="folio">
+        <!-- CARTOUCHE -->
+        <header class="cartouche">
+            <p class="cartouche__motto">A Folio · Irina Crawford</p>
+            <h1 class="cartouche__title">Moss <em>&amp;</em> Tea</h1>
+            <p class="cartouche__sub">Rooted in earth · drawn to light</p>
+            <div class="cartouche__rule" aria-hidden="true">
+                <span class="cartouche__dot"></span>
+            </div>
+        </header>
+
+        <!-- HERO -->
+        <figure class="hero">
+            <img class="hero__img" src="/images/irina/archive/makenna13-full.webp" alt="Still life of fruit and cloth in soft light">
+            <figcaption class="hero__caption">Plate I · Hero</figcaption>
+        </figure>
+
+        <!-- INTRO -->
+        <section class="intro">
+            <p>I make photographs that feel like memory before they become photographs. Faces, water, leaves, light — held still long enough to become true.</p>
+            <p>This folio gathers four chapters: the held gaze, the body as element, earth and dream, the spiral dance.</p>
+            <p class="intro__signature">Irina Crawford</p>
+        </section>
+
+        <!-- CHAPTER NAV -->
+        <nav class="chapters" id="chaptersNav">
+            <div class="chapters__list" role="tablist">
+                <button class="chapter-tab is-active" data-filter="held-gaze" role="tab" aria-selected="true">The Held Gaze</button>
+                <button class="chapter-tab" data-filter="body-element" role="tab" aria-selected="false">Body as Element</button>
+                <button class="chapter-tab" data-filter="earth-dream" role="tab" aria-selected="false">Earth &amp; Dream</button>
+                <button class="chapter-tab" data-filter="spiral-dance" role="tab" aria-selected="false">The Spiral Dance</button>
+            </div>
+        </nav>
+
+        <!-- CHAPTER HEADER -->
+        <header class="chapter-header" id="chapterHeader">
+            <svg class="chapter-header__arch" viewBox="0 0 84 32" aria-hidden="true">
+                <path d="M2 30 Q 2 4, 42 4 T 82 30" fill="none" stroke="var(--gold)" stroke-width="0.7" opacity="0.7"/>
+                <circle cx="42" cy="4" r="2" fill="var(--gold)"/>
+            </svg>
+            <h2 class="chapter-header__title" id="chapterTitle">The Held Gaze</h2>
+            <p class="chapter-header__essay" id="chapterEssay"></p>
+        </header>
+
+        <!-- FOLIO GALLERY -->
+        <section class="folio-gallery" id="folioGallery" aria-live="polite">
+            <div class="folio-gallery__col" id="folioColLeft"></div>
+            <div class="folio-gallery__col folio-gallery__col--right" id="folioColRight"></div>
+        </section>
+
+        <!-- ABOUT -->
+        <section class="about" id="about">
+            <div class="about__plate">
+                <img src="/images/irina/archive/g3a5407b-full.webp" alt="Irina Crawford — photographer">
+            </div>
+            <div>
+                <p class="about__col-label">A Note from the Author</p>
+                <h2 class="about__title">I come from a filmmaking eye.</h2>
+                <p class="about__text">I think in atmosphere, movement, and emotional rhythm. A session with me is not about performing a perfect version of yourself. It is about <em>entering a small world together</em> and letting the real image rise.</p>
+                <p class="about__text">Based in California and available for travel, I work with families, artists, makers, and brands who want photographs with tenderness, strangeness, beauty, and a living pulse.</p>
+            </div>
+        </section>
+
+        <!-- SERVICES — iconostasis row -->
+        <section class="services" id="services">
+            <h2 class="services__title">Four Ways I Work</h2>
+            <div class="services__row">
+                <div class="service">
+                    <p class="service__rom">I</p>
+                    <h3 class="service__title">Portrait &amp; Family</h3>
+                    <p class="service__text">Tender, unforced portraits. Quiet direction, natural movement, and room for real feeling.</p>
+                </div>
+                <div class="service">
+                    <p class="service__rom">II</p>
+                    <h3 class="service__title">Lifestyle &amp; Editorial</h3>
+                    <p class="service__text">Cinematic stories for artists, publications, and creative projects.</p>
+                </div>
+                <div class="service">
+                    <p class="service__rom">III</p>
+                    <h3 class="service__title">Nature &amp; Place</h3>
+                    <p class="service__text">Landscape, water, earth, and atmosphere for projects that need the natural world to feel present and alive.</p>
+                </div>
+                <div class="service">
+                    <p class="service__rom">IV</p>
+                    <h3 class="service__title">Brand Stories</h3>
+                    <p class="service__text">Visual storytelling for makers who want their work to feel human, textured, and emotionally specific.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section class="contact" id="contact">
+            <div>
+                <p class="about__col-label">A Letter, If You'd Like</p>
+                <h2 class="contact__title">Let's make something that feels true.</h2>
+                <p class="contact__intro">Tell me what you are hoping to remember, reveal, or bring into the light. I would love to hear what you are imagining.</p>
+                <div class="contact__detail">
+                    <span class="contact__detail-label">Post</span>
+                    <a href="mailto:hello@mossandtea.com">hello@mossandtea.com</a>
+                </div>
+                <div class="contact__detail">
+                    <span class="contact__detail-label">Domicile</span>
+                    <span>California · Worldwide</span>
+                </div>
+            </div>
+            <form class="contact-form" id="contactForm" autocomplete="on">
+                <div class="contact-form__field">
+                    <label for="cf-name">Name</label>
+                    <input type="text" id="cf-name" name="name" autocomplete="name" required>
+                </div>
+                <div class="contact-form__field">
+                    <label for="cf-email">Email</label>
+                    <input type="email" id="cf-email" name="email" autocomplete="email" required>
+                </div>
+                <div class="contact-form__field">
+                    <label for="cf-subject">Subject</label>
+                    <input type="text" id="cf-subject" name="subject">
+                </div>
+                <div class="contact-form__field">
+                    <label for="cf-message">Your Note</label>
+                    <textarea id="cf-message" name="message" rows="4" required></textarea>
+                </div>
+                <input class="contact-form__honeypot" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+                <button type="submit" class="contact-form__btn">Seal &amp; Send</button>
+            </form>
+        </section>
+
+        <!-- COLOPHON -->
+        <footer class="colophon">
+            <span class="colophon__mark">Moss &amp; Tea</span>
+            <span>© 2026 · Irina Crawford · A folio of light</span>
+        </footer>
+    </main>
+
+    <!-- LIGHTBOX -->
+    <div class="lightbox" id="lightbox" role="dialog" aria-label="Image viewer">
+        <div class="lightbox__inner">
+            <img class="lightbox__img" id="lightboxImg" src="" alt="">
+            <div class="lightbox__caption" id="lightboxCaption"></div>
+            <button class="lightbox__close" id="lightboxClose" aria-label="Close">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+            <button class="lightbox__nav lightbox__nav--prev" id="lightboxPrev" aria-label="Previous">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <button class="lightbox__nav lightbox__nav--next" id="lightboxNext" aria-label="Next">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+        </div>
+    </div>
+
+<script>
+(() => {
+    const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    let chapters = {};
+    let images = [];
+    let activeFilter = 'held-gaze';
+    let currentLightboxIndex = -1;
+    let currentLightboxList = [];
+
+    const colLeft = document.getElementById('folioColLeft');
+    const colRight = document.getElementById('folioColRight');
+    const chapterTitle = document.getElementById('chapterTitle');
+    const chapterEssay = document.getElementById('chapterEssay');
+
+    async function load() {
+        const r = await fetch('/data/gallery-config.json', { cache: 'no-cache' });
+        const m = await r.json();
+        chapters = Object.fromEntries((m.chapters || []).map(c => [c.id, c]));
+        images = m.images || [];
+        render();
+    }
+
+    function imageHTML(img, idx) {
+        return `
+            <figure class="plate" data-idx="${idx}" data-src="${esc(img.full)}" data-caption="${esc(img.caption)}">
+                <figcaption class="plate__titulus">${esc(img.caption.replace(/^[^—-]+[—-]\s*/, ''))}</figcaption>
+                <div class="plate__frame">
+                    <img class="plate__img" src="${esc(img.thumb)}" alt="${esc(img.alt)}" loading="lazy" decoding="async">
+                </div>
+                <div class="plate__rule" aria-hidden="true"><span class="plate__rule-dot"></span></div>
+            </figure>`;
+    }
+
+    function render() {
+        const filtered = images.filter(im => im.chapter === activeFilter);
+        currentLightboxList = filtered;
+        const chapter = chapters[activeFilter] || {};
+        chapterTitle.textContent = chapter.label || '';
+        chapterEssay.textContent = chapter.text || '';
+
+        const left = filtered.filter((_, i) => i % 2 === 0).map((im, i) => imageHTML(im, i * 2)).join('');
+        const right = filtered.filter((_, i) => i % 2 === 1).map((im, i) => imageHTML(im, i * 2 + 1)).join('');
+        colLeft.innerHTML = left;
+        colRight.innerHTML = right;
+
+        // Stagger reveal
+        document.querySelectorAll('.plate').forEach((p, i) => {
+            setTimeout(() => p.classList.add('is-revealed'), 90 + i * 38);
+        });
+    }
+
+    document.querySelectorAll('.chapter-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            activeFilter = tab.dataset.filter;
+            document.querySelectorAll('.chapter-tab').forEach(t => {
+                const active = t === tab;
+                t.classList.toggle('is-active', active);
+                t.setAttribute('aria-selected', active ? 'true' : 'false');
+            });
+            render();
+        });
+    });
+
+    // Lightbox
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightboxImg');
+    const lbCap = document.getElementById('lightboxCaption');
+
+    function openAt(idx) {
+        if (idx < 0 || idx >= currentLightboxList.length) return;
+        currentLightboxIndex = idx;
+        const im = currentLightboxList[idx];
+        lbImg.classList.remove('is-loaded');
+        lbImg.src = '';
+        const tmp = new Image();
+        tmp.onload = () => { lbImg.src = im.full; lbImg.alt = im.alt; requestAnimationFrame(() => lbImg.classList.add('is-loaded')); };
+        tmp.src = im.full;
+        lbCap.textContent = im.caption;
+        lb.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+        // preload neighbors
+        [-1, 1].forEach(o => { const n = currentLightboxList[idx + o]; if (n) (new Image()).src = n.full; });
+    }
+    function closeLB() { lb.classList.remove('is-open'); document.body.style.overflow = ''; }
+
+    document.addEventListener('click', (e) => {
+        const plate = e.target.closest('.plate');
+        if (plate) openAt(parseInt(plate.dataset.idx, 10));
+    });
+    document.getElementById('lightboxClose').addEventListener('click', closeLB);
+    document.getElementById('lightboxPrev').addEventListener('click', () => openAt(currentLightboxIndex - 1));
+    document.getElementById('lightboxNext').addEventListener('click', () => openAt(currentLightboxIndex + 1));
+    lb.addEventListener('click', (e) => { if (e.target === lb || e.target.classList.contains('lightbox__inner')) closeLB(); });
+    document.addEventListener('keydown', (e) => {
+        if (!lb.classList.contains('is-open')) return;
+        if (e.key === 'Escape') closeLB();
+        if (e.key === 'ArrowLeft') openAt(currentLightboxIndex - 1);
+        if (e.key === 'ArrowRight') openAt(currentLightboxIndex + 1);
+    });
+
+    // Contact form
+    const form = document.getElementById('contactForm');
+    if (form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (form.elements.company.value) { form.reset(); return; }
+            const btn = form.querySelector('button[type="submit"]');
+            const original = btn.textContent;
+            btn.textContent = 'Sending...';
+            btn.disabled = true;
+            const values = {
+                name: form.elements.name.value.trim(),
+                email: form.elements.email.value.trim(),
+                subject: form.elements.subject.value.trim() || 'Photography Inquiry',
+                message: form.elements.message.value.trim(),
+            };
+            try {
+                const r = await fetch('/api/inquiries', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(values) });
+                const d = await r.json().catch(() => ({}));
+                if (!r.ok || !d.ok) throw new Error();
+                form.reset();
+                btn.textContent = 'Sent';
+            } catch {
+                window.location.href = `mailto:hello@mossandtea.com?subject=${encodeURIComponent(values.subject)}&body=${encodeURIComponent(`Name: ${values.name}\nEmail: ${values.email}\n\n${values.message}`)}`;
+                btn.textContent = original;
+            } finally {
+                btn.disabled = false;
+                setTimeout(() => { btn.textContent = original; }, 2400);
+            }
+        });
+    }
+
+    load();
+})();
+</script>
+</body>
+</html>

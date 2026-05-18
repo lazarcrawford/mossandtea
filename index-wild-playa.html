@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moss &amp; Tea — A Temple Under Sky</title>
+    <meta name="description" content="A pilgrimage through the photographs of Irina Crawford — four chapters, taken slowly.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================
+           WILD-PLAYA — temple under sky
+           Burning Man scale × Pinterest image-first
+           × Irina's painterly surface
+           ============================================ */
+
+        :root {
+            --ink: #0E0A07;
+            --ink-soft: #2B2218;
+            --sand: #E7DDC9;
+            --sand-deep: #C7B89B;
+            --ember: #C45F2E;
+            --ember-soft: rgba(196, 95, 46, 0.42);
+            --dusk: #6B3340;
+            --gold: #D4A744;
+            --bone: #F1E9DA;
+            --serif: 'Cormorant Garamond', Georgia, serif;
+            --sans: 'Inter', -apple-system, sans-serif;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+        body {
+            font-family: var(--serif);
+            color: var(--bone);
+            background: var(--ink);
+            line-height: 1.55;
+            overflow-x: hidden;
+            position: relative;
+        }
+        img { max-width: 100%; height: auto; display: block; }
+        button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+        a { color: inherit; text-decoration: none; }
+
+        /* ========== AMBIENT DUST ========== */
+        .dust {
+            position: fixed; inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.35;
+            mix-blend-mode: screen;
+        }
+        .dust__mote {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--bone);
+            filter: blur(0.3px);
+            animation: drift 38s linear infinite;
+            opacity: 0.5;
+        }
+
+        @keyframes drift {
+            0% { transform: translate3d(0, 0, 0); opacity: 0; }
+            10% { opacity: 0.55; }
+            90% { opacity: 0.55; }
+            100% { transform: translate3d(-80px, -120vh, 0); opacity: 0; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .dust { display: none; }
+        }
+
+        /* ========== STATION COUNTER ========== */
+        .counter {
+            position: fixed;
+            top: 50%;
+            left: 2.4rem;
+            transform: translateY(-50%);
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+            mix-blend-mode: difference;
+        }
+        .counter__mark {
+            font-family: var(--sans);
+            font-size: 0.62rem;
+            letter-spacing: 0.38em;
+            color: rgba(241, 233, 218, 0.55);
+            font-weight: 500;
+            padding-left: 1rem;
+            position: relative;
+            cursor: pointer;
+            transition: color 0.42s ease;
+            transition-property: color, padding-left;
+        }
+        .counter__mark::before {
+            content: "";
+            position: absolute;
+            left: 0; top: 50%;
+            width: 8px; height: 1px;
+            background: currentColor;
+            transition: width 0.42s ease;
+        }
+        .counter__mark.is-active {
+            color: var(--ember);
+            padding-left: 2.2rem;
+        }
+        .counter__mark.is-active::before { width: 22px; }
+        @media (max-width: 760px) { .counter { display: none; } }
+
+        /* ========== TOP-RIGHT MARK ========== */
+        .topmark {
+            position: fixed;
+            top: 2rem; right: 2.4rem;
+            z-index: 50;
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 1.05rem;
+            color: rgba(241, 233, 218, 0.7);
+            letter-spacing: 0.04em;
+            mix-blend-mode: difference;
+        }
+        .topmark__sub {
+            display: block;
+            font-family: var(--sans);
+            font-size: 0.55rem;
+            letter-spacing: 0.38em;
+            text-transform: uppercase;
+            margin-top: 0.2rem;
+            opacity: 0.6;
+            font-style: normal;
+        }
+
+        /* ========== HERO STATION ========== */
+        .station-hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            text-align: center;
+            z-index: 2;
+        }
+        .station-hero__bg {
+            position: absolute; inset: 0;
+            z-index: -1;
+        }
+        .station-hero__bg img {
+            width: 100%; height: 100%; object-fit: cover;
+            opacity: 0.78;
+            filter: contrast(1.04) saturate(0.92);
+            animation: heroDrift 36s ease-in-out infinite alternate;
+        }
+        .station-hero__bg::after {
+            content: "";
+            position: absolute; inset: 0;
+            background:
+                radial-gradient(ellipse at 50% 50%, transparent 0%, rgba(14, 10, 7, 0.5) 75%, rgba(14, 10, 7, 0.9) 100%),
+                linear-gradient(180deg, rgba(14, 10, 7, 0.5) 0%, transparent 30%, transparent 60%, rgba(14, 10, 7, 0.8) 100%);
+        }
+        @keyframes heroDrift {
+            from { transform: scale(1) translate3d(0, 0, 0); }
+            to { transform: scale(1.06) translate3d(-12px, 6px, 0); }
+        }
+
+        .station-hero__content {
+            padding: 0 2rem;
+            max-width: 1100px;
+        }
+        .station-hero__pretitle {
+            font-family: var(--sans);
+            font-size: 0.65rem;
+            letter-spacing: 0.55em;
+            text-transform: uppercase;
+            color: rgba(241, 233, 218, 0.65);
+            margin-bottom: 2rem;
+        }
+        .station-hero__title {
+            font-family: var(--serif);
+            font-weight: 300;
+            font-size: clamp(3.6rem, 11vw, 9rem);
+            line-height: 0.92;
+            letter-spacing: -0.02em;
+            color: var(--bone);
+            margin-bottom: 1.5rem;
+            text-shadow: 0 4px 40px rgba(0, 0, 0, 0.6);
+        }
+        .station-hero__title em {
+            font-style: italic;
+            color: var(--ember);
+            font-weight: 300;
+        }
+        .station-hero__subtitle {
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: clamp(1.05rem, 1.8vw, 1.42rem);
+            color: rgba(241, 233, 218, 0.78);
+            margin-bottom: 3rem;
+            letter-spacing: 0.02em;
+        }
+        .station-hero__cta {
+            display: inline-block;
+            font-family: var(--sans);
+            font-size: 0.66rem;
+            letter-spacing: 0.42em;
+            text-transform: uppercase;
+            color: var(--bone);
+            padding: 1rem 2.4rem;
+            border: 1px solid rgba(241, 233, 218, 0.45);
+            transition: all 0.42s ease;
+        }
+        .station-hero__cta:hover {
+            background: var(--bone);
+            color: var(--ink);
+            border-color: var(--bone);
+            letter-spacing: 0.46em;
+        }
+        .station-hero__scroll {
+            position: absolute;
+            bottom: 2.5rem; left: 50%;
+            transform: translateX(-50%);
+            font-family: var(--sans);
+            font-size: 0.58rem;
+            letter-spacing: 0.42em;
+            text-transform: uppercase;
+            color: rgba(241, 233, 218, 0.5);
+            text-align: center;
+        }
+        .station-hero__scroll-line {
+            display: block;
+            width: 1px; height: 50px;
+            background: rgba(241, 233, 218, 0.3);
+            margin: 0.8rem auto 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .station-hero__scroll-line::after {
+            content: "";
+            position: absolute; inset: 0;
+            background: var(--ember);
+            animation: scrollPulse 2.4s ease-in-out infinite;
+        }
+        @keyframes scrollPulse {
+            0% { transform: translateY(-100%); }
+            55% { transform: translateY(0%); }
+            100% { transform: translateY(100%); }
+        }
+
+        /* ========== INTRO STATEMENT ========== */
+        .station-intro {
+            position: relative;
+            padding: 12rem 2rem;
+            text-align: center;
+            background: var(--ink);
+            z-index: 3;
+        }
+        .station-intro__inner {
+            max-width: 880px;
+            margin: 0 auto;
+        }
+        .station-intro__label {
+            font-family: var(--sans);
+            font-size: 0.6rem;
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            color: var(--ember);
+            margin-bottom: 1.8rem;
+        }
+        .station-intro__body {
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: clamp(1.4rem, 2.6vw, 2.2rem);
+            line-height: 1.5;
+            color: rgba(241, 233, 218, 0.9);
+            letter-spacing: 0.01em;
+        }
+        .station-intro__body em {
+            font-style: normal;
+            color: var(--ember);
+        }
+
+        /* ========== CHAPTER STATION ========== */
+        .station-chapter {
+            position: relative;
+            padding: 9rem 0 7rem;
+            z-index: 3;
+            min-height: 100vh;
+        }
+        .station-chapter__head {
+            text-align: center;
+            margin-bottom: 5rem;
+            padding: 0 2rem;
+        }
+        .station-chapter__numeral {
+            font-family: var(--sans);
+            font-size: 0.62rem;
+            letter-spacing: 0.55em;
+            text-transform: uppercase;
+            color: var(--ember);
+            margin-bottom: 1.5rem;
+        }
+        .station-chapter__title {
+            font-family: var(--serif);
+            font-weight: 300;
+            font-size: clamp(2.6rem, 6vw, 4.8rem);
+            line-height: 1;
+            letter-spacing: -0.01em;
+            color: var(--bone);
+            margin-bottom: 1.4rem;
+        }
+        .station-chapter__title em {
+            font-style: italic;
+            color: var(--ember);
+        }
+        .station-chapter__essay {
+            max-width: 680px;
+            margin: 0 auto;
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: rgba(241, 233, 218, 0.75);
+        }
+
+        /* ========== PHOTO PROCESSION — alternating large/small ========== */
+        .procession {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(2.5rem, 6vw, 6rem);
+            padding: 0 clamp(1rem, 4vw, 4rem);
+        }
+        .procession__row {
+            display: grid;
+            gap: clamp(1rem, 2vw, 2rem);
+        }
+        .procession__row--one { grid-template-columns: 1fr; }
+        .procession__row--two { grid-template-columns: 1fr 1fr; }
+        .procession__row--three { grid-template-columns: 1.5fr 1fr 1fr; }
+        @media (max-width: 760px) {
+            .procession__row--two, .procession__row--three { grid-template-columns: 1fr; }
+        }
+
+        .relic {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            background: var(--ink-soft);
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1.1s ease, transform 1.1s ease;
+        }
+        .relic.is-visible { opacity: 1; transform: translateY(0); }
+        .relic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1.4s ease, filter 0.6s ease;
+        }
+        .relic:hover img {
+            transform: scale(1.03);
+            filter: brightness(1.04);
+        }
+        .relic::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 60%, rgba(14, 10, 7, 0.6) 100%);
+            opacity: 0;
+            transition: opacity 0.42s;
+            pointer-events: none;
+        }
+        .relic:hover::after { opacity: 1; }
+        .relic__caption {
+            position: absolute;
+            bottom: 1.4rem; left: 1.4rem; right: 1.4rem;
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 0.95rem;
+            color: var(--bone);
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 0.42s, transform 0.42s;
+            z-index: 2;
+            text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+        }
+        .relic:hover .relic__caption { opacity: 1; transform: translateY(0); }
+        .relic--portrait { aspect-ratio: 3 / 4; }
+        .relic--landscape { aspect-ratio: 4 / 3; }
+        .relic--tall { aspect-ratio: 2 / 3; }
+        .relic--full { aspect-ratio: 21 / 9; }
+
+        /* ========== ABOUT STATION ========== */
+        .station-about {
+            position: relative;
+            padding: 10rem 2rem;
+            background:
+                radial-gradient(ellipse at 30% 30%, rgba(107, 51, 64, 0.18), transparent 50%),
+                var(--ink);
+            z-index: 3;
+        }
+        .station-about__grid {
+            max-width: 1180px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 0.85fr 1fr;
+            gap: clamp(2.5rem, 6vw, 6rem);
+            align-items: center;
+        }
+        @media (max-width: 760px) {
+            .station-about__grid { grid-template-columns: 1fr; gap: 3rem; }
+        }
+        .station-about__img {
+            position: relative;
+            aspect-ratio: 3 / 4;
+            overflow: hidden;
+            background: var(--ink-soft);
+        }
+        .station-about__img img {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+        .station-about__img::before {
+            content: "";
+            position: absolute;
+            inset: -8px;
+            border: 1px solid var(--ember-soft);
+            pointer-events: none;
+        }
+        .station-about__label {
+            font-family: var(--sans);
+            font-size: 0.62rem;
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            color: var(--ember);
+            margin-bottom: 1.6rem;
+        }
+        .station-about__title {
+            font-family: var(--serif);
+            font-weight: 300;
+            font-size: clamp(2rem, 4vw, 3.4rem);
+            line-height: 1.05;
+            color: var(--bone);
+            margin-bottom: 2rem;
+        }
+        .station-about__title em { font-style: italic; color: var(--ember); }
+        .station-about__text {
+            font-size: 1.1rem;
+            line-height: 1.85;
+            color: rgba(241, 233, 218, 0.78);
+            margin-bottom: 1.4rem;
+        }
+
+        /* ========== OFFERINGS (Services) ========== */
+        .station-offerings {
+            position: relative;
+            padding: 10rem 2rem;
+            z-index: 3;
+        }
+        .station-offerings__inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .station-offerings__head {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+        .station-offerings__title {
+            font-family: var(--serif);
+            font-weight: 300;
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            color: var(--bone);
+            margin-bottom: 1rem;
+        }
+        .station-offerings__title em { font-style: italic; color: var(--ember); }
+        .station-offerings__sub {
+            font-family: var(--sans);
+            font-size: 0.65rem;
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            color: rgba(241, 233, 218, 0.5);
+        }
+
+        .offerings {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1px;
+            background: var(--ember-soft);
+        }
+        @media (max-width: 760px) {
+            .offerings { grid-template-columns: 1fr; }
+        }
+        .offering {
+            padding: 3.5rem 2.5rem;
+            background: var(--ink);
+            transition: background 0.6s ease;
+        }
+        .offering:hover { background: rgba(196, 95, 46, 0.06); }
+        .offering__numeral {
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 0.95rem;
+            color: var(--ember);
+            letter-spacing: 0.18em;
+            margin-bottom: 1rem;
+        }
+        .offering__title {
+            font-family: var(--serif);
+            font-weight: 400;
+            font-size: 1.65rem;
+            color: var(--bone);
+            margin-bottom: 1rem;
+        }
+        .offering__text {
+            font-size: 0.98rem;
+            line-height: 1.75;
+            color: rgba(241, 233, 218, 0.7);
+        }
+
+        /* ========== CONTACT — pilgrim's exchange ========== */
+        .station-contact {
+            position: relative;
+            padding: 10rem 2rem 6rem;
+            background: linear-gradient(180deg, var(--ink) 0%, #0A0703 100%);
+            z-index: 3;
+        }
+        .station-contact__inner {
+            max-width: 880px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .station-contact__label {
+            font-family: var(--sans);
+            font-size: 0.62rem;
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            color: var(--ember);
+            margin-bottom: 1.8rem;
+        }
+        .station-contact__title {
+            font-family: var(--serif);
+            font-weight: 300;
+            font-size: clamp(2.6rem, 5.5vw, 4.6rem);
+            line-height: 1;
+            color: var(--bone);
+            margin-bottom: 1.8rem;
+        }
+        .station-contact__title em { font-style: italic; color: var(--ember); }
+        .station-contact__lead {
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 1.18rem;
+            line-height: 1.7;
+            color: rgba(241, 233, 218, 0.78);
+            margin-bottom: 3.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .pilgrim-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.3rem;
+            text-align: left;
+        }
+        .pilgrim-form__row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.3rem;
+        }
+        @media (max-width: 600px) {
+            .pilgrim-form__row { grid-template-columns: 1fr; }
+        }
+        .pilgrim-form__field label {
+            display: block;
+            font-family: var(--sans);
+            font-size: 0.58rem;
+            letter-spacing: 0.42em;
+            text-transform: uppercase;
+            color: var(--ember);
+            margin-bottom: 0.45rem;
+        }
+        .pilgrim-form input,
+        .pilgrim-form textarea {
+            width: 100%;
+            background: rgba(241, 233, 218, 0.04);
+            border: none;
+            border-bottom: 1px solid rgba(241, 233, 218, 0.2);
+            padding: 0.7rem 0;
+            font-family: var(--serif);
+            font-size: 1.1rem;
+            color: var(--bone);
+            outline: none;
+            transition: border-color 0.42s;
+        }
+        .pilgrim-form input:focus,
+        .pilgrim-form textarea:focus {
+            border-color: var(--ember);
+        }
+        .pilgrim-form textarea {
+            resize: vertical;
+            min-height: 130px;
+        }
+        .pilgrim-form__honeypot {
+            position: absolute !important;
+            left: -10000px !important; opacity: 0; width: 1px; height: 1px;
+        }
+        .pilgrim-form__btn {
+            margin-top: 1.4rem;
+            padding: 1.1rem 3rem;
+            font-family: var(--sans);
+            font-size: 0.66rem;
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            color: var(--bone);
+            background: var(--ember);
+            border: none;
+            cursor: pointer;
+            transition: all 0.42s ease;
+            align-self: center;
+        }
+        .pilgrim-form__btn:hover {
+            background: var(--bone);
+            color: var(--ember);
+            letter-spacing: 0.56em;
+        }
+
+        .station-contact__details {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-top: 4rem;
+            padding-top: 3rem;
+            border-top: 1px solid rgba(241, 233, 218, 0.1);
+            flex-wrap: wrap;
+        }
+        .station-contact__detail-label {
+            display: block;
+            font-family: var(--sans);
+            font-size: 0.58rem;
+            letter-spacing: 0.42em;
+            text-transform: uppercase;
+            color: var(--ember);
+            margin-bottom: 0.4rem;
+        }
+        .station-contact__detail-value {
+            font-family: var(--serif);
+            font-size: 1.1rem;
+            color: var(--bone);
+        }
+
+        /* ========== FAREWELL ========== */
+        .farewell {
+            text-align: center;
+            padding: 4rem 2rem 3rem;
+            background: #0A0703;
+            position: relative;
+            z-index: 3;
+        }
+        .farewell__mark {
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 1.4rem;
+            color: rgba(241, 233, 218, 0.8);
+            margin-bottom: 0.8rem;
+        }
+        .farewell__note {
+            font-family: var(--sans);
+            font-size: 0.6rem;
+            letter-spacing: 0.36em;
+            text-transform: uppercase;
+            color: rgba(241, 233, 218, 0.32);
+        }
+
+        /* ========== LIGHTBOX ========== */
+        .lb {
+            position: fixed; inset: 0;
+            z-index: 200;
+            background:
+                radial-gradient(circle at 50% 50%, rgba(196, 95, 46, 0.08), transparent 50%),
+                rgba(10, 7, 3, 0.97);
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+            display: flex; align-items: center; justify-content: center;
+            padding: 3rem 4rem;
+        }
+        .lb.is-open { opacity: 1; visibility: visible; }
+        .lb__img {
+            max-width: 88vw; max-height: 84vh;
+            object-fit: contain;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            box-shadow: 0 40px 120px rgba(0, 0, 0, 0.7), 0 0 80px rgba(196, 95, 46, 0.1);
+        }
+        .lb__img.is-loaded { opacity: 1; }
+        .lb__caption {
+            position: absolute;
+            bottom: 2.5rem; left: 50%;
+            transform: translateX(-50%);
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 1.05rem;
+            color: rgba(241, 233, 218, 0.75);
+            text-align: center;
+            max-width: 80vw;
+        }
+        .lb__counter {
+            position: absolute;
+            top: 2rem; left: 2.5rem;
+            font-family: var(--sans);
+            font-size: 0.62rem;
+            letter-spacing: 0.38em;
+            color: var(--ember);
+        }
+        .lb__close, .lb__nav {
+            position: absolute;
+            top: 50%; transform: translateY(-50%);
+            width: 48px; height: 48px;
+            display: flex; align-items: center; justify-content: center;
+            color: rgba(241, 233, 218, 0.6);
+            transition: color 0.32s;
+            cursor: pointer;
+        }
+        .lb__close { top: 2rem; right: 2.5rem; transform: none; }
+        .lb__nav--prev { left: 2rem; }
+        .lb__nav--next { right: 2rem; }
+        .lb__close:hover, .lb__nav:hover { color: var(--ember); }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Photograph",
+        "name": "Moss & Tea — A Temple Under Sky",
+        "url": "https://mossandtea.com/",
+        "creator": {
+            "@type": "Person",
+            "name": "Irina Crawford",
+            "jobTitle": "Photographer",
+            "email": "hello@mossandtea.com",
+            "knowsLanguage": ["en", "ro"],
+            "areaServed": ["California", "Worldwide"]
+        }
+    }
+    </script>
+</head>
+<body>
+    <!-- AMBIENT DUST -->
+    <div class="dust" aria-hidden="true" id="dust"></div>
+
+    <!-- STATION COUNTER -->
+    <nav class="counter" aria-label="Chapter stations">
+        <a href="#held-gaze" class="counter__mark is-active" data-counter="held-gaze">I · Held Gaze</a>
+        <a href="#body-element" class="counter__mark" data-counter="body-element">II · Body</a>
+        <a href="#earth-dream" class="counter__mark" data-counter="earth-dream">III · Earth</a>
+        <a href="#spiral-dance" class="counter__mark" data-counter="spiral-dance">IV · Spiral</a>
+    </nav>
+
+    <!-- TOP MARK -->
+    <a href="#" class="topmark">
+        Moss &amp; Tea
+        <span class="topmark__sub">Irina Crawford</span>
+    </a>
+
+    <!-- HERO -->
+    <section class="station-hero" id="top">
+        <div class="station-hero__bg">
+            <img src="images/irina/archive/makenna13-full.webp" alt="">
+        </div>
+        <div class="station-hero__content">
+            <p class="station-hero__pretitle">A Pilgrimage in Four Chapters</p>
+            <h1 class="station-hero__title">Rooted in <em>Earth.</em></h1>
+            <h1 class="station-hero__title">Drawn to Light.</h1>
+            <p class="station-hero__subtitle">photographs that wait with you — Irina Crawford</p>
+            <a href="#intro" class="station-hero__cta">Begin the Walk</a>
+        </div>
+        <div class="station-hero__scroll" aria-hidden="true">
+            Scroll
+            <span class="station-hero__scroll-line"></span>
+        </div>
+    </section>
+
+    <!-- INTRO STATEMENT -->
+    <section class="station-intro" id="intro">
+        <div class="station-intro__inner">
+            <p class="station-intro__label">Statement of Intent</p>
+            <p class="station-intro__body">
+                I do not <em>direct</em> people into poses.<br>
+                I give the moment enough room to become honest —<br>
+                then I wait until <em>the real image rises.</em>
+            </p>
+        </div>
+    </section>
+
+    <!-- HELD GAZE -->
+    <section class="station-chapter" id="held-gaze" data-chapter="held-gaze">
+        <header class="station-chapter__head">
+            <p class="station-chapter__numeral">Chapter I</p>
+            <h2 class="station-chapter__title">The <em>Held Gaze</em></h2>
+            <p class="station-chapter__essay" data-essay="held-gaze"></p>
+        </header>
+        <div class="procession" data-gallery="held-gaze"></div>
+    </section>
+
+    <!-- BODY -->
+    <section class="station-chapter" id="body-element" data-chapter="body-element">
+        <header class="station-chapter__head">
+            <p class="station-chapter__numeral">Chapter II</p>
+            <h2 class="station-chapter__title">Body as <em>Element</em></h2>
+            <p class="station-chapter__essay" data-essay="body-element"></p>
+        </header>
+        <div class="procession" data-gallery="body-element"></div>
+    </section>
+
+    <!-- EARTH -->
+    <section class="station-chapter" id="earth-dream" data-chapter="earth-dream">
+        <header class="station-chapter__head">
+            <p class="station-chapter__numeral">Chapter III</p>
+            <h2 class="station-chapter__title">Earth &amp; <em>Dream</em></h2>
+            <p class="station-chapter__essay" data-essay="earth-dream"></p>
+        </header>
+        <div class="procession" data-gallery="earth-dream"></div>
+    </section>
+
+    <!-- SPIRAL -->
+    <section class="station-chapter" id="spiral-dance" data-chapter="spiral-dance">
+        <header class="station-chapter__head">
+            <p class="station-chapter__numeral">Chapter IV</p>
+            <h2 class="station-chapter__title">The Spiral <em>Dance</em></h2>
+            <p class="station-chapter__essay" data-essay="spiral-dance"></p>
+        </header>
+        <div class="procession" data-gallery="spiral-dance"></div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="station-about" id="about">
+        <div class="station-about__grid">
+            <div class="station-about__img">
+                <img src="images/irina/archive/g3a5407b-full.webp" alt="Irina Crawford — photographer">
+            </div>
+            <div>
+                <p class="station-about__label">The Photographer</p>
+                <h2 class="station-about__title">I make <em>images</em> that feel like memory before they become photographs.</h2>
+                <p class="station-about__text">I work quietly, with patience and attention to what is already alive: the way someone softens when they feel safe, the gesture between words, the light that finds a face for only a second.</p>
+                <p class="station-about__text">I come from a filmmaking eye, so I think in atmosphere, movement, and emotional rhythm. Based in California, available for travel.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- OFFERINGS -->
+    <section class="station-offerings" id="services">
+        <div class="station-offerings__inner">
+            <div class="station-offerings__head">
+                <h2 class="station-offerings__title">Four <em>Offerings</em></h2>
+                <p class="station-offerings__sub">What I will gather with you</p>
+            </div>
+            <div class="offerings">
+                <div class="offering">
+                    <p class="offering__numeral">i.</p>
+                    <h3 class="offering__title">Portrait &amp; Family</h3>
+                    <p class="offering__text">Tender, unforced portraits for individuals, couples, children, and families. Quiet direction, natural movement, and room for real feeling.</p>
+                </div>
+                <div class="offering">
+                    <p class="offering__numeral">ii.</p>
+                    <h3 class="offering__title">Lifestyle &amp; Editorial</h3>
+                    <p class="offering__text">Cinematic stories for artists, publications, and creative projects. Images shaped by mood, gesture, material, and place.</p>
+                </div>
+                <div class="offering">
+                    <p class="offering__numeral">iii.</p>
+                    <h3 class="offering__title">Nature &amp; Place</h3>
+                    <p class="offering__text">Photographs of landscape, water, earth, and atmosphere for projects that need the natural world to feel present and alive.</p>
+                </div>
+                <div class="offering">
+                    <p class="offering__numeral">iv.</p>
+                    <h3 class="offering__title">Brand Stories</h3>
+                    <p class="offering__text">Visual storytelling for makers and small brands who want their work to feel human, textured, and emotionally specific.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="station-contact" id="contact">
+        <div class="station-contact__inner">
+            <p class="station-contact__label">Send a Note</p>
+            <h2 class="station-contact__title">Let's make something that <em>feels true.</em></h2>
+            <p class="station-contact__lead">Tell me what you are hoping to remember, reveal, or bring into the light. I would love to hear what you are imagining.</p>
+            <form class="pilgrim-form" id="contactForm" autocomplete="on">
+                <div class="pilgrim-form__row">
+                    <div class="pilgrim-form__field">
+                        <label for="pf-name">Name</label>
+                        <input type="text" id="pf-name" name="name" autocomplete="name" required>
+                    </div>
+                    <div class="pilgrim-form__field">
+                        <label for="pf-email">Email</label>
+                        <input type="email" id="pf-email" name="email" autocomplete="email" required>
+                    </div>
+                </div>
+                <div class="pilgrim-form__field">
+                    <label for="pf-subject">Subject</label>
+                    <input type="text" id="pf-subject" name="subject">
+                </div>
+                <div class="pilgrim-form__field">
+                    <label for="pf-message">Your Note</label>
+                    <textarea id="pf-message" name="message" rows="5" required></textarea>
+                </div>
+                <input class="pilgrim-form__honeypot" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+                <button type="submit" class="pilgrim-form__btn">Send the Note</button>
+            </form>
+            <div class="station-contact__details">
+                <div>
+                    <span class="station-contact__detail-label">Post</span>
+                    <span class="station-contact__detail-value">hello@mossandtea.com</span>
+                </div>
+                <div>
+                    <span class="station-contact__detail-label">Based</span>
+                    <span class="station-contact__detail-value">California · Worldwide</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAREWELL -->
+    <footer class="farewell">
+        <p class="farewell__mark">Leave no trace but the photograph.</p>
+        <p class="farewell__note">© 2026 · Irina Crawford · Moss &amp; Tea, LLC</p>
+    </footer>
+
+    <!-- LIGHTBOX -->
+    <div class="lb" id="lb" role="dialog" aria-label="Image viewer">
+        <span class="lb__counter" id="lbCounter">I / —</span>
+        <img class="lb__img" id="lbImg" src="" alt="">
+        <div class="lb__caption" id="lbCaption"></div>
+        <button class="lb__close" id="lbClose" aria-label="Close">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+        <button class="lb__nav lb__nav--prev" id="lbPrev" aria-label="Previous">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button class="lb__nav lb__nav--next" id="lbNext" aria-label="Next">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+    </div>
+
+<script>
+(() => {
+    const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+    // ===== AMBIENT DUST =====
+    const dust = document.getElementById('dust');
+    if (dust && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const motes = 22;
+        for (let i = 0; i < motes; i++) {
+            const m = document.createElement('span');
+            m.className = 'dust__mote';
+            const size = Math.random() * 2.4 + 0.8;
+            m.style.width = `${size}px`;
+            m.style.height = `${size}px`;
+            m.style.left = `${Math.random() * 100}%`;
+            m.style.top = `${100 + Math.random() * 30}%`;
+            m.style.animationDuration = `${28 + Math.random() * 22}s`;
+            m.style.animationDelay = `${-Math.random() * 38}s`;
+            dust.appendChild(m);
+        }
+    }
+
+    // ===== GALLERY LOAD =====
+    let chapters = {}, images = [], lbList = [], lbIndex = -1;
+
+    async function load() {
+        const r = await fetch('data/gallery-config.json', { cache: 'no-cache' });
+        const m = await r.json();
+        chapters = Object.fromEntries((m.chapters || []).map(c => [c.id, c]));
+        images = m.images || [];
+        // Essays
+        document.querySelectorAll('[data-essay]').forEach(el => {
+            el.textContent = (chapters[el.dataset.essay] || {}).text || '';
+        });
+        // Galleries
+        document.querySelectorAll('[data-gallery]').forEach(el => renderChapter(el, el.dataset.gallery));
+        observeRelics();
+        observeChapters();
+    }
+
+    function renderChapter(container, chapterId) {
+        const list = images.filter(i => i.chapter === chapterId);
+        if (!list.length) return;
+
+        // Compose alternating procession: full / two / three / two / one / two...
+        const rowPattern = ['one', 'two', 'three', 'two', 'one', 'two', 'three'];
+        let html = '';
+        let i = 0;
+        let row = 0;
+        while (i < list.length) {
+            const pattern = rowPattern[row % rowPattern.length];
+            let count = pattern === 'one' ? 1 : pattern === 'two' ? 2 : 3;
+            count = Math.min(count, list.length - i);
+            const slice = list.slice(i, i + count);
+            const sizeClass = pattern === 'one' ? 'relic--full' :
+                              pattern === 'two' ? 'relic--portrait' : 'relic--portrait';
+            html += `<div class="procession__row procession__row--${pattern}">${slice.map((im, j) => {
+                const idx = i + j;
+                return `<figure class="relic ${sizeClass}" data-idx="${idx}" data-chapter="${chapterId}">
+                    <img src="${esc(im.thumb)}" alt="${esc(im.alt)}" loading="lazy" decoding="async">
+                    <figcaption class="relic__caption">${esc(im.caption.replace(/^[^—-]+[—-]\s*/, ''))}</figcaption>
+                </figure>`;
+            }).join('')}</div>`;
+            i += count;
+            row++;
+        }
+        container.innerHTML = html;
+    }
+
+    function observeRelics() {
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduce) {
+            document.querySelectorAll('.relic').forEach(r => r.classList.add('is-visible'));
+            return;
+        }
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('is-visible');
+                    io.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        document.querySelectorAll('.relic').forEach(r => io.observe(r));
+    }
+
+    function observeChapters() {
+        const counterLinks = document.querySelectorAll('.counter__mark');
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting && e.intersectionRatio > 0.25) {
+                    const id = e.target.id;
+                    counterLinks.forEach(l => l.classList.toggle('is-active', l.dataset.counter === id));
+                }
+            });
+        }, { threshold: [0.25, 0.5] });
+        document.querySelectorAll('.station-chapter').forEach(c => io.observe(c));
+    }
+
+    // ===== LIGHTBOX =====
+    const lb = document.getElementById('lb');
+    const lbImg = document.getElementById('lbImg');
+    const lbCap = document.getElementById('lbCaption');
+    const lbCounter = document.getElementById('lbCounter');
+
+    function openLB(chapterId, idx) {
+        lbList = images.filter(i => i.chapter === chapterId);
+        lbIndex = idx;
+        showLB();
+    }
+    function showLB() {
+        if (lbIndex < 0 || lbIndex >= lbList.length) return;
+        const im = lbList[lbIndex];
+        lbImg.classList.remove('is-loaded');
+        const tmp = new Image();
+        tmp.onload = () => { lbImg.src = im.full; lbImg.alt = im.alt; requestAnimationFrame(() => lbImg.classList.add('is-loaded')); };
+        tmp.src = im.full;
+        lbCap.textContent = im.caption;
+        lbCounter.textContent = `${String(lbIndex + 1).padStart(2, '0')} / ${String(lbList.length).padStart(2, '0')}`;
+        lb.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+        [-1, 1].forEach(o => { const n = lbList[lbIndex + o]; if (n) (new Image()).src = n.full; });
+    }
+    function closeLB() { lb.classList.remove('is-open'); document.body.style.overflow = ''; }
+
+    document.addEventListener('click', (e) => {
+        const r = e.target.closest('.relic');
+        if (r) openLB(r.dataset.chapter, parseInt(r.dataset.idx, 10));
+    });
+    document.getElementById('lbClose').addEventListener('click', closeLB);
+    document.getElementById('lbPrev').addEventListener('click', () => { lbIndex = Math.max(0, lbIndex - 1); showLB(); });
+    document.getElementById('lbNext').addEventListener('click', () => { lbIndex = Math.min(lbList.length - 1, lbIndex + 1); showLB(); });
+    lb.addEventListener('click', (e) => { if (e.target === lb) closeLB(); });
+    document.addEventListener('keydown', (e) => {
+        if (!lb.classList.contains('is-open')) return;
+        if (e.key === 'Escape') closeLB();
+        if (e.key === 'ArrowLeft') { lbIndex = Math.max(0, lbIndex - 1); showLB(); }
+        if (e.key === 'ArrowRight') { lbIndex = Math.min(lbList.length - 1, lbIndex + 1); showLB(); }
+    });
+
+    // ===== FORM =====
+    const form = document.getElementById('contactForm');
+    if (form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (form.elements.company.value) { form.reset(); return; }
+            const btn = form.querySelector('button[type="submit"]');
+            const original = btn.textContent;
+            btn.textContent = 'Sending';
+            btn.disabled = true;
+            const values = {
+                name: form.elements.name.value.trim(),
+                email: form.elements.email.value.trim(),
+                subject: form.elements.subject.value.trim() || 'Photography Inquiry',
+                message: form.elements.message.value.trim(),
+            };
+            try {
+                const r = await fetch('/api/inquiries', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(values) });
+                const d = await r.json().catch(() => ({}));
+                if (!r.ok || !d.ok) throw new Error();
+                form.reset(); btn.textContent = 'Sent';
+            } catch {
+                window.location.href = `mailto:hello@mossandtea.com?subject=${encodeURIComponent(values.subject)}&body=${encodeURIComponent(`Name: ${values.name}\nEmail: ${values.email}\n\n${values.message}`)}`;
+                btn.textContent = original;
+            } finally {
+                btn.disabled = false;
+                setTimeout(() => { btn.textContent = original; }, 2400);
+            }
+        });
+    }
+
+    load();
+})();
+</script>
+</body>
+</html>

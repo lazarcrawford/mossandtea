@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moss &amp; Tea — An Atlas of Orbits</title>
+    <meta name="description" content="An atlas of photographs by Irina Crawford — four spiraling galaxies, one for each chapter of her work.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================
+           WILD-SPIRAL — atlas of orbits
+           Pinterest density × Apple depth × Brâncuși spiral
+           × Irina's "Spiral Dance" chapter
+           ============================================ */
+
+        :root {
+            --ink-deep: #07090F;
+            --ink: #0C111B;
+            --ink-soft: #161E2C;
+            --indigo: #2A2E5C;
+            --indigo-soft: rgba(108, 116, 200, 0.16);
+            --pearl: #F1ECE2;
+            --pearl-dim: rgba(241, 236, 226, 0.62);
+            --gold: #D7B768;
+            --rose: #D27C7A;
+            --sage: #8FA88A;
+            --serif: 'Cormorant Garamond', Georgia, serif;
+            --sans: 'Inter', -apple-system, sans-serif;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+        body {
+            font-family: var(--serif);
+            background: var(--ink-deep);
+            color: var(--pearl);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        img { max-width: 100%; height: auto; display: block; }
+        button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+        a { color: inherit; text-decoration: none; }
+
+        /* ========== STARFIELD BACKDROP ========== */
+        body::before {
+            content: "";
+            position: fixed; inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.55;
+            background:
+                radial-gradient(1.5px circle at 12% 22%, rgba(241, 236, 226, 0.55), transparent 100%),
+                radial-gradient(1px circle at 78% 31%, rgba(241, 236, 226, 0.45), transparent 100%),
+                radial-gradient(2px circle at 41% 67%, rgba(215, 183, 104, 0.32), transparent 100%),
+                radial-gradient(1px circle at 88% 78%, rgba(241, 236, 226, 0.42), transparent 100%),
+                radial-gradient(1.5px circle at 28% 88%, rgba(241, 236, 226, 0.4), transparent 100%),
+                radial-gradient(1px circle at 64% 12%, rgba(241, 236, 226, 0.38), transparent 100%),
+                radial-gradient(1px circle at 6% 56%, rgba(210, 124, 122, 0.32), transparent 100%);
+            background-size: 100% 100%;
+        }
+        body::after {
+            content: "";
+            position: fixed;
+            inset: -20vh -20vw;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse at 18% 12%, rgba(108, 116, 200, 0.18), transparent 38%),
+                radial-gradient(ellipse at 78% 82%, rgba(143, 168, 138, 0.12), transparent 38%);
+        }
+
+        main, header, footer, section { position: relative; z-index: 2; }
+
+        /* ========== TOP BAR ========== */
+        .topbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 60;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.4rem 2rem;
+            mix-blend-mode: difference;
+        }
+        .topbar__mark {
+            font-family: var(--serif);
+            font-size: 1.18rem;
+            font-style: italic;
+            letter-spacing: 0.04em;
+            color: rgba(241, 236, 226, 0.85);
+        }
+        .topbar__mark span {
+            display: block;
+            font-family: var(--sans);
+            font-style: normal;
+            font-size: 0.55rem;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            opacity: 0.55;
+            margin-top: 0.18rem;
+        }
+        .topbar__nav {
+            display: flex;
+            gap: 1.6rem;
+        }
+        .topbar__link {
+            font-family: var(--sans);
+            font-size: 0.62rem;
+            letter-spacing: 0.36em;
+            text-transform: uppercase;
+            color: rgba(241, 236, 226, 0.55);
+            transition: color 0.42s;
+        }
+        .topbar__link:hover { color: var(--gold); }
+        @media (max-width: 600px) {
+            .topbar__nav { display: none; }
+        }
+
+        /* ========== HERO ========== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 2rem;
+            text-align: center;
+            position: relative;
+        }
+        .hero__inner {
+            max-width: 900px;
+        }
+        .hero__pretitle {
+            font-family: var(--sans);
+            font-size: 0.65rem;
+            letter-spacing: 0.55em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 2.5rem;
+        }
+        .hero__title {
+            font-family: var(--serif);
+            font-weight: 300;
+            font-size: clamp(3rem, 8vw, 6.5rem);
+            line-height: 0.95;
+            color: var(--pearl);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+        .hero__title em {
+            font-style: italic;
+            color: var(--rose);
+        }
+        .hero__sub {
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: clamp(1rem, 1.6vw, 1.32rem);
+            color: var(--pearl-dim);
+            margin-bottom: 3rem;
+            letter-spacing: 0.02em;
+        }
+        .hero__galaxies {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 4rem;
+        }
+        .hero__galaxy-link {
+            font-family: var(--sans);
+            font-size: 0.62rem;
+            letter-spacing: 0.32em;
+            text-transform: uppercase;
+            color: var(--pearl-dim);
+            padding: 0.8rem 1.4rem;
+            border: 1px solid rgba(241, 236, 226, 0.18);
+            border-radius: 999px;
+            transition: all 0.42s;
+        }
+        .hero__galaxy-link:hover {
+            color: var(--gold);
+            border-color: var(--gold);
+        }
+
+        /* Subtle floating dot at hero center, hinting at spiral system */
+        .hero__center {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 3px; height: 3px;
+            border-radius: 50%;
+            background: var(--gold);
+            box-shadow: 0 0 22px var(--gold), 0 0 8px var(--gold);
+            opacity: 0.8;
+        }
+
+        /* ========== GALAXY SECTION ========== */
+        .galaxy {
+            min-height: 110vh;
+            padding: 6rem 2rem 8rem;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .galaxy__head {
+            text-align: center;
+            margin-bottom: 2.4rem;
+            max-width: 760px;
+        }
+        .galaxy__numeral {
+            font-family: var(--sans);
+            font-size: 0.62rem;
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 1.1rem;
+        }
+        .galaxy__title {
+            font-family: var(--serif);
+            font-weight: 300;
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
+            color: var(--pearl);
+            margin-bottom: 1rem;
+            line-height: 1;
+        }
+        .galaxy__title em { font-style: italic; color: var(--rose); }
+        .galaxy__essay {
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 1.05rem;
+            color: var(--pearl-dim);
+            line-height: 1.7;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .galaxy__hint {
+            font-family: var(--sans);
+            font-size: 0.56rem;
+            letter-spacing: 0.42em;
+            text-transform: uppercase;
+            color: rgba(215, 183, 104, 0.62);
+            margin-top: 1.4rem;
+        }
+
+        /* ========== ORBIT STAGE ========== */
+        .orbit {
+            position: relative;
+            width: min(880px, 92vw);
+            aspect-ratio: 1 / 1;
+            margin: 1.4rem auto 0;
+            cursor: grab;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .orbit:active { cursor: grabbing; }
+
+        .orbit__inner {
+            position: absolute;
+            inset: 0;
+            transform-origin: 50% 50%;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .orbit.is-dragging .orbit__inner { transition: none; }
+
+        /* The central anchor — chapter symbol */
+        .orbit__center {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 56px; height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(215, 183, 104, 0.42);
+            border-radius: 50%;
+            background: rgba(7, 9, 15, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 30;
+        }
+        .orbit__symbol {
+            font-family: var(--serif);
+            font-style: italic;
+            color: var(--gold);
+            font-size: 1.4rem;
+        }
+
+        /* Each photo as an orbital body */
+        .body {
+            position: absolute;
+            width: 88px;
+            height: 88px;
+            border-radius: 50%;
+            overflow: hidden;
+            cursor: pointer;
+            transform: translate(-50%, -50%);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease, opacity 0.7s ease;
+            opacity: 0;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4),
+                        inset 0 0 0 1px rgba(241, 236, 226, 0.12);
+            will-change: transform, opacity;
+            padding: 0;
+            border: none;
+            background: none;
+        }
+        .body.is-mounted { opacity: 1; }
+        .body img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+        }
+        .body::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, transparent 55%, rgba(7, 9, 15, 0.45) 100%);
+            pointer-events: none;
+            transition: opacity 0.42s;
+        }
+        .body:hover {
+            z-index: 20;
+            transform: translate(-50%, -50%) scale(1.5);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6),
+                        0 0 30px rgba(215, 183, 104, 0.32),
+                        inset 0 0 0 1px rgba(215, 183, 104, 0.4);
+        }
+        .body:hover::after { opacity: 0.3; }
+
+        .body__caption {
+            position: absolute;
+            bottom: -1.7rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 0.78rem;
+            color: var(--pearl);
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.42s;
+            pointer-events: none;
+            text-shadow: 0 1px 8px rgba(0, 0, 0, 0.8);
+        }
+        .body:hover .body__caption { opacity: 1; }
+
+        /* Spiral path indicator (subtle) */
+        .orbit__path {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.22;
+        }
+
+        /* Mobile fallback: galaxies become vertical scrolls */
+        @media (max-width: 720px) {
+            .orbit { aspect-ratio: auto; cursor: default; height: auto; }
+            .orbit__inner {
+                position: static;
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.6rem;
+            }
+            .orbit__center { display: none; }
+            .orbit__path { display: none; }
+            .body {
+                position: static;
+                width: 100%;
+                aspect-ratio: 1 / 1;
+                height: auto;
+                transform: none !important;
+                opacity: 1;
+                border-radius: 4px;
+            }
+            .body:hover { transform: none !important; }
+            .body__caption { display: none; }
+        }
+
+        /* ========== ABOUT ========== */
+        .about {
+            padding: 10rem 2rem;
+            display: flex;
+            justify-content: center;
+        }
+        .about__inner {
+            display: grid;
+            grid-template-columns: 0.8fr 1fr;
+            gap: clamp(2rem, 5vw, 5rem);
+            align-items: center;
+            max-width: 1100px;
+        }
+        @media (max-width: 720px) {
+            .about__inner { grid-template-columns: 1fr; }
+        }
+        .about__plate {
+            position: relative;
+            aspect-ratio: 3 / 4;
+            overflow: hidden;
+            border-radius: 6px;
+        }
+        .about__plate img { width: 100%; height: 100%; object-fit: cover; }
+        .about__plate::before {
+            content: "";
+            position: absolute;
+            inset: -10px;
+            border: 1px solid var(--indigo-soft);
+            border-radius: 12px;
+            pointer-events: none;
+        }
+        .about__label {
+            font-family: var(--sans);
+            font-size: 0.62rem;
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 1.4rem;
+        }
+        .about__title {
+            font-family: var(--serif);
+            font-weight: 300;
+            font-size: clamp(1.9rem, 4vw, 2.8rem);
+            color: var(--pearl);
+            margin-bottom: 1.6rem;
+            line-height: 1.12;
+        }
+        .about__title em { font-style: italic; color: var(--rose); }
+        .about__text {
+            font-size: 1.04rem;
+            line-height: 1.85;
+            color: var(--pearl-dim);
+            margin-bottom: 1.2rem;
+        }
+
+        /* ========== ENVELOPE (contact) ========== */
+        .envelope {
+            padding: 8rem 2rem;
+            text-align: center;
+        }
+        .envelope__inner {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+        .envelope__label {
+            font-family: var(--sans);
+            font-size: 0.62rem;
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 1.8rem;
+        }
+        .envelope__title {
+            font-family: var(--serif);
+            font-weight: 300;
+            font-size: clamp(2.2rem, 4vw, 3.2rem);
+            color: var(--pearl);
+            margin-bottom: 1.4rem;
+            line-height: 1.1;
+        }
+        .envelope__title em { font-style: italic; color: var(--rose); }
+        .envelope__lead {
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 1.05rem;
+            color: var(--pearl-dim);
+            line-height: 1.75;
+            margin-bottom: 3rem;
+        }
+        .envelope-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem 1.4rem;
+            text-align: left;
+        }
+        .envelope-form__field { position: relative; }
+        .envelope-form__field--full { grid-column: 1 / -1; }
+        .envelope-form__field label {
+            display: block;
+            font-family: var(--sans);
+            font-size: 0.56rem;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 0.4rem;
+        }
+        .envelope-form input,
+        .envelope-form textarea {
+            width: 100%;
+            background: rgba(241, 236, 226, 0.04);
+            border: 1px solid rgba(241, 236, 226, 0.12);
+            border-radius: 4px;
+            padding: 0.85rem 1rem;
+            font-family: var(--serif);
+            font-size: 1.04rem;
+            color: var(--pearl);
+            outline: none;
+            transition: all 0.42s;
+        }
+        .envelope-form input:focus,
+        .envelope-form textarea:focus {
+            border-color: var(--gold);
+            background: rgba(215, 183, 104, 0.04);
+        }
+        .envelope-form textarea {
+            resize: vertical;
+            min-height: 130px;
+        }
+        .envelope-form__honeypot {
+            position: absolute !important;
+            left: -10000px !important;
+            opacity: 0; width: 1px; height: 1px;
+        }
+        .envelope-form__btn {
+            grid-column: 1 / -1;
+            justify-self: center;
+            padding: 1rem 2.8rem;
+            font-family: var(--sans);
+            font-size: 0.66rem;
+            letter-spacing: 0.42em;
+            text-transform: uppercase;
+            color: var(--ink-deep);
+            background: var(--gold);
+            border: none;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.42s ease;
+            margin-top: 0.8rem;
+        }
+        .envelope-form__btn:hover {
+            background: var(--pearl);
+            letter-spacing: 0.5em;
+        }
+
+        @media (max-width: 600px) {
+            .envelope-form { grid-template-columns: 1fr; }
+        }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            padding: 3rem 2rem 2.2rem;
+            text-align: center;
+            border-top: 1px solid rgba(241, 236, 226, 0.08);
+            font-family: var(--sans);
+            font-size: 0.6rem;
+            letter-spacing: 0.32em;
+            text-transform: uppercase;
+            color: rgba(241, 236, 226, 0.3);
+        }
+        .footer__mark {
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 1.08rem;
+            color: var(--pearl-dim);
+            letter-spacing: 0.04em;
+            text-transform: none;
+            display: block;
+            margin-bottom: 0.6rem;
+        }
+
+        /* ========== LIGHTBOX ========== */
+        .lb {
+            position: fixed; inset: 0;
+            z-index: 200;
+            background: rgba(7, 9, 15, 0.97);
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+            display: flex; align-items: center; justify-content: center;
+            padding: 3rem 4rem;
+        }
+        .lb.is-open { opacity: 1; visibility: visible; }
+        .lb::before {
+            content: "";
+            position: absolute; inset: 0;
+            background:
+                radial-gradient(circle at 50% 50%, rgba(215, 183, 104, 0.06), transparent 50%);
+            pointer-events: none;
+        }
+        .lb__img {
+            max-width: 88vw; max-height: 84vh;
+            object-fit: contain;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            box-shadow: 0 40px 120px rgba(0, 0, 0, 0.7);
+        }
+        .lb__img.is-loaded { opacity: 1; }
+        .lb__caption {
+            position: absolute;
+            bottom: 2.5rem; left: 50%;
+            transform: translateX(-50%);
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 1rem;
+            color: var(--pearl-dim);
+            text-align: center;
+            max-width: 80vw;
+        }
+        .lb__counter {
+            position: absolute;
+            top: 2rem; left: 2.5rem;
+            font-family: var(--sans);
+            font-size: 0.62rem;
+            letter-spacing: 0.38em;
+            color: var(--gold);
+        }
+        .lb__close, .lb__nav {
+            position: absolute;
+            top: 50%; transform: translateY(-50%);
+            width: 48px; height: 48px;
+            display: flex; align-items: center; justify-content: center;
+            color: rgba(241, 236, 226, 0.6);
+            transition: color 0.32s;
+        }
+        .lb__close { top: 2rem; right: 2.5rem; transform: none; }
+        .lb__nav--prev { left: 2rem; }
+        .lb__nav--next { right: 2rem; }
+        .lb__close:hover, .lb__nav:hover { color: var(--gold); }
+
+        @media (prefers-reduced-motion: reduce) {
+            .body, .orbit__inner {
+                transition: none !important;
+                animation: none !important;
+            }
+        }
+    </style>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Photograph",
+        "name": "Moss & Tea — An Atlas of Orbits",
+        "url": "https://mossandtea.com/",
+        "creator": {
+            "@type": "Person",
+            "name": "Irina Crawford",
+            "jobTitle": "Photographer",
+            "email": "hello@mossandtea.com",
+            "knowsLanguage": ["en", "ro"],
+            "areaServed": ["California", "Worldwide"]
+        }
+    }
+    </script>
+</head>
+<body>
+    <!-- TOP BAR -->
+    <nav class="topbar">
+        <a href="#top" class="topbar__mark">
+            Moss &amp; Tea
+            <span>Irina Crawford</span>
+        </a>
+        <div class="topbar__nav">
+            <a href="#held-gaze" class="topbar__link">Galaxies</a>
+            <a href="#about" class="topbar__link">About</a>
+            <a href="#contact" class="topbar__link">Send</a>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" id="top">
+        <div class="hero__center" aria-hidden="true"></div>
+        <div class="hero__inner">
+            <p class="hero__pretitle">An Atlas of Orbits</p>
+            <h1 class="hero__title">Four <em>galaxies</em> of light.</h1>
+            <p class="hero__sub">Photographs of women, nature, ritual, and light — gathered into spiraling fields. Drag to turn each galaxy. Click any star.</p>
+            <div class="hero__galaxies">
+                <a href="#held-gaze" class="hero__galaxy-link">I · Held Gaze</a>
+                <a href="#body-element" class="hero__galaxy-link">II · Body</a>
+                <a href="#earth-dream" class="hero__galaxy-link">III · Earth &amp; Dream</a>
+                <a href="#spiral-dance" class="hero__galaxy-link">IV · Spiral Dance</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALAXIES -->
+    <section class="galaxy" id="held-gaze">
+        <header class="galaxy__head">
+            <p class="galaxy__numeral">Galaxy I</p>
+            <h2 class="galaxy__title">The <em>Held Gaze</em></h2>
+            <p class="galaxy__essay" data-essay="held-gaze"></p>
+            <p class="galaxy__hint" aria-hidden="true">Drag to turn · Click to enter</p>
+        </header>
+        <div class="orbit" data-chapter="held-gaze" data-symbol="◯">
+            <svg class="orbit__path" viewBox="0 0 100 100" aria-hidden="true">
+                <circle cx="50" cy="50" r="36" fill="none" stroke="var(--gold)" stroke-width="0.1" stroke-dasharray="0.4 1"/>
+            </svg>
+            <div class="orbit__inner"></div>
+            <div class="orbit__center"><span class="orbit__symbol">i</span></div>
+        </div>
+    </section>
+
+    <section class="galaxy" id="body-element">
+        <header class="galaxy__head">
+            <p class="galaxy__numeral">Galaxy II</p>
+            <h2 class="galaxy__title">Body as <em>Element</em></h2>
+            <p class="galaxy__essay" data-essay="body-element"></p>
+            <p class="galaxy__hint" aria-hidden="true">Drag to turn · Click to enter</p>
+        </header>
+        <div class="orbit" data-chapter="body-element" data-symbol="≈">
+            <svg class="orbit__path" viewBox="0 0 100 100" aria-hidden="true">
+                <circle cx="50" cy="50" r="36" fill="none" stroke="var(--gold)" stroke-width="0.1" stroke-dasharray="0.4 1"/>
+            </svg>
+            <div class="orbit__inner"></div>
+            <div class="orbit__center"><span class="orbit__symbol">ii</span></div>
+        </div>
+    </section>
+
+    <section class="galaxy" id="earth-dream">
+        <header class="galaxy__head">
+            <p class="galaxy__numeral">Galaxy III</p>
+            <h2 class="galaxy__title">Earth &amp; <em>Dream</em></h2>
+            <p class="galaxy__essay" data-essay="earth-dream"></p>
+            <p class="galaxy__hint" aria-hidden="true">Drag to turn · Click to enter</p>
+        </header>
+        <div class="orbit" data-chapter="earth-dream" data-symbol="△">
+            <svg class="orbit__path" viewBox="0 0 100 100" aria-hidden="true">
+                <circle cx="50" cy="50" r="36" fill="none" stroke="var(--gold)" stroke-width="0.1" stroke-dasharray="0.4 1"/>
+            </svg>
+            <div class="orbit__inner"></div>
+            <div class="orbit__center"><span class="orbit__symbol">iii</span></div>
+        </div>
+    </section>
+
+    <section class="galaxy" id="spiral-dance">
+        <header class="galaxy__head">
+            <p class="galaxy__numeral">Galaxy IV</p>
+            <h2 class="galaxy__title">The Spiral <em>Dance</em></h2>
+            <p class="galaxy__essay" data-essay="spiral-dance"></p>
+            <p class="galaxy__hint" aria-hidden="true">Drag to turn · Click to enter</p>
+        </header>
+        <div class="orbit" data-chapter="spiral-dance" data-symbol="↻">
+            <svg class="orbit__path" viewBox="0 0 100 100" aria-hidden="true">
+                <circle cx="50" cy="50" r="36" fill="none" stroke="var(--gold)" stroke-width="0.1" stroke-dasharray="0.4 1"/>
+            </svg>
+            <div class="orbit__inner"></div>
+            <div class="orbit__center"><span class="orbit__symbol">iv</span></div>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="about" id="about">
+        <div class="about__inner">
+            <div class="about__plate">
+                <img src="images/irina/archive/g3a5407b-full.webp" alt="Irina Crawford — photographer">
+            </div>
+            <div>
+                <p class="about__label">The Cartographer</p>
+                <h2 class="about__title">An atlas of <em>encounters.</em></h2>
+                <p class="about__text">I work quietly, with patience and attention to what is already alive: the way someone softens when they feel safe, the gesture between words, the light that finds a face for only a second.</p>
+                <p class="about__text">I come from a filmmaking eye, so I think in atmosphere, movement, and emotional rhythm. Based in California, available for travel.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ENVELOPE -->
+    <section class="envelope" id="contact">
+        <div class="envelope__inner">
+            <p class="envelope__label">Cast a Line</p>
+            <h2 class="envelope__title">Let's make something <em>that feels true.</em></h2>
+            <p class="envelope__lead">Tell me what you are hoping to remember, reveal, or bring into the light.</p>
+            <form class="envelope-form" id="contactForm" autocomplete="on">
+                <div class="envelope-form__field">
+                    <label for="ef-name">Name</label>
+                    <input type="text" id="ef-name" name="name" autocomplete="name" required>
+                </div>
+                <div class="envelope-form__field">
+                    <label for="ef-email">Email</label>
+                    <input type="email" id="ef-email" name="email" autocomplete="email" required>
+                </div>
+                <div class="envelope-form__field envelope-form__field--full">
+                    <label for="ef-subject">Subject</label>
+                    <input type="text" id="ef-subject" name="subject">
+                </div>
+                <div class="envelope-form__field envelope-form__field--full">
+                    <label for="ef-message">Your Note</label>
+                    <textarea id="ef-message" name="message" rows="4" required></textarea>
+                </div>
+                <input class="envelope-form__honeypot" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+                <button type="submit" class="envelope-form__btn">Send Across</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <span class="footer__mark">Moss &amp; Tea</span>
+        <span>© 2026 · Irina Crawford · An atlas of orbits</span>
+    </footer>
+
+    <!-- LIGHTBOX -->
+    <div class="lb" id="lb" role="dialog" aria-label="Image viewer">
+        <span class="lb__counter" id="lbCounter">I / —</span>
+        <img class="lb__img" id="lbImg" src="" alt="">
+        <div class="lb__caption" id="lbCaption"></div>
+        <button class="lb__close" id="lbClose" aria-label="Close">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+        <button class="lb__nav lb__nav--prev" id="lbPrev" aria-label="Previous">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button class="lb__nav lb__nav--next" id="lbNext" aria-label="Next">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+    </div>
+
+<script>
+(() => {
+    const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const GOLDEN_ANGLE = 137.5077640500378; // degrees — phyllotaxis
+    let chapters = {}, images = [];
+    let lbList = [], lbIndex = -1;
+
+    async function load() {
+        const r = await fetch('data/gallery-config.json', { cache: 'no-cache' });
+        const m = await r.json();
+        chapters = Object.fromEntries((m.chapters || []).map(c => [c.id, c]));
+        images = m.images || [];
+        document.querySelectorAll('[data-essay]').forEach(el => {
+            el.textContent = (chapters[el.dataset.essay] || {}).text || '';
+        });
+        document.querySelectorAll('.orbit').forEach(buildGalaxy);
+    }
+
+    function buildGalaxy(orbitEl) {
+        const chapterId = orbitEl.dataset.chapter;
+        const inner = orbitEl.querySelector('.orbit__inner');
+        const list = images.filter(i => i.chapter === chapterId);
+        const n = list.length;
+        if (!n) return;
+
+        // Layout sizing — radius scales with sqrt(i) so the spiral fills evenly
+        // Tuned: max radius ~42% of orbit on largest galaxy (held-gaze, 56)
+        const isMobile = window.matchMedia('(max-width: 720px)').matches;
+        if (isMobile) {
+            // Mobile fallback — just render thumbs as a grid (CSS handles)
+            inner.innerHTML = list.map((im, i) =>
+                `<button class="body is-mounted" data-idx="${i}" data-chapter="${chapterId}" aria-label="${esc(im.alt)}">
+                    <img src="${esc(im.thumb)}" alt="${esc(im.alt)}" loading="lazy" decoding="async">
+                </button>`
+            ).join('');
+            return;
+        }
+
+        const baseR = 9;          // % from center where first body sits
+        const stepR = 36 / Math.sqrt(n);  // tuned to spread outward to ~45%
+
+        // Build with DOM API — Brave Shields was stripping inline style="" + nested span
+        // via innerHTML round-trip. createElement preserves everything.
+        inner.replaceChildren();
+        const frag = document.createDocumentFragment();
+        list.forEach((im, i) => {
+            const r = baseR + stepR * Math.sqrt(i);
+            const theta = i * GOLDEN_ANGLE * (Math.PI / 180);
+            const x = 50 + r * Math.cos(theta);
+            const y = 50 + r * Math.sin(theta);
+            const delay = Math.min(800, i * 22);
+
+            const btn = document.createElement('button');
+            btn.className = 'body';
+            btn.type = 'button';
+            btn.dataset.idx = i;
+            btn.dataset.chapter = chapterId;
+            btn.dataset.x = x.toFixed(2);
+            btn.dataset.y = y.toFixed(2);
+            btn.style.left = x.toFixed(2) + '%';
+            btn.style.top = y.toFixed(2) + '%';
+            btn.style.transitionDelay = delay + 'ms';
+            btn.setAttribute('aria-label', im.alt || '');
+
+            const img = document.createElement('img');
+            img.src = im.thumb;
+            img.alt = im.alt || '';
+            img.loading = 'lazy';
+            img.decoding = 'async';
+            btn.appendChild(img);
+
+            const cap = document.createElement('span');
+            cap.className = 'body__caption';
+            cap.textContent = (im.caption || '').replace(/^[^—\-]+[—\-]\s*/, '');
+            btn.appendChild(cap);
+
+            frag.appendChild(btn);
+        });
+        inner.appendChild(frag);
+
+        // Stagger mount (opacity 0 → 1 with transition-delay already baked into inline style)
+        requestAnimationFrame(() => {
+            inner.querySelectorAll('.body').forEach(b => b.classList.add('is-mounted'));
+        });
+
+        // Drag to rotate
+        setupDrag(orbitEl, inner);
+        // Idle slow rotation
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            let rotation = 0;
+            let lastTime = performance.now();
+            function tick(now) {
+                if (!orbitEl.dataset.userRot) {
+                    rotation += (now - lastTime) * 0.002; // very slow drift
+                    inner.style.transform = `rotate(${rotation}deg)`;
+                }
+                lastTime = now;
+                requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
+        }
+    }
+
+    function setupDrag(orbitEl, inner) {
+        let pointerDown = false, dragging = false;
+        let startX = 0, startY = 0;
+        let startA = 0, startRot = 0;
+        const DRAG_THRESHOLD = 6; // px before treating as drag, not click
+
+        const rect = () => orbitEl.getBoundingClientRect();
+        function angle(clientX, clientY) {
+            const r = rect();
+            const cx = r.left + r.width / 2;
+            const cy = r.top + r.height / 2;
+            return Math.atan2(clientY - cy, clientX - cx) * 180 / Math.PI;
+        }
+        function readRot() {
+            const t = inner.style.transform.match(/rotate\(([-\d.]+)deg\)/);
+            return t ? parseFloat(t[1]) : 0;
+        }
+        function onDown(e) {
+            const pt = e.touches ? e.touches[0] : e;
+            pointerDown = true;
+            dragging = false;
+            startX = pt.clientX;
+            startY = pt.clientY;
+            startA = angle(pt.clientX, pt.clientY);
+            startRot = readRot();
+            orbitEl.dataset.userRot = '1';
+        }
+        function onMove(e) {
+            if (!pointerDown) return;
+            const pt = e.touches ? e.touches[0] : e;
+            const dx = pt.clientX - startX;
+            const dy = pt.clientY - startY;
+            if (!dragging) {
+                if (Math.hypot(dx, dy) < DRAG_THRESHOLD) return;
+                dragging = true;
+                orbitEl.classList.add('is-dragging');
+            }
+            const a = angle(pt.clientX, pt.clientY);
+            inner.style.transform = `rotate(${startRot + (a - startA)}deg)`;
+            if (e.cancelable) e.preventDefault();
+        }
+        function onUp(e) {
+            if (!pointerDown) return;
+            pointerDown = false;
+            if (dragging) {
+                orbitEl.classList.remove('is-dragging');
+                // Swallow the click that would follow this drag
+                const swallow = (ev) => { ev.stopPropagation(); ev.preventDefault(); orbitEl.removeEventListener('click', swallow, true); };
+                orbitEl.addEventListener('click', swallow, true);
+            }
+            dragging = false;
+            setTimeout(() => { delete orbitEl.dataset.userRot; }, 4000);
+        }
+        orbitEl.addEventListener('mousedown', onDown);
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+        orbitEl.addEventListener('touchstart', onDown, { passive: true });
+        document.addEventListener('touchmove', onMove, { passive: false });
+        document.addEventListener('touchend', onUp);
+    }
+
+    // ===== LIGHTBOX =====
+    const lb = document.getElementById('lb');
+    const lbImg = document.getElementById('lbImg');
+    const lbCap = document.getElementById('lbCaption');
+    const lbCounter = document.getElementById('lbCounter');
+
+    function openLB(chapterId, idx) {
+        lbList = images.filter(i => i.chapter === chapterId);
+        lbIndex = idx;
+        showLB();
+    }
+    function showLB() {
+        if (lbIndex < 0 || lbIndex >= lbList.length) return;
+        const im = lbList[lbIndex];
+        lbImg.classList.remove('is-loaded');
+        const tmp = new Image();
+        tmp.onload = () => { lbImg.src = im.full; lbImg.alt = im.alt; requestAnimationFrame(() => lbImg.classList.add('is-loaded')); };
+        tmp.src = im.full;
+        lbCap.textContent = im.caption;
+        lbCounter.textContent = `${String(lbIndex + 1).padStart(2, '0')} / ${String(lbList.length).padStart(2, '0')}`;
+        lb.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+        [-1, 1].forEach(o => { const n = lbList[lbIndex + o]; if (n) (new Image()).src = n.full; });
+    }
+    function closeLB() { lb.classList.remove('is-open'); document.body.style.overflow = ''; }
+
+    document.addEventListener('click', (e) => {
+        const b = e.target.closest('.body');
+        if (b) openLB(b.dataset.chapter, parseInt(b.dataset.idx, 10));
+    });
+    document.getElementById('lbClose').addEventListener('click', closeLB);
+    document.getElementById('lbPrev').addEventListener('click', () => { lbIndex = Math.max(0, lbIndex - 1); showLB(); });
+    document.getElementById('lbNext').addEventListener('click', () => { lbIndex = Math.min(lbList.length - 1, lbIndex + 1); showLB(); });
+    lb.addEventListener('click', (e) => { if (e.target === lb) closeLB(); });
+    document.addEventListener('keydown', (e) => {
+        if (!lb.classList.contains('is-open')) return;
+        if (e.key === 'Escape') closeLB();
+        if (e.key === 'ArrowLeft') { lbIndex = Math.max(0, lbIndex - 1); showLB(); }
+        if (e.key === 'ArrowRight') { lbIndex = Math.min(lbList.length - 1, lbIndex + 1); showLB(); }
+    });
+
+    // ===== FORM =====
+    const form = document.getElementById('contactForm');
+    if (form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (form.elements.company.value) { form.reset(); return; }
+            const btn = form.querySelector('button[type="submit"]');
+            const original = btn.textContent;
+            btn.textContent = 'Sending';
+            btn.disabled = true;
+            const values = {
+                name: form.elements.name.value.trim(),
+                email: form.elements.email.value.trim(),
+                subject: form.elements.subject.value.trim() || 'Photography Inquiry',
+                message: form.elements.message.value.trim(),
+            };
+            try {
+                const r = await fetch('/api/inquiries', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(values) });
+                const d = await r.json().catch(() => ({}));
+                if (!r.ok || !d.ok) throw new Error();
+                form.reset(); btn.textContent = 'Sent';
+            } catch {
+                window.location.href = `mailto:hello@mossandtea.com?subject=${encodeURIComponent(values.subject)}&body=${encodeURIComponent(`Name: ${values.name}\nEmail: ${values.email}\n\n${values.message}`)}`;
+                btn.textContent = original;
+            } finally {
+                btn.disabled = false;
+                setTimeout(() => { btn.textContent = original; }, 2400);
+            }
+        });
+    }
+
+    load();
+})();
+</script>
+</body>
+</html>

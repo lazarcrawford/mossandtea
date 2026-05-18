@@ -28,6 +28,7 @@ const DIRS = [
   'images',
   'js',
   'portal',
+  'preview',
   'telegram-console',
 ];
 

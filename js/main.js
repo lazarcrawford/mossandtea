@@ -48,9 +48,12 @@ function renderArchiveGallery() {
     gallery.innerHTML = galleryImages.map((image, index) => {
         const classes = ['gallery__item'];
         if (image.layout) classes.push(`gallery__item--${image.layout}`);
+        const ratioWidth = Number(image.thumbWidth || image.width) || 1;
+        const ratioHeight = Number(image.thumbHeight || image.height) || 1;
+        const rowSpan = Math.max(18, Math.round((ratioHeight / ratioWidth) * 34));
 
         return `
-            <button class="${classes.join(' ')}" type="button" data-category="${escapeHtml(image.chapter)}" data-lightbox="${index + 1}" data-src="${escapeHtml(image.full)}" data-caption="${escapeHtml(image.caption)}">
+            <button class="${classes.join(' ')}" style="--row-span: ${rowSpan};" type="button" data-category="${escapeHtml(image.chapter)}" data-lightbox="${index + 1}" data-src="${escapeHtml(image.full)}" data-caption="${escapeHtml(image.caption)}">
                 <img src="${escapeHtml(image.thumb)}" alt="${escapeHtml(image.alt)}" loading="lazy" decoding="async" width="${Number(image.thumbWidth) || ''}" height="${Number(image.thumbHeight) || ''}">
                 <span class="gallery__overlay">
                     <span>${escapeHtml(image.caption)}</span>
@@ -175,6 +178,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // --- Logo: smooth scroll to top on homepage ---
+    document.querySelectorAll('[data-scroll-top]').forEach((el) => {
+        el.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    });
+
     // --- Contact form handler ---
     const form = document.getElementById('contactForm');
     if (form) {
@@ -200,6 +211,15 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.textContent = 'Sending...';
             btn.disabled = true;
             setStatus('');
+
+            // Honeypot — if a bot filled the hidden "company" field, silently no-op
+            if (form.elements.company && form.elements.company.value) {
+                form.reset();
+                setStatus('Thank you. Your note was sent.', 'success');
+                btn.textContent = originalText;
+                btn.disabled = false;
+                return;
+            }
 
             const values = {
                 name: form.elements.name.value.trim(),

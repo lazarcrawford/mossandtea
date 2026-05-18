@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moss &amp; Tea — Design Previews</title>
+    <meta name="description" content="Three design directions for Moss & Tea — Irina Crawford photography. Private previews for review.">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #F5F0EB;
+            color: #2C2C2C;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 4rem 2rem;
+        }
+        .wrap {
+            max-width: 880px;
+            margin: 0 auto;
+        }
+        .lede {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        .lede__label {
+            font-size: 0.62rem;
+            letter-spacing: 0.42em;
+            text-transform: uppercase;
+            color: #8B6F5E;
+            margin-bottom: 1.4rem;
+        }
+        .lede__title {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-weight: 300;
+            font-size: clamp(2.4rem, 5vw, 3.8rem);
+            letter-spacing: -0.02em;
+            line-height: 1.05;
+            color: #18130E;
+            margin-bottom: 1rem;
+        }
+        .lede__sub {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-style: italic;
+            font-size: 1.15rem;
+            color: #7A7A7A;
+            max-width: 540px;
+            margin: 0 auto;
+        }
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.4rem;
+        }
+        .opt {
+            display: block;
+            padding: 2rem 2.2rem;
+            background: #FFFFFF;
+            border: 1px solid #E0D6CC;
+            color: inherit;
+            text-decoration: none;
+            transition: all 0.42s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+        }
+        .opt:hover {
+            border-color: #8B6F5E;
+            box-shadow: 0 12px 36px -16px rgba(96, 72, 56, 0.18);
+            transform: translateY(-2px);
+        }
+        .opt__num {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-style: italic;
+            font-size: 0.95rem;
+            color: #8B6F5E;
+            letter-spacing: 0.18em;
+            margin-bottom: 0.6rem;
+        }
+        .opt__title {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-weight: 400;
+            font-size: 1.85rem;
+            color: #18130E;
+            margin-bottom: 0.6rem;
+            letter-spacing: 0.01em;
+        }
+        .opt__metaphor {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-style: italic;
+            font-size: 1.02rem;
+            color: #5B5246;
+            margin-bottom: 1rem;
+        }
+        .opt__desc {
+            font-size: 0.92rem;
+            color: #7A7A7A;
+            line-height: 1.75;
+            margin-bottom: 1.2rem;
+        }
+        .opt__cta {
+            font-size: 0.7rem;
+            letter-spacing: 0.32em;
+            text-transform: uppercase;
+            color: #8B6F5E;
+            font-weight: 500;
+        }
+        .opt__cta::after {
+            content: " →";
+            transition: margin-left 0.42s ease;
+            display: inline-block;
+        }
+        .opt:hover .opt__cta::after { margin-left: 6px; }
+        .foot {
+            text-align: center;
+            margin-top: 4rem;
+            font-size: 0.78rem;
+            color: #9A9A9A;
+            font-style: italic;
+            font-family: 'Cormorant Garamond', Georgia, serif;
+        }
+        @media (min-width: 720px) {
+            .options { grid-template-columns: repeat(3, 1fr); }
+            .opt { padding: 2.4rem 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <header class="lede">
+            <p class="lede__label">A Private Preview</p>
+            <h1 class="lede__title">Three directions for Moss &amp; Tea</h1>
+            <p class="lede__sub">Three working drafts of the site. Open one, scroll the whole page, then come back and try another.</p>
+        </header>
+
+        <section class="options">
+            <a href="/preview/folio.html" class="opt">
+                <p class="opt__num">i.</p>
+                <h2 class="opt__title">Sacred Folio</h2>
+                <p class="opt__metaphor">the site as a manuscript</p>
+                <p class="opt__desc">Single column. Pilastered. The chapters paced like icon panels.</p>
+                <span class="opt__cta">Open Folio</span>
+            </a>
+            <a href="/preview/playa.html" class="opt">
+                <p class="opt__num">ii.</p>
+                <h2 class="opt__title">Temple Under Sky</h2>
+                <p class="opt__metaphor">the site as a pilgrimage</p>
+                <p class="opt__desc">Massive type. Ambient dust. Four chapter stations you walk through.</p>
+                <span class="opt__cta">Enter Temple</span>
+            </a>
+            <a href="/preview/spiral.html" class="opt">
+                <p class="opt__num">iii.</p>
+                <h2 class="opt__title">Atlas of Orbits</h2>
+                <p class="opt__metaphor">the site as a star map</p>
+                <p class="opt__desc">Each chapter is a phyllotaxis galaxy. Drag to rotate. Click any star.</p>
+                <span class="opt__cta">Open Atlas</span>
+            </a>
+        </section>
+
+        <footer class="foot">
+            <p>Designed for Irina Crawford · 2026</p>
+        </footer>
+    </div>
+</body>
+</html>
