@@ -376,36 +376,37 @@
         .procession__row--two { grid-template-columns: 1fr 1fr; }
         .procession__row--three { grid-template-columns: 1.5fr 1fr 1fr; }
 
-        /* Mobile gallery — circular-thumb 3-col grid, matching the Spiral fallback
-           Lazar loved. Same Playa palette + ember accents. */
+        /* Mobile gallery — compact square-thumb 3-col grid. Same Playa palette.
+           Circles belong on Spiral (orbits). Here: crisp squares, small gap,
+           breathing without bloat. */
         @media (max-width: 720px) {
-            .procession { padding: 0 1rem; gap: 1.6rem; }
+            .procession { padding: 0 0.55rem; gap: 1.6rem; }
             .procession__row {
                 grid-template-columns: repeat(3, 1fr) !important;
-                gap: 0.55rem;
+                gap: 0.4rem;
             }
             .relic,
             .relic--portrait, .relic--landscape, .relic--tall, .relic--full {
                 aspect-ratio: 1 / 1 !important;
-                border-radius: 50%;
+                border-radius: 0;
                 overflow: hidden;
                 opacity: 1;
                 transform: none;
-                transition: transform 0.42s ease, box-shadow 0.42s ease;
-                box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45),
-                            inset 0 0 0 1px rgba(241, 233, 218, 0.08);
+                transition: transform 0.32s ease, filter 0.32s ease;
             }
             .relic.is-visible { transform: none; }
             .relic::after { display: none; }
             .relic__caption { display: none; }
             .relic:active {
-                transform: scale(0.96);
-                box-shadow: 0 4px 18px rgba(0, 0, 0, 0.55),
-                            inset 0 0 0 1px rgba(196, 95, 46, 0.5),
-                            0 0 22px rgba(196, 95, 46, 0.25);
+                transform: scale(0.97);
+                filter: brightness(1.08) saturate(1.08);
             }
             .relic img {
-                transition: filter 0.42s ease;
+                transition: none;
+            }
+            .relic:hover img {
+                transform: none;
+                filter: none;
             }
         }
 
