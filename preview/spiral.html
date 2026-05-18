@@ -352,28 +352,43 @@
             opacity: 0.22;
         }
 
-        /* Mobile fallback: galaxies become vertical scrolls */
+        /* Mobile orbital: same phyllotaxis, smaller bodies that breathe in
+           a phone-sized disc. Idle drift + drag-to-rotate + tap-to-enter
+           all preserved. The disc is the page; the page is the disc. */
         @media (max-width: 720px) {
-            .orbit { aspect-ratio: auto; cursor: default; height: auto; }
-            .orbit__inner {
-                position: static;
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 0.6rem;
+            .galaxy { padding: 4rem 0.6rem 5rem; }
+            .galaxy__head { padding: 0 1rem; margin-bottom: 1.4rem; }
+            .galaxy__hint { font-size: 0.5rem; letter-spacing: 0.36em; }
+            .orbit {
+                width: min(96vw, 520px);
+                margin: 0.8rem auto 0;
             }
-            .orbit__center { display: none; }
-            .orbit__path { display: none; }
             .body {
-                position: static;
-                width: 100%;
-                aspect-ratio: 1 / 1;
-                height: auto;
-                transform: none !important;
-                opacity: 1;
-                border-radius: 4px;
+                width: 46px;
+                height: 46px;
             }
-            .body:hover { transform: none !important; }
+            .body:hover,
+            .body:active {
+                transform: translate(-50%, -50%) scale(1.65);
+                z-index: 25;
+                box-shadow: 0 10px 32px rgba(0, 0, 0, 0.65),
+                            0 0 26px rgba(215, 183, 104, 0.36),
+                            inset 0 0 0 1px rgba(215, 183, 104, 0.5);
+            }
             .body__caption { display: none; }
+            .orbit__center {
+                width: 38px;
+                height: 38px;
+            }
+            .orbit__symbol { font-size: 0.95rem; }
+        }
+        @media (max-width: 420px) {
+            .body { width: 38px; height: 38px; }
+            .body:hover, .body:active {
+                transform: translate(-50%, -50%) scale(1.8);
+            }
+            .orbit__center { width: 32px; height: 32px; }
+            .orbit__symbol { font-size: 0.8rem; }
         }
 
         /* ========== ABOUT ========== */
@@ -824,19 +839,8 @@
         const n = list.length;
         if (!n) return;
 
-        // Layout sizing — radius scales with sqrt(i) so the spiral fills evenly
-        // Tuned: max radius ~42% of orbit on largest galaxy (held-gaze, 56)
-        const isMobile = window.matchMedia('(max-width: 720px)').matches;
-        if (isMobile) {
-            // Mobile fallback — just render thumbs as a grid (CSS handles)
-            inner.innerHTML = list.map((im, i) =>
-                `<button class="body is-mounted" data-idx="${i}" data-chapter="${chapterId}" aria-label="${esc(im.alt)}">
-                    <img src="${esc(im.thumb)}" alt="${esc(im.alt)}" loading="lazy" decoding="async">
-                </button>`
-            ).join('');
-            return;
-        }
-
+        // Layout: phyllotaxis spiral with radius scaling by sqrt(i).
+        // Mobile gets the same math, just smaller thumbs (set in CSS).
         const baseR = 9;          // % from center where first body sits
         const stepR = 36 / Math.sqrt(n);  // tuned to spread outward to ~45%
 

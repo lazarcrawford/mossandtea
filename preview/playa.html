@@ -108,7 +108,43 @@
             padding-left: 2.2rem;
         }
         .counter__mark.is-active::before { width: 22px; }
-        @media (max-width: 760px) { .counter { display: none; } }
+
+        /* Mobile: floating chapter chip at the bottom — a compass you carry */
+        @media (max-width: 760px) {
+            .counter {
+                top: auto;
+                left: 50%;
+                bottom: 1rem;
+                transform: translateX(-50%);
+                flex-direction: row;
+                gap: 0;
+                background: rgba(14, 10, 7, 0.86);
+                backdrop-filter: blur(14px) saturate(1.05);
+                -webkit-backdrop-filter: blur(14px) saturate(1.05);
+                padding: 0.42rem 0.4rem;
+                border-radius: 999px;
+                border: 1px solid rgba(241, 233, 218, 0.16);
+                mix-blend-mode: normal;
+                max-width: calc(100% - 1.6rem);
+                box-shadow: 0 12px 36px -16px rgba(0, 0, 0, 0.7);
+            }
+            .counter__mark {
+                padding: 0.5rem 0.85rem;
+                font-size: 0.55rem;
+                letter-spacing: 0.26em;
+                color: rgba(241, 233, 218, 0.55);
+                border-radius: 999px;
+                transition: color 0.32s ease, background 0.32s ease;
+                padding-left: 0.85rem;
+                white-space: nowrap;
+            }
+            .counter__mark::before { display: none; }
+            .counter__mark.is-active {
+                color: #0E0A07;
+                background: var(--ember);
+                padding-left: 0.85rem;
+            }
+        }
 
         /* ========== TOP-RIGHT MARK ========== */
         .topmark {
@@ -339,8 +375,38 @@
         .procession__row--one { grid-template-columns: 1fr; }
         .procession__row--two { grid-template-columns: 1fr 1fr; }
         .procession__row--three { grid-template-columns: 1.5fr 1fr 1fr; }
-        @media (max-width: 760px) {
-            .procession__row--two, .procession__row--three { grid-template-columns: 1fr; }
+
+        /* Mobile gallery — circular-thumb 3-col grid, matching the Spiral fallback
+           Lazar loved. Same Playa palette + ember accents. */
+        @media (max-width: 720px) {
+            .procession { padding: 0 1rem; gap: 1.6rem; }
+            .procession__row {
+                grid-template-columns: repeat(3, 1fr) !important;
+                gap: 0.55rem;
+            }
+            .relic,
+            .relic--portrait, .relic--landscape, .relic--tall, .relic--full {
+                aspect-ratio: 1 / 1 !important;
+                border-radius: 50%;
+                overflow: hidden;
+                opacity: 1;
+                transform: none;
+                transition: transform 0.42s ease, box-shadow 0.42s ease;
+                box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45),
+                            inset 0 0 0 1px rgba(241, 233, 218, 0.08);
+            }
+            .relic.is-visible { transform: none; }
+            .relic::after { display: none; }
+            .relic__caption { display: none; }
+            .relic:active {
+                transform: scale(0.96);
+                box-shadow: 0 4px 18px rgba(0, 0, 0, 0.55),
+                            inset 0 0 0 1px rgba(196, 95, 46, 0.5),
+                            0 0 22px rgba(196, 95, 46, 0.25);
+            }
+            .relic img {
+                transition: filter 0.42s ease;
+            }
         }
 
         .relic {

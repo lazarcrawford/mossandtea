@@ -44,15 +44,13 @@ fi
 echo "🌿 On branch: $(git rev-parse --abbrev-ref HEAD)"
 echo ""
 
-# ===== 2. Stage and commit Codex's chapter rebuild =====
-echo "📦 Commit 1/2 — Codex's chapter rebuild + masonry gallery"
-# Files that were Codex's work (staged earlier as "M ")
-git add data/gallery-config.json css/motion.css scripts/public-gallery-smoke.js scripts/public-responsive-smoke.js
-# index.html, css/style.css, js/main.js, js/motion.js are MIXED.
-# Approach: commit the WHOLE state as the chapter rebuild first, then amend by also committing my preview/build changes as the second.
-# Simpler: commit everything as ONE commit. The "preserve authorship" split was nice-to-have, not load-bearing.
+# ===== 2. Drop folio direction (Lazar's decision after preview) =====
+echo "🗑  Removing folio direction per Lazar's review"
+rm -f preview/folio.html index-wild-folio.html
 
-# Reset to commit everything in one clean commit:
+# ===== 3. Stage and commit =====
+echo ""
+echo "📦 Committing chapter rebuild + UX baseline + three preview proposals"
 git add -A
 git status --short
 
@@ -72,13 +70,17 @@ Baseline UX fixes (Prometheus Cowork):
   - Lightbox: preload prev+next for instant navigation feel
   - JSON-LD Photograph schema for discovery
   - Merged duplicate @media (max-width:480px) blocks
-  - gallery-config.json paths now absolute (work from any URL depth)
+  - All asset paths absolute (work from any URL depth, incl. /preview/)
 
 Three preview proposals (under /preview/):
-  - /preview/folio.html  — sacred folio (Brâncuși × Romanian icon × Apple)
-  - /preview/playa.html  — temple under sky (Burning Man × Pinterest × Irina)
-  - /preview/spiral.html — atlas of orbits (phyllotaxis galaxies, draggable)
-  - /preview/index.html  — landing page listing all three
+  - /preview/baseline.html — the current theme, refined (production candidate)
+  - /preview/playa.html    — temple under sky (Burning Man × Pinterest × Irina)
+  - /preview/spiral.html   — atlas of orbits (phyllotaxis galaxies, draggable)
+  - /preview/index.html    — landing page listing all three
+
+The folio direction (Romanian sacred manuscript) was cut after review —
+it read as appliqué/twee rather than structural grammar. Lessons logged
+in ~/second-brain/Reference/ for future runs.
 
 Design memo: PROMETHEUS_DESIGN_PASS.md in repo root.
 Skill + voice + heritage model persisted to ~/second-brain/Reference/.
@@ -127,9 +129,9 @@ verify() {
   fi
 }
 
-verify "/" "Main page (baseline)"
+verify "/" "Main page (production)"
 verify "/preview/" "Preview landing"
-verify "/preview/folio.html" "Sacred Folio"
+verify "/preview/baseline.html" "Refined Baseline (preview)"
 verify "/preview/playa.html" "Temple Under Sky"
 verify "/preview/spiral.html" "Atlas of Orbits"
 verify "/data/gallery-config.json" "Gallery manifest"
@@ -143,7 +145,7 @@ echo "  Landing (lets her pick):"
 echo "    ${WORKER_URL}/preview/"
 echo ""
 echo "  Direct links:"
-echo "    Sacred Folio:    ${WORKER_URL}/preview/folio.html"
-echo "    Temple Under Sky:${WORKER_URL}/preview/playa.html"
-echo "    Atlas of Orbits: ${WORKER_URL}/preview/spiral.html"
+echo "    1. The Site, Refined:  ${WORKER_URL}/preview/baseline.html"
+echo "    2. Temple Under Sky:   ${WORKER_URL}/preview/playa.html"
+echo "    3. Atlas of Orbits:    ${WORKER_URL}/preview/spiral.html"
 echo ""

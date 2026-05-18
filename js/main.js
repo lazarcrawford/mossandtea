@@ -4,7 +4,7 @@
    ============================================ */
 
 const DEFAULT_GALLERY_FILTER = 'held-gaze';
-const GALLERY_MANIFEST_URL = 'data/gallery-config.json';
+const GALLERY_MANIFEST_URL = '/data/gallery-config.json';
 
 let galleryChapters = {};
 let galleryImages = [];
